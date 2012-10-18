@@ -1,5 +1,5 @@
 ## Moon9
-A game framework. Warning: wip, dev, unstable, radiation hazard, defcon 3
+Another game framework. Warning: wip, dev, unstable, radiation hazard, defcon 3
 
 ## Subframeworks
 - [moon9::memtracer](https://github.com/r-lyeh/moon9/tree/master/src/moon9/memtracer)
