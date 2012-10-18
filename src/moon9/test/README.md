@@ -1,4 +1,3 @@
-moon9-test
-==========
-
-moon9 framework: test library
+## moon9 framework: test library
+- Simple test framework with no dependencies.
+- MIT licensed
