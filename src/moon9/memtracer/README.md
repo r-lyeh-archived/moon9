@@ -1,7 +1,7 @@
 ## moon9 framework: memtracer library
 - Simple and lightweight memory tracer
 
-## Features:
+## Features
 - Tiny
 - Clean
 - Callstack based
@@ -9,7 +9,7 @@
 - Embeddable, just include this source in your project
 - MIT licensed
 
-## Requeriments:
+## Dependencies
 - moon9::mutex
 - moon9::callstack
 - moon9::string
