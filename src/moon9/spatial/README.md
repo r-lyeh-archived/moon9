@@ -1,4 +1,12 @@
-moon9-spatial-
-==============
+## Moon9 framework: spatial library
+Simple geometry framework.
+Features collision.
 
-moon9 framework: spatial library 
+## Roadmap for 'next' branch
+- Navmesh
+- Pathfinding
+- Physics
+
+## Requeriments
+- GLM
+- MSGPACK (optional)
