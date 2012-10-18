@@ -1,0 +1,83 @@
+--NullEngine Scene File
+
+entry = neCreateToken
+
+entry
+{
+	Name = "Room",
+	Pos = {0,0,0},
+	RotX = {1,0,0},
+	RotY = {0,1,0},
+	RotZ = {0,0,1},
+	Type = "Simple",
+	Mesh = "Room.x",
+	Data = "Hello",
+}
+entry
+{
+	Name = "Sphere01",
+	Pos = {17.398,0,-16.5974},
+	RotX = {1,0,0},
+	RotY = {0,1,0},
+	RotZ = {0,0,1},
+	Type = "Simple",
+	Mesh = "Sphere.x",
+	Data = "Hello",
+	OnClick = "OnClick",
+}
+entry
+{
+	Name = "Cylinder01",
+	Pos = {9.3519,0,-16.6275},
+	RotX = {1,0,0},
+	RotY = {0,1,0},
+	RotZ = {0,0,1},
+	Type = "Simple",
+	Mesh = "Cylinder.x",
+	Data = "Hello",
+}
+entry
+{
+	Name = "teapot01",
+	Pos = {0.882279,0,-16.8244},
+	RotX = {5.96046e-008,0,-1},
+	RotY = {0,1,0},
+	RotZ = {1,0,5.96046e-008},
+	Type = "Simple",
+	Mesh = "MaxTeapot.x",
+	Data = "Hello",
+}
+entry
+{
+	Name = "Cone01",
+	Pos = {-12.5115,0,-16.2335},
+	RotX = {1,0,0},
+	RotY = {0,1,0},
+	RotZ = {0,0,1},
+	Type = "Simple",
+	Mesh = "Cone.x",
+	Data = "Hello",
+}
+entry
+{
+	Name = "Saucer",
+	Pos = {0.325624,-1.19209e-007,0},
+	RotX = {1,0,0},
+	RotY = {0,1,0},
+	RotZ = {0,0,1},
+	Type = "Simple",
+	Mesh = "Saucer.x",
+	Data = "Hello",
+}
+entry
+{
+	Name = "ChamferBox01",
+	Pos = {21.6055,2.005,2.39891},
+	RotX = {1,0,0},
+	RotY = {0,1,0},
+	RotZ = {0,0,1},
+	Type = "Simple",
+	Mesh = "Cube.x",
+	Data = "Hello",
+	OnClick = "OnClick",
+}

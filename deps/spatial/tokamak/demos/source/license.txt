@@ -1,0 +1,49 @@
+Tokamak Game Physics SDK Version 1.2 User License Agreement
+
+
+This is a contract. By accepting the Tokamak Game Physics SDK Version 1
+(the SOFTWARE), you (either an individual or a single entity, the LICENSEE)
+accept the terms and conditions of this licensing agreement. If the 
+LICENSEE does not accept the terms and conditions, then LICENSEE must not 
+accept the SOFTWARE. If at a later time the LICENSEE decides not to continue 
+licensing the SOFTWARE under these terms and conditions, then the LICENSEE 
+must delete permanently all files constituting the SOFTWARE.
+
+
+LICENSE AGREEMENT
+
+
+Tokamak Limited grants to the LICENSEE and the LICENSEE hereby accepts 
+a nontransferable and nonexclusive license to use the SOFTWARE on the PC, 
+for any purpose. In addition, the following conditions apply:
+
+1) The LICENSEE may not redistribute the SOFTWARE, except as part of a 
+compiled software program that is not itself a physics library.
+
+2) The LICENSEE may not use the SOFTWARE to reverse engineer the computer 
+algorithm used by the SOFTWARE.
+
+3) The LICENSEE agrees to credit the use of the Tokamak physics library 
+in any program information, including splash screens, "About" dialogs, 
+program notes or instructions and shrink-wrapped packaging.
+
+4) The LICENSEE agrees to notify Tokamak Physics (the COMPANY) of any 
+products, commercial, shareware or free that incorporate the Tokamak library.
+In addition LICENSEE agrees to notify the COMPANY of the incorporation of 
+the software in libraries or compiled programs irrespective of the 
+public release of the LICENSEE's software. All notifications should be
+made to license@tokamakphysics.com.
+
+5) The LICENSEE agrees that the Company can refer to any such product 
+as described in item (4) in its promotional material or press releases 
+unless a specific agreement is made with the Company prior to its usage.
+
+LIMITED WARRANTY
+
+
+The SOFTWARE is provided "AS IS" without warranty of any kind, either 
+express or implied. The LICENSEE assume the full risk for the use of the 
+SOFTWARE. The LICENSEE agrees that the Company shall not be held liable 
+for any direct, indirect, consequential, or incidental damages with respect 
+to any claim by the LICENSEE or any third party from this agreement or from 
+the use of the SOFTWARE.

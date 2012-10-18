@@ -1,0 +1,32 @@
+dword dAMB;		//ambient colour
+vector xDIF;	//material diffuse
+vector xAMB;	//material ambient
+vector vL0D;	//light 0 direction
+vector vL0C;	//light 0 colour
+vector vL0A;	//light 0 colour
+
+technique t0
+{
+	pass p0
+	{
+		LightDirection[0] = <vL0D>;
+		LightDiffuse[0] = <vL0C>;
+		LightAmbient[0] = <vL0A>;
+		LightType[0] = Directional;
+		LightEnable[0] = TRUE;
+		MaterialDiffuse = <xDIF>;
+		MaterialAmbient = <xAMB>;
+		Ambient = <dAMB>;
+		FillMode = Wireframe;
+
+	}
+	pass p1
+	{
+		ColorOp[0] = SelectArg1;
+		ColorArg1[0] = Diffuse;
+				
+		AlphaOp[0] = Disable;
+			
+		ColorOp[1] = Disable;
+	}
+}

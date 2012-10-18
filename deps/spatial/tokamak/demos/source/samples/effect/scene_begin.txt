@@ -1,0 +1,7 @@
+technique t0
+{
+	pass p0
+	{
+		AlphaBlendEnable = True;
+	}
+}

@@ -1,0 +1,35 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: customcd - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\CYBERS~1.SAG\LOCALS~1\Temp\RSP739.tmp" with contents
+[
+/nologo /ML /W3 /GX /O2 /I "../../include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/customcd.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\dev\tokamak2\samples\customcd\customcd.cpp"
+"C:\dev\tokamak2\samples\customcd\glsamplebase.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\CYBERS~1.SAG\LOCALS~1\Temp\RSP739.tmp" 
+Creating temporary file "C:\DOCUME~1\CYBERS~1.SAG\LOCALS~1\Temp\RSP73A.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tokamak.lib /nologo /subsystem:console /incremental:no /pdb:"Release/customcd.pdb" /machine:I386 /out:"Release/customcd.exe" /libpath:"../../lib" 
+.\Release\customcd.obj
+.\Release\glsamplebase.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\CYBERS~1.SAG\LOCALS~1\Temp\RSP73A.tmp"
+<h3>Output Window</h3>
+Compiling...
+customcd.cpp
+glsamplebase.cpp
+Linking...
+
+
+
+<h3>Results</h3>
+customcd.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

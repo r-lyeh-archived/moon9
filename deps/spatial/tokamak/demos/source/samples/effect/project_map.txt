@@ -1,0 +1,49 @@
+texture		tPJ0;	// sphere map texture
+matrix		mPJ0;	// sphere map matrix
+vector		vSPM;	// intensity of sphere map
+
+texture		xTEX;	// material texture
+vector		vL0D;
+vector		vL0C;
+vector		vL0A;
+dword		dAMB;
+vector		xDIF;
+vector		xAMB;	//material ambient
+
+technique t0
+{
+	pass p0
+	{
+		Texture[0] = <xTEX>;
+		Texture[1] = <tPJ0>;
+		TextureTransform[1] = <mPJ0>;
+		TextureTransformFlags[1] = Projected | COUNT3;
+		TexCoordIndex[1] = CameraSpacePosition;
+		Ambient = dAMB;
+		MaterialDiffuse = <xDIF>;
+		MaterialAmbient = <xAMB>;
+		//MaterialAmbient = <vL0A>;
+		LightDirection[0] = <vL0D>;
+		LightAmbient[0] = <vL0C>;
+		LightType[0] = Directional;
+		LightEnable[0] = TRUE;
+	}
+	pass p1
+	{
+		
+		ColorOp[0] = SelectArg1;
+		ColorArg1[0] = Texture;
+		AlphaOp[0] = Disable;
+
+		ColorOp[1] = Modulate;
+		ColorArg1[1] = Texture;
+		ColorArg2[1] = Current;
+
+		ColorOp[2] = Modulate2x;
+		ColorArg1[2] = Diffuse;
+		ColorArg2[2] = Current;
+
+		AddressU[1] = Clamp;
+		AddressV[1] = Clamp;
+	}
+}

@@ -1,0 +1,31 @@
+// Opening Ice Core
+
+Registering dynamic identifier 1 (Shared data block)
+Registering dynamic identifier 2 (Custom list)
+Pentium Pro processor detected.
+FPU detected.
+MMX detected.
+RDTSC supported.
+CMOV supported.
+FCOMI supported.
+Registering API: IceCore
+// Opening Ice Maths
+
+Registering API: IceMaths
+// Opening Ice ImageWork
+
+// Opening Ice Meshmerizer
+
+// Closing Ice Meshmerizer
+
+// Closing Ice ImageWork
+
+// Closing Ice Maths
+
+// Closing Ice Core
+
+0 entries left in kernel (max = 1), 108 bytes used by ref-tracking.
+2 registered dynamic identifiers.
+0 flushed messages.
+0 flushed errors.
+Trash buffer size: 0 bytes

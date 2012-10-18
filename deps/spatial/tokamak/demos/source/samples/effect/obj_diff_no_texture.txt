@@ -1,0 +1,53 @@
+dword dAMB;		//ambient colour
+vector vL0D;	//light 0 direction
+vector vL0C;	//light 0 colour
+vector vL0A;	//light 0 colour
+vector vODF;	//object diffuse colour
+vector vOAM;	//object ambient colour
+
+technique t0
+{
+	pass p0
+	{
+		LightDirection[0] = <vL0D>;
+		LightDiffuse[0] = <vL0C>;
+		LightAmbient[0] = <vL0A>;
+		LightSpecular[0]  = (1.0f,1.0f,1.0f,1.0f); 
+		LightType[0] = Directional;
+		LightFallOff[0] = 0.0f;
+		LightAttenuation0[0] = 1.0f;
+		LightAttenuation1[0] = 0.0f;
+		LightAttenuation2[0] = 0.0f;
+		LightRange[0]     = 100000.0f;
+		LightEnable[0] = TRUE;
+
+		LightDirection[1] = (-0.5f,-0.5f,-1.0f);
+		LightDiffuse[1] = (0.3f,0.3f,0.3f);
+		LightAmbient[1] = (0.0f,0.0f,0.0f);
+		LightSpecular[1]  = (0.0f,0.0f,0.0f,1.0f); 
+		LightType[1] = Directional;
+
+		LightRange[1]     = 100000.0f;
+		LightEnable[1] = TRUE;
+
+		SpecularEnable = TRUE;
+
+		MaterialSpecular = (1.0f,1.0f,1.0f,1.0f);
+		SpecularMaterialSource = Material;
+		MaterialPower = 20;
+		MaterialDiffuse = <vODF>;
+		MaterialAmbient = <vOAM>;
+		Ambient = <dAMB>;
+
+		NormalizeNormals = TRUE;
+	}
+	pass p1
+	{
+		ColorOp[0] = SelectArg1;
+		ColorArg1[0] = Diffuse;
+				
+		AlphaOp[0] = Disable;
+			
+		ColorOp[1] = Disable;
+	}
+}

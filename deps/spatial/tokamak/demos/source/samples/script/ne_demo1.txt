@@ -1,0 +1,320 @@
+function CubeOnClick(this)
+
+	local ThisToken = neConvertToToken(this)
+
+	local NewPiece
+
+	local NewValue
+
+	if GameState == "WaitForCross" then
+
+		print(NextCross)
+
+		NewPiece = neGetToken("cross"..NextCross)
+
+		NextCross = NextCross + 1
+
+		GameState = "WaitForCircle"
+
+		NewValue = 1
+
+	elseif GameState == "WaitForCircle" then
+
+		NewPiece = neGetToken("circle"..NextCircle)
+
+		NextCircle = NextCircle + 1
+
+		GameState = "WaitForCross"
+
+		NewValue = 2
+
+	else
+
+		return
+
+	end
+	
+	if NewPiece ~= nil then
+	
+		pos = {0,0,0}
+
+		ThisToken:GetPos(pos)
+		
+		NewPiece:SetPos(pos)
+
+		NewPiece:SetVisible(1)
+	
+	end
+
+	grid[1][ThisToken["Row"]][ThisToken["Col"]] = NewValue
+
+	grid[2][ThisToken["Row"]][ThisToken["Col"]] = NewPiece
+end
+
+------------------------------------
+
+function Test1Initialise()
+
+	create = neCreateToken
+
+--create the room
+
+	create
+	{
+		Name = "Room",
+		Pos = {0,0,0},
+		RotX = {1,0,0},
+		RotY = {0,1,0},
+		RotZ = {0,0,1},
+		Type = "Simple",
+		Mesh = "Room.x",
+		Data = "Hello",
+	}
+
+	create
+	{
+		Name = "Landscape",
+		Pos = {0,0,0},
+		RotX = {1,0,0},
+		RotY = {0,1,0},
+		RotZ = {0,0,1},
+		Type = "Simple",
+		Mesh = "landscape1.X",
+		Data = "Hello",
+	}
+
+
+--create the crosses and circles
+
+	for num1 = 1, 6 do
+
+		create 
+		{
+			Name = "cross"..num1,
+			Pos = {0, 0, 0},
+			RotX = {1,0,0},
+			RotY = {0,1,0},
+			RotZ = {0,0,1},
+			Type = "Simple",
+			Mesh = "box.x",
+			--Mesh = "cone.x",
+		}
+		create 
+		{
+			Name = "circle"..num1,
+			Pos = {0, 0, 0},
+			RotX = {1,0,0},
+			RotY = {0,1,0},
+			RotZ = {0,0,1},
+			Type = "Simple",
+			Mesh = "Sphere.x",
+		}
+
+	end
+
+--set up the playing grid
+
+	NewGame()
+
+end
+
+------------------------------------
+
+function Test1Process(t)
+
+	if GameState == "WaitForCross" or GameState == "WaitForCircle" then
+
+		GameStateTestEndGame()
+
+	elseif GameState == "ShowWinner" then
+
+		GameStateShowWinner()
+
+	end
+end
+
+------------------------------------
+
+function NewGame()
+
+	if grid == nil then
+
+		grid = { 
+				{{0,0,0},{0,0,0},{0,0,0}},
+				{{nil,nil,nil},{nil,nil,nil},{nil,nil,nil}},
+			   }
+
+		spin = {nil, nil, nil}
+
+	else
+		for ii = 1, 3 do
+
+			for jj = 1, 3 do
+
+				grid[1][ii][jj] = 0
+
+				grid[2][ii][jj] = nil
+
+			end			
+
+		end
+	end 
+
+	for ii = 1, 6 do
+
+		thisToken = neGetToken("cross"..ii)
+
+		thisToken:SetVisible(0)
+
+		thisToken = neGetToken("circle"..ii)
+
+		thisToken:SetVisible(0)
+
+	end
+
+	GameState = "WaitForCross"
+
+	NextCross = 1
+
+	NextCircle = 1
+
+end
+
+------------------------------------
+
+function TestForEndGame()
+
+	for CheckValue = 1, 2 do
+
+		for ii = 1, 3 do
+
+			if	(grid[1][ii][1] == CheckValue) and 
+				(grid[1][ii][2] == CheckValue) and
+				(grid[1][ii][3] == CheckValue) then
+
+				spin[1] = grid[2][ii][1]
+				spin[2] = grid[2][ii][2]
+				spin[3] = grid[2][ii][3]
+
+				return CheckValue
+
+			end
+
+			if	(grid[1][1][ii] == CheckValue) and 
+				(grid[1][2][ii] == CheckValue) and
+				(grid[1][3][ii] == CheckValue) then
+
+				spin[1] = grid[2][1][ii]
+				spin[2] = grid[2][2][ii]
+				spin[3] = grid[2][3][ii]
+
+				return CheckValue
+
+			end
+
+		end
+		
+		if	(grid[1][1][1] == CheckValue) and 
+			(grid[1][2][2] == CheckValue) and
+			(grid[1][3][3] == CheckValue) then
+
+			spin[1] = grid[2][1][1]
+			spin[2] = grid[2][2][2]
+			spin[3] = grid[2][3][3]
+
+			return CheckValue
+
+		end
+
+		if	(grid[1][1][3] == CheckValue) and 
+			(grid[1][2][2] == CheckValue) and
+			(grid[1][3][1] == CheckValue) then
+
+			spin[1] = grid[2][1][3]
+			spin[2] = grid[2][2][2]
+			spin[3] = grid[2][3][1]
+
+			return CheckValue
+
+		end
+
+	end
+
+	for ii = 1, 3 do
+
+		for jj = 1, 3 do
+
+			if grid[1][ii][jj] == 0 then
+
+				return 0 
+
+			end
+
+		end
+
+	end
+
+	spin[1] = nil
+	spin[2] = nil
+	spin[3] = nil
+
+	return 3 --all filled, a draw
+
+end
+
+------------------------------------
+
+function GameStateTestEndGame()
+
+	EndGame = TestForEndGame()
+
+	if EndGame == 1 then
+
+		print("Cross Won!")
+
+	elseif EndGame == 2 then
+
+		print("Circle Won!")
+
+	elseif EndGame ==3 then
+
+		print("Draw")
+		
+	end
+
+	if EndGame ~= 0 then
+		
+		ShowWinnerTimer = 60 * 1
+
+		RotateDegree = 0
+
+		GameState = "ShowWinner"
+	
+	end
+
+end
+
+------------------------------------
+
+function GameStateShowWinner()
+
+	ShowWinnerTimer = ShowWinnerTimer - 1
+
+	if spin[1] then
+		spin[1]:RotateYDegree(RotateDegree)
+		spin[2]:RotateYDegree(RotateDegree)
+		spin[3]:RotateYDegree(RotateDegree)
+	end
+
+	RotateDegree = RotateDegree + 6
+
+	if ShowWinnerTimer == 0 then
+
+		NewGame()
+
+	end
+
+end
+
+
+

@@ -1,0 +1,135 @@
+EXPORTS
+    _ZN3SPK3IRR11IRRRenderer10getVBOFlagEv @1
+    _ZN3SPK3IRR11IRRRenderer11setBlendingEN3irr5video14E_BLEND_FACTORES4_j @2
+    _ZN3SPK3IRR11IRRRenderer11setBlendingENS_12BlendingModeE @3
+    _ZN3SPK3IRR11IRRRenderer12checkBuffersERKNS_5GroupE @4
+    _ZN3SPK3IRR11IRRRenderer14destroyBuffersERKNS_5GroupE @5
+    _ZN3SPK3IRR11IRRRenderer19enableRenderingHintENS_13RenderingHintEb @6
+    _ZN3SPK3IRR11IRRRenderer21setAlphaTestThresholdEf @7
+    _ZN3SPK3IRR11IRRRenderer26updateMaterialBlendingModeEv @8
+    _ZN3SPK3IRR11IRRRendererC1EPN3irr14IrrlichtDeviceE @9
+    _ZN3SPK3IRR11IRRRendererC2EPN3irr14IrrlichtDeviceE @10
+    _ZN3SPK3IRR11IRRRendererD0Ev @11
+    _ZN3SPK3IRR11IRRRendererD1Ev @12
+    _ZN3SPK3IRR11IRRRendererD2Ev @13
+    _ZN3SPK3IRR15IRRLineRenderer13createBuffersERKNS_5GroupE @14
+    _ZN3SPK3IRR15IRRLineRenderer15IRR_BUFFER_NAMEE @15 DATA
+    _ZN3SPK3IRR15IRRLineRenderer6renderERKNS_5GroupE @16
+    _ZN3SPK3IRR15IRRLineRenderer8setWidthEf @17
+    _ZN3SPK3IRR15IRRLineRendererC1EPN3irr14IrrlichtDeviceEff @18
+    _ZN3SPK3IRR15IRRLineRendererC2EPN3irr14IrrlichtDeviceEff @19
+    _ZN3SPK3IRR15IRRQuadRenderer13createBuffersERKNS_5GroupE @20
+    _ZN3SPK3IRR15IRRQuadRenderer14renderParticleE @21 DATA
+    _ZN3SPK3IRR15IRRQuadRenderer15IRR_BUFFER_NAMEE @22 DATA
+    _ZN3SPK3IRR15IRRQuadRenderer6renderERKNS_5GroupE @23
+    _ZN3SPK3IRR15IRRQuadRendererC1EPN3irr14IrrlichtDeviceEff @24
+    _ZN3SPK3IRR15IRRQuadRendererC2EPN3irr14IrrlichtDeviceEff @25
+    _ZN3SPK3IRR16IRRBufferCreatorC1EPN3irr14IrrlichtDeviceEjjNS0_18E_IRRSPK_INDEXMODEE @26
+    _ZN3SPK3IRR16IRRBufferCreatorC2EPN3irr14IrrlichtDeviceEjjNS0_18E_IRRSPK_INDEXMODEE @27
+    _ZN3SPK3IRR16IRRBufferCreatorD0Ev @28
+    _ZN3SPK3IRR16IRRPointRenderer13createBuffersERKNS_5GroupE @29
+    _ZN3SPK3IRR16IRRPointRenderer15IRR_BUFFER_NAMEE @30 DATA
+    _ZN3SPK3IRR16IRRPointRenderer6renderERKNS_5GroupE @31
+    _ZN3SPK3IRR16IRRPointRenderer7setSizeEf @32
+    _ZN3SPK3IRR16IRRPointRenderer7setTypeENS_9PointTypeE @33
+    _ZN3SPK3IRR16IRRPointRendererC1EPN3irr14IrrlichtDeviceEf @34
+    _ZN3SPK3IRR16IRRPointRendererC2EPN3irr14IrrlichtDeviceEf @35
+    _ZN3SPK3IRR9IRRBuffer13getMeshBufferEv @36
+    _ZN3SPK3IRR9IRRBuffer14getIndexBufferEv @37
+    _ZN3SPK3IRR9IRRBuffer15activateVBOHintEb @38
+    _ZN3SPK3IRR9IRRBuffer15getVertexBufferEv @39
+    _ZN3SPK3IRR9IRRBuffer16initInnerBuffersEv @40
+    _ZN3SPK3IRR9IRRBuffer17setVBOInitializedEb @41
+    _ZN3SPK3IRR9IRRBuffer18isVBOHintActivatedEv @42
+    _ZN3SPK3IRR9IRRBuffer4swapEjj @43
+    _ZN3SPK3IRR9IRRBuffer6useVBOE @44 DATA
+    _ZN3SPK3IRR9IRRBuffer7setUsedEj @45
+    _ZN3SPK3IRR9IRRBufferC1EPN3irr14IrrlichtDeviceEjjjNS2_5video12E_INDEX_TYPEE @46
+    _ZN3SPK3IRR9IRRBufferC1ERKS1_ @47
+    _ZN3SPK3IRR9IRRBufferC2EPN3irr14IrrlichtDeviceEjjjNS2_5video12E_INDEX_TYPEE @48
+    _ZN3SPK3IRR9IRRBufferC2ERKS1_ @49
+    _ZN3SPK3IRR9IRRBufferD0Ev @50
+    _ZN3SPK3IRR9IRRBufferD1Ev @51
+    _ZN3SPK3IRR9IRRBufferD2Ev @52
+    _ZN3SPK3IRR9IRRSystem10onRegisterEv @53
+    _ZN3SPK3IRR9IRRSystem12onUnregisterEv @54
+    _ZN3SPK3IRR9IRRSystem19OnRegisterSceneNodeEv @55
+    _ZN3SPK3IRR9IRRSystem22updateAbsolutePositionEv @56
+    _ZN3SPK3IRR9IRRSystem6renderEv @57
+    _ZN3SPK3IRR9IRRSystem6updateEf @58
+    _ZN3SPK3IRR9IRRSystem9OnAnimateEj @59
+    _ZN3SPK3IRR9IRRSystemC1EPN3irr5scene10ISceneNodeEPNS3_13ISceneManagerEbi @60
+    _ZN3SPK3IRR9IRRSystemC1ERKS1_ @61
+    _ZN3SPK3IRR9IRRSystemC2EPN3irr5scene10ISceneNodeEPNS3_13ISceneManagerEbi @62
+    _ZN3SPK3IRR9IRRSystemC2ERKS1_ @63
+    _ZNK3SPK3IRR11IRRRenderer22isRenderingHintEnabledENS_13RenderingHintE @64
+    _ZNK3SPK3IRR15IRRLineRenderer12getClassNameEv @65
+    _ZNK3SPK3IRR15IRRLineRenderer13getBufferNameEv @66
+    _ZNK3SPK3IRR15IRRLineRenderer5cloneEb @67
+    _ZNK3SPK3IRR15IRRQuadRenderer11renderAtlasERKNS_8ParticleE @68
+    _ZNK3SPK3IRR15IRRQuadRenderer11renderBasicERKNS_8ParticleE @69
+    _ZNK3SPK3IRR15IRRQuadRenderer12getClassNameEv @70
+    _ZNK3SPK3IRR15IRRQuadRenderer13getBufferNameEv @71
+    _ZNK3SPK3IRR15IRRQuadRenderer14renderAtlasRotERKNS_8ParticleE @72
+    _ZNK3SPK3IRR15IRRQuadRenderer22FillBufferTextureAtlasERKNS_8ParticleE @73
+    _ZNK3SPK3IRR15IRRQuadRenderer24FillBufferColorAndVertexERKNS_8ParticleE @74
+    _ZNK3SPK3IRR15IRRQuadRenderer5cloneEb @75
+    _ZNK3SPK3IRR15IRRQuadRenderer9renderRotERKNS_8ParticleE @76
+    _ZNK3SPK3IRR16IRRBufferCreator12createBufferEjRKNS_5GroupE @77
+    _ZNK3SPK3IRR16IRRPointRenderer12getClassNameEv @78
+    _ZNK3SPK3IRR16IRRPointRenderer13getBufferNameEv @79
+    _ZNK3SPK3IRR16IRRPointRenderer16getBufferPurposeEv @80
+    _ZNK3SPK3IRR16IRRPointRenderer5cloneEb @81
+    _ZNK3SPK3IRR9IRRBuffer17areVBOInitializedEv @82
+    _ZNK3SPK3IRR9IRRSystem12getClassNameEv @83
+    _ZNK3SPK3IRR9IRRSystem14getBoundingBoxEv @84
+    _ZNK3SPK3IRR9IRRSystem20updateCameraPositionEv @85
+    _ZNK3SPK3IRR9IRRSystem5cloneEb @86
+    _ZNK3SPK3IRR9IRRSystem6renderEv @87
+    _ZTCN3SPK3IRR9IRRSystemE220_N3irr2io26IAttributeExchangingObjectE @88 DATA
+    _ZTCN3SPK3IRR9IRRSystemE220_N3irr5scene10ISceneNodeE @89 DATA
+    _ZTTN3SPK3IRR9IRRSystemE @90 DATA
+    _ZTVN3SPK3IRR11IRRRendererE @91 DATA
+    _ZTVN3SPK3IRR15IRRLineRendererE @92 DATA
+    _ZTVN3SPK3IRR15IRRQuadRendererE @93 DATA
+    _ZTVN3SPK3IRR16IRRBufferCreatorE @94 DATA
+    _ZTVN3SPK3IRR16IRRPointRendererE @95 DATA
+    _ZTVN3SPK3IRR9IRRBufferE @96 DATA
+    _ZTVN3SPK3IRR9IRRSystemE @97 DATA
+    _ZThn160_N3SPK3IRR15IRRLineRenderer8setWidthEf @98
+    _ZThn160_N3SPK3IRR15IRRLineRendererD0Ev @99
+    _ZThn160_N3SPK3IRR15IRRLineRendererD1Ev @100
+    _ZThn160_N3SPK3IRR15IRRQuadRendererD0Ev @101
+    _ZThn160_N3SPK3IRR15IRRQuadRendererD1Ev @102
+    _ZThn160_N3SPK3IRR16IRRPointRenderer7setSizeEf @103
+    _ZThn160_N3SPK3IRR16IRRPointRenderer7setTypeENS_9PointTypeE @104
+    _ZThn160_N3SPK3IRR16IRRPointRendererD0Ev @105
+    _ZThn160_N3SPK3IRR16IRRPointRendererD1Ev @106
+    _ZThn208_N3SPK3IRR15IRRQuadRendererD0Ev @107
+    _ZThn208_N3SPK3IRR15IRRQuadRendererD1Ev @108
+    _ZThn20_N3SPK3IRR11IRRRenderer12checkBuffersERKNS_5GroupE @109
+    _ZThn20_N3SPK3IRR11IRRRenderer14destroyBuffersERKNS_5GroupE @110
+    _ZThn20_N3SPK3IRR11IRRRendererD0Ev @111
+    _ZThn20_N3SPK3IRR11IRRRendererD1Ev @112
+    _ZThn20_N3SPK3IRR15IRRLineRenderer13createBuffersERKNS_5GroupE @113
+    _ZThn20_N3SPK3IRR15IRRLineRendererD0Ev @114
+    _ZThn20_N3SPK3IRR15IRRLineRendererD1Ev @115
+    _ZThn20_N3SPK3IRR15IRRQuadRenderer13createBuffersERKNS_5GroupE @116
+    _ZThn20_N3SPK3IRR15IRRQuadRendererD0Ev @117
+    _ZThn20_N3SPK3IRR15IRRQuadRendererD1Ev @118
+    _ZThn20_N3SPK3IRR16IRRPointRenderer13createBuffersERKNS_5GroupE @119
+    _ZThn20_N3SPK3IRR16IRRPointRendererD0Ev @120
+    _ZThn20_N3SPK3IRR16IRRPointRendererD1Ev @121
+    _ZThn20_N3SPK3IRR9IRRSystemD0Ev @122
+    _ZThn20_N3SPK3IRR9IRRSystemD1Ev @123
+    _ZThn220_N3SPK3IRR9IRRSystem19OnRegisterSceneNodeEv @124
+    _ZThn220_N3SPK3IRR9IRRSystem22updateAbsolutePositionEv @125
+    _ZThn220_N3SPK3IRR9IRRSystem6renderEv @126
+    _ZThn220_N3SPK3IRR9IRRSystem9OnAnimateEj @127
+    _ZThn220_N3SPK3IRR9IRRSystemD0Ev @128
+    _ZThn220_N3SPK3IRR9IRRSystemD1Ev @129
+    _ZThn220_NK3SPK3IRR9IRRSystem14getBoundingBoxEv @130
+    _ZTv0_n12_N3SPK3IRR9IRRSystemD0Ev @131
+    _ZTv0_n12_N3SPK3IRR9IRRSystemD1Ev @132
+    _ZTv0_n24_N3SPK3IRR9IRRSystemD0Ev @133
+    _ZTv0_n24_N3SPK3IRR9IRRSystemD1Ev @134

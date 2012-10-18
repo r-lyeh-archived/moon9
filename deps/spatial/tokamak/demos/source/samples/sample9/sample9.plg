@@ -1,0 +1,36 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: sample9 - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\CYBERS~1.SAG\LOCALS~1\Temp\RSP184.tmp" with contents
+[
+/nologo /ML /W3 /GR /GX /O2 /I "../../include" /I "../../include/math" /I "../../common/include" /I "../../common/lua/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /FR"tmp/Release/" /Fo"tmp/Release/" /Fd"tmp/Release/" /FD /c 
+"C:\dev\tokamak2\samples\sample9\sample9.cpp"
+"C:\dev\tokamak2\samples\samplebase.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\CYBERS~1.SAG\LOCALS~1\Temp\RSP184.tmp" 
+Creating temporary file "C:\DOCUME~1\CYBERS~1.SAG\LOCALS~1\Temp\RSP185.tmp" with contents
+[
+tokamak.lib d3dengine.lib demoframework.lib ne_base.lib ne_pattern.lib lua.lib lualib.lib tolua_lib.lib d3dx8.lib d3d8.lib winmm.lib d3dxof.lib dxguid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /incremental:no /pdb:"../sample9.pdb" /machine:I386 /out:"../sample9.exe" /libpath:"../../lib" /libpath:"../../common/lib" 
+.\tmp\Release\sample9.obj
+.\tmp\Release\samplebase.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\CYBERS~1.SAG\LOCALS~1\Temp\RSP185.tmp"
+<h3>Output Window</h3>
+Compiling...
+sample9.cpp
+samplebase.cpp
+Generating Code...
+Linking...
+
+
+
+<h3>Results</h3>
+sample9.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

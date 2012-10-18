@@ -1,0 +1,59 @@
+texture		tSPM;	// sphere map texture
+matrix		mSPM;	// sphere map matrix
+vector		vSPM;	// intensity of sphere map
+
+texture		xTEX;	// material texture
+
+vector		vL0D;
+vector		vL0C;
+vector		vL0A;
+dword		dAMB;	// scene abient
+
+technique t0
+{
+	pass p0
+	{
+		Texture[0] = <xTEX>;
+
+		Texture[1] = <tSPM>;
+		TextureTransform[1] = <mSPM>;
+
+		LightDirection[0] = <vL0D>;
+		LightAmbient[0] = <vL0C>;
+		LightType[0] = Directional;
+		LightEnable[0] = TRUE;
+		
+		Ambient = <dAMB>;
+
+		MaterialDiffuse = <vSPM>;
+		MaterialAmbient = <vL0A>;
+
+	}
+	pass p1
+	{
+		TextureTransformFlags[0] = Disable;
+		TexCoordIndex[0] = PassThru;
+		
+		TextureTransformFlags[1] = Count2;
+		//TexCoordIndex[1] = CameraSpaceReflectionVector;
+		TexCoordIndex[1] = CameraSpaceNormal;
+
+		ColorOp[0] = Modulate;
+		ColorArg1[0] = Diffuse;
+		ColorArg2[0] = Texture;
+		
+		AlphaOp[0] = SelectArg1;
+		AlphaArg1[0] = Current;
+	
+		DiffuseMaterialSource = Material;
+		
+		//ColorOp[1] = ModulateAlpha_AddColor;
+		ColorOp[1] = Add;//AddSigned2X;//BlendDiffuseAlpha;
+		ColorArg1[1] = Current;
+		ColorArg2[1] = Texture;
+		AlphaOp[1] = SelectArg1;
+		AlphaArg1[1] = Current;
+		
+		ColorOp[2] = Disable;
+	}
+}

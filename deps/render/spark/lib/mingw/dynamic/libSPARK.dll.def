@@ -1,0 +1,536 @@
+EXPORTS
+    _ZN3SPK10SPKFactory10destroyAllEv @1
+    _ZN3SPK10SPKFactory10findByNameERKSs @2
+    _ZN3SPK10SPKFactory11getInstanceEv @3
+    _ZN3SPK10SPKFactory11traceObjectERKSt17_Rb_tree_iteratorISt4pairIKmPNS_12RegisterableEEEb @4
+    _ZN3SPK10SPKFactory14registerObjectEPNS_12RegisterableE @5
+    _ZN3SPK10SPKFactory15destroyInstanceEv @6
+    _ZN3SPK10SPKFactory16unregisterObjectERSt17_Rb_tree_iteratorISt4pairIKmPNS_12RegisterableEEEb @7
+    _ZN3SPK10SPKFactory16unregisterObjectEmb @8
+    _ZN3SPK10SPKFactory3getEm @9
+    _ZN3SPK10SPKFactory4copyEPKNS_12RegisterableE @10
+    _ZN3SPK10SPKFactory4copyEm @11
+    _ZN3SPK10SPKFactory5traceEPKNS_12RegisterableE @12
+    _ZN3SPK10SPKFactory5traceEm @13
+    _ZN3SPK10SPKFactory6createERKNS_12RegisterableE @14
+    _ZN3SPK10SPKFactory7destroyEPNS_12RegisterableEb @15
+    _ZN3SPK10SPKFactory7destroyEmb @16
+    _ZN3SPK10SPKFactory8instanceE @17 DATA
+    _ZN3SPK10SPKFactory8traceAllEv @18
+    _ZN3SPK10SPKFactory9currentIDE @19 DATA
+    _ZN3SPK10getSqrDistERKNS_8Vector3DES2_ @20
+    _ZN3SPK10randomSeedE @21 DATA
+    _ZN3SPK11LinearForce20innerUpdateTransformEv @22
+    _ZN3SPK11LinearForceC1EPNS_4ZoneENS_15ModifierTriggerERKNS_8Vector3DENS_11ForceFactorENS_10ModelParamE @23
+    _ZN3SPK11LinearForceC2EPNS_4ZoneENS_15ModifierTriggerERKNS_8Vector3DENS_11ForceFactorENS_10ModelParamE @24
+    _ZN3SPK12Interpolator11interpolateERKNS_8ParticleENS_10ModelParamEfff @25
+    _ZN3SPK12Interpolator12COMPUTE_X_FNE @26 DATA
+    _ZN3SPK12Interpolator16generateSinCurveEffffffjj @27
+    _ZN3SPK12Interpolator17generatePolyCurveEffffffj @28
+    _ZN3SPK12InterpolatorC1Ev @29
+    _ZN3SPK12InterpolatorC2Ev @30
+    _ZN3SPK12Registerable10findByNameERKSs @31
+    _ZN3SPK12Registerable10onRegisterEv @32
+    _ZN3SPK12Registerable12copyChildrenERKS0_b @33
+    _ZN3SPK12Registerable12destroyChildEPS0_b @34
+    _ZN3SPK12Registerable12onUnregisterEv @35
+    _ZN3SPK12Registerable13registerChildEPS0_b @36
+    _ZN3SPK12Registerable14registerObjectEPS0_b @37
+    _ZN3SPK12Registerable15destroyChildrenEb @38
+    _ZN3SPK12Registerable16registerChildrenEb @39
+    _ZN3SPK12Registerable9copyChildEPS0_b @40
+    _ZN3SPK12RegisterableC1ERKS0_ @41
+    _ZN3SPK12RegisterableC1Ev @42
+    _ZN3SPK12RegisterableC2ERKS0_ @43
+    _ZN3SPK12RegisterableC2Ev @44
+    _ZN3SPK12RegisterableD0Ev @45
+    _ZN3SPK12RegisterableD1Ev @46
+    _ZN3SPK12RegisterableD2Ev @47
+    _ZN3SPK12crossProductERKNS_8Vector3DES2_ @48
+    _ZN3SPK12crossProductERKNS_8Vector3DES2_RS0_ @49
+    _ZN3SPK13BufferHandler12checkBuffersERKNS_5GroupE @50
+    _ZN3SPK13BufferHandler13createBuffersERKNS_5GroupE @51
+    _ZN3SPK13BufferHandler14bufferCreationE @52 DATA
+    _ZN3SPK13BufferHandler14destroyBuffersERKNS_5GroupE @53
+    _ZN3SPK13BufferHandler14prepareBuffersERKNS_5GroupE @54
+    _ZN3SPK13BufferHandler21enableBuffersCreationEb @55
+    _ZN3SPK13BufferHandler24isBuffersCreationEnabledEv @56
+    _ZN3SPK13BufferHandlerD0Ev @57
+    _ZN3SPK13BufferHandlerD1Ev @58
+    _ZN3SPK13ModifierGroup10findByNameERKSs @59
+    _ZN3SPK13ModifierGroup11addModifierEPNS_8ModifierE @60
+    _ZN3SPK13ModifierGroup12checkBuffersERKNS_5GroupE @61
+    _ZN3SPK13ModifierGroup12copyChildrenERKNS_12RegisterableEb @62
+    _ZN3SPK13ModifierGroup13createBuffersERKNS_5GroupE @63
+    _ZN3SPK13ModifierGroup14destroyBuffersERKNS_5GroupE @64
+    _ZN3SPK13ModifierGroup14removeModifierEPKNS_8ModifierE @65
+    _ZN3SPK13ModifierGroup15destroyChildrenEb @66
+    _ZN3SPK13ModifierGroup16registerChildrenEb @67
+    _ZN3SPK13ModifierGroup5clearEv @68
+    _ZN3SPK13ModifierGroupC1EPNS_4ZoneENS_15ModifierTriggerE @69
+    _ZN3SPK13ModifierGroupC2EPNS_4ZoneENS_15ModifierTriggerE @70
+    _ZN3SPK13NormalEmitter10findByNameERKSs @71
+    _ZN3SPK13NormalEmitter12copyChildrenERKNS_12RegisterableEb @72
+    _ZN3SPK13NormalEmitter13setNormalZoneEPNS_4ZoneE @73
+    _ZN3SPK13NormalEmitter15destroyChildrenEb @74
+    _ZN3SPK13NormalEmitter16registerChildrenEb @75
+    _ZN3SPK13NormalEmitterC1EPNS_4ZoneEb @76
+    _ZN3SPK13NormalEmitterC2EPNS_4ZoneEb @77
+    _ZN3SPK13Transformable12transformDirERNS_8Vector3DERKS1_ @78
+    _ZN3SPK13Transformable12transformPosERNS_8Vector3DERKS1_ @79
+    _ZN3SPK13Transformable14setTransformNCEPKf @80
+    _ZN3SPK13Transformable15updateTransformEPKS0_ @81
+    _ZN3SPK13Transformable20innerUpdateTransformEv @82
+    _ZN3SPK13Transformable20setTransformPositionERKNS_8Vector3DE @83
+    _ZN3SPK13Transformable23setTransformOrientationENS_8Vector3DEf @84
+    _ZN3SPK13Transformable24propagateUpdateTransformEv @85
+    _ZN3SPK13Transformable24setTransformOrientationXEf @86
+    _ZN3SPK13Transformable24setTransformOrientationYEf @87
+    _ZN3SPK13Transformable24setTransformOrientationZEf @88
+    _ZN3SPK13Transformable25setTransformOrientationLHENS_8Vector3DES1_ @89
+    _ZN3SPK13Transformable25setTransformOrientationRHENS_8Vector3DES1_ @90
+    _ZN3SPK13Transformable8IDENTITYE @91 DATA
+    _ZN3SPK13TransformableC1ERKS0_ @92
+    _ZN3SPK13TransformableC1Ev @93
+    _ZN3SPK13TransformableC2ERKS0_ @94
+    _ZN3SPK13TransformableC2Ev @95
+    _ZN3SPK13TransformableD0Ev @96
+    _ZN3SPK13TransformableD1Ev @97
+    _ZN3SPK14SphericEmitter12setDirectionERKNS_8Vector3DE @98
+    _ZN3SPK14SphericEmitter13computeMatrixEv @99
+    _ZN3SPK14SphericEmitter20innerUpdateTransformEv @100
+    _ZN3SPK14SphericEmitter2PIE @101 DATA
+    _ZN3SPK14SphericEmitter9setAnglesEff @102
+    _ZN3SPK14SphericEmitterC1ERKNS_8Vector3DEff @103
+    _ZN3SPK14SphericEmitterC2ERKNS_8Vector3DEff @104
+    _ZN3SPK15StraightEmitter12setDirectionERKNS_8Vector3DE @105
+    _ZN3SPK15StraightEmitter20innerUpdateTransformEv @106
+    _ZN3SPK15StraightEmitterC1ERKNS_8Vector3DE @107
+    _ZN3SPK15StraightEmitterC2ERKNS_8Vector3DE @108
+    _ZN3SPK21QuadRendererInterface16setTexturingModeENS_13TexturingModeE @109
+    _ZN3SPK21QuadRendererInterface18setAtlasDimensionsEjj @110
+    _ZN3SPK21QuadRendererInterfaceC1Eff @111
+    _ZN3SPK21QuadRendererInterfaceC2Eff @112
+    _ZN3SPK21QuadRendererInterfaceD0Ev @113
+    _ZN3SPK21QuadRendererInterfaceD1Ev @114
+    _ZN3SPK27Oriented3DRendererInterface14setOrientationENS_15LookOrientationENS_13UpOrientationENS_10LockedAxisE @115
+    _ZN3SPK27Oriented3DRendererInterface14setOrientationENS_17OrientationPresetE @116
+    _ZN3SPK27Oriented3DRendererInterfaceC1Ev @117
+    _ZN3SPK27Oriented3DRendererInterfaceC2Ev @118
+    _ZN3SPK27Oriented3DRendererInterfaceD0Ev @119
+    _ZN3SPK27Oriented3DRendererInterfaceD1Ev @120
+    _ZN3SPK4Line11setPositionERKNS_8Vector3DE @121
+    _ZN3SPK4Line20innerUpdateTransformEv @122
+    _ZN3SPK4Line9pushBoundERKNS_8Vector3DE @123
+    _ZN3SPK4Line9setBoundsERKNS_8Vector3DES3_ @124
+    _ZN3SPK4LineC1ERKNS_8Vector3DES3_ @125
+    _ZN3SPK4LineC2ERKNS_8Vector3DES3_ @126
+    _ZN3SPK4Ring20innerUpdateTransformEv @127
+    _ZN3SPK4Ring9setRadiusEff @128
+    _ZN3SPK4RingC1ERKNS_8Vector3DES3_ff @129
+    _ZN3SPK4RingC2ERKNS_8Vector3DES3_ff @130
+    _ZN3SPK4Zone11setPositionERKNS_8Vector3DE @131
+    _ZN3SPK4Zone19APPROXIMATION_VALUEE @132 DATA
+    _ZN3SPK4Zone20innerUpdateTransformEv @133
+    _ZN3SPK4ZoneC1ERKNS_8Vector3DE @134
+    _ZN3SPK4ZoneC2ERKNS_8Vector3DE @135
+    _ZN3SPK4ZoneD0Ev @136
+    _ZN3SPK4ZoneD1Ev @137
+    _ZN3SPK5AABox12setDimensionERKNS_8Vector3DE @138
+    _ZN3SPK5AABoxC1ERKNS_8Vector3DES3_ @139
+    _ZN3SPK5AABoxC2ERKNS_8Vector3DES3_ @140
+    _ZN3SPK5Group10addEmitterEPNS_7EmitterE @141
+    _ZN3SPK5Group10findByNameERKSs @142
+    _ZN3SPK5Group10reallocateEj @143
+    _ZN3SPK5Group10updateAABBERKNS_8ParticleE @144
+    _ZN3SPK5Group11addModifierEPNS_8ModifierE @145
+    _ZN3SPK5Group11computeAABBEv @146
+    _ZN3SPK5Group11setRendererEPNS_8RendererE @147
+    _ZN3SPK5Group12addParticlesEPKNS_4ZoneEPNS_7EmitterEfb @148
+    _ZN3SPK5Group12addParticlesEPNS_7EmitterEf @149
+    _ZN3SPK5Group12addParticlesERKNS_8Vector3DEPNS_7EmitterEf @150
+    _ZN3SPK5Group12addParticlesERKNS_8Vector3DES3_PNS_7EmitterEff @151
+    _ZN3SPK5Group12addParticlesERKNS_8Vector3DES3_S3_ff @152
+    _ZN3SPK5Group12addParticlesEjPNS_7EmitterE @153
+    _ZN3SPK5Group12addParticlesEjRKNS_8Vector3DES3_PKNS_4ZoneEPNS_7EmitterEb @154
+    _ZN3SPK5Group12copyChildrenERKNS_12RegisterableEb @155
+    _ZN3SPK5Group12pushParticleERN9__gnu_cxx17__normal_iteratorIPNS0_11EmitterDataESt6vectorIS3_SaIS3_EEEERj @156
+    _ZN3SPK5Group13removeEmitterEPNS_7EmitterE @157
+    _ZN3SPK5Group13sortParticlesEii @158
+    _ZN3SPK5Group13sortParticlesEv @159
+    _ZN3SPK5Group14launchParticleERNS_8ParticleERN9__gnu_cxx17__normal_iteratorIPNS0_11EmitterDataESt6vectorIS5_SaIS5_EEEERj @160
+    _ZN3SPK5Group14removeModifierEPNS_8ModifierE @161
+    _ZN3SPK5Group15destroyChildrenEb @162
+    _ZN3SPK5Group15getDefaultModelEv @163
+    _ZN3SPK5Group16bufferManagementE @164 DATA
+    _ZN3SPK5Group16computeDistancesEv @165
+    _ZN3SPK5Group16registerChildrenEb @166
+    _ZN3SPK5Group19flushAddedParticlesEv @167
+    _ZN3SPK5Group19popNextManualAddingERj @168
+    _ZN3SPK5Group23enableBuffersManagementEb @169
+    _ZN3SPK5Group24propagateUpdateTransformEv @170
+    _ZN3SPK5Group26isBuffersManagementEnabledEv @171
+    _ZN3SPK5Group5emptyEv @172
+    _ZN3SPK5Group6renderEv @173
+    _ZN3SPK5Group6updateEf @174
+    _ZN3SPK5Group8setModelEPNS_5ModelE @175
+    _ZN3SPK5GroupC1EPNS_5ModelEj @176
+    _ZN3SPK5GroupC1ERKS0_ @177
+    _ZN3SPK5GroupC2EPNS_5ModelEj @178
+    _ZN3SPK5GroupC2ERKS0_ @179
+    _ZN3SPK5GroupD0Ev @180
+    _ZN3SPK5GroupD1Ev @181
+    _ZN3SPK5GroupD2Ev @182
+    _ZN3SPK5Model14DEFAULT_VALUESE @183 DATA
+    _ZN3SPK5Model15getDefaultValueENS_10ModelParamE @184
+    _ZN3SPK5Model8setParamENS_10ModelParamEf @185
+    _ZN3SPK5Model8setParamENS_10ModelParamEff @186
+    _ZN3SPK5Model8setParamENS_10ModelParamEffff @187
+    _ZN3SPK5ModelC1ERKS0_ @188
+    _ZN3SPK5ModelC1Eiiii @189
+    _ZN3SPK5ModelC2ERKS0_ @190
+    _ZN3SPK5ModelC2Eiiii @191
+    _ZN3SPK5ModelD0Ev @192
+    _ZN3SPK5ModelD1Ev @193
+    _ZN3SPK5ModelD2Ev @194
+    _ZN3SPK5NO_IDE @195 DATA
+    _ZN3SPK5Plane20innerUpdateTransformEv @196
+    _ZN3SPK5PlaneC1ERKNS_8Vector3DES3_ @197
+    _ZN3SPK5PlaneC2ERKNS_8Vector3DES3_ @198
+    _ZN3SPK5PointC1ERKNS_8Vector3DE @199
+    _ZN3SPK5PointC2ERKNS_8Vector3DE @200
+    _ZN3SPK5PointD0Ev @201
+    _ZN3SPK6SphereC1ERKNS_8Vector3DEf @202
+    _ZN3SPK6SphereC2ERKNS_8Vector3DEf @203
+    _ZN3SPK6System10findByNameERKSs @204
+    _ZN3SPK6System11computeAABBEv @205
+    _ZN3SPK6System11getStepModeEv @206
+    _ZN3SPK6System11innerUpdateEf @207
+    _ZN3SPK6System11removeGroupEPNS_5GroupE @208
+    _ZN3SPK6System11useRealStepEv @209
+    _ZN3SPK6System12constantStepE @210 DATA
+    _ZN3SPK6System12copyChildrenERKNS_12RegisterableEb @211
+    _ZN3SPK6System12setClampStepEbf @212
+    _ZN3SPK6System13sortParticlesEv @213
+    _ZN3SPK6System14cameraPositionE @214 DATA
+    _ZN3SPK6System15destroyChildrenEb @215
+    _ZN3SPK6System15useAdaptiveStepEff @216
+    _ZN3SPK6System15useConstantStepEf @217
+    _ZN3SPK6System16clampStepEnabledE @218 DATA
+    _ZN3SPK6System16computeDistancesEv @219
+    _ZN3SPK6System16registerChildrenEb @220
+    _ZN3SPK6System17getCameraPositionEv @221
+    _ZN3SPK6System17setCameraPositionERKNS_8Vector3DE @222
+    _ZN3SPK6System18computeNbParticlesEv @223
+    _ZN3SPK6System24propagateUpdateTransformEv @224
+    _ZN3SPK6System4growEff @225
+    _ZN3SPK6System5emptyEv @226
+    _ZN3SPK6System6updateEf @227
+    _ZN3SPK6System7maxStepE @228 DATA
+    _ZN3SPK6System7minStepE @229 DATA
+    _ZN3SPK6System8addGroupEPNS_5GroupE @230
+    _ZN3SPK6System8stepModeE @231 DATA
+    _ZN3SPK6System9clampStepE @232 DATA
+    _ZN3SPK6SystemC1Ev @233
+    _ZN3SPK6SystemC2Ev @234
+    _ZN3SPK6SystemD0Ev @235
+    _ZN3SPK6SystemD1Ev @236
+    _ZN3SPK6Vortex20innerUpdateTransformEv @237
+    _ZN3SPK6VortexC1ERKNS_8Vector3DES3_ff @238
+    _ZN3SPK6VortexC2ERKNS_8Vector3DES3_ff @239
+    _ZN3SPK7Emitter10changeFlowEf @240
+    _ZN3SPK7Emitter10changeTankEi @241
+    _ZN3SPK7Emitter10findByNameERKSs @242
+    _ZN3SPK7Emitter12copyChildrenERKNS_12RegisterableEb @243
+    _ZN3SPK7Emitter12updateNumberEf @244
+    _ZN3SPK7Emitter14getDefaultZoneEv @245
+    _ZN3SPK7Emitter15destroyChildrenEb @246
+    _ZN3SPK7Emitter16registerChildrenEb @247
+    _ZN3SPK7Emitter24propagateUpdateTransformEv @248
+    _ZN3SPK7Emitter7setZoneEPNS_4ZoneEb @249
+    _ZN3SPK7EmitterC1Ev @250
+    _ZN3SPK7EmitterC2Ev @251
+    _ZN3SPK7EmitterD0Ev @252
+    _ZN3SPK7EmitterD1Ev @253
+    _ZN3SPK7NO_NAMEE @254 DATA
+    _ZN3SPK7getDistERKNS_8Vector3DES2_ @255
+    _ZN3SPK8Cylinder20innerUpdateTransformEv @256
+    _ZN3SPK8CylinderC1ERKNS_8Vector3DES3_ff @257
+    _ZN3SPK8CylinderC2ERKNS_8Vector3DES3_ff @258
+    _ZN3SPK8Modifier10findByNameERKSs @259
+    _ZN3SPK8Modifier10setTriggerENS_15ModifierTriggerE @260
+    _ZN3SPK8Modifier12beginProcessERNS_5GroupE @261
+    _ZN3SPK8Modifier12copyChildrenERKNS_12RegisterableEb @262
+    _ZN3SPK8Modifier12intersectionE @263 DATA
+    _ZN3SPK8Modifier15destroyChildrenEb @264
+    _ZN3SPK8Modifier16registerChildrenEb @265
+    _ZN3SPK8Modifier24propagateUpdateTransformEv @266
+    _ZN3SPK8Modifier6normalE @267 DATA
+    _ZN3SPK8Modifier7setZoneEPNS_4ZoneEb @268
+    _ZN3SPK8ModifierC1EiNS_15ModifierTriggerEbbPNS_4ZoneE @269
+    _ZN3SPK8ModifierC2EiNS_15ModifierTriggerEbbPNS_4ZoneE @270
+    _ZN3SPK8ModifierD0Ev @271
+    _ZN3SPK8ModifierD1Ev @272
+    _ZN3SPK8ObstacleC1EPNS_4ZoneENS_15ModifierTriggerEff @273
+    _ZN3SPK8ObstacleC2EPNS_4ZoneENS_15ModifierTriggerEff @274
+    _ZN3SPK8Particle14computeSqrDistEv @275
+    _ZN3SPK8Particle18setParamFinalValueENS_10ModelParamEf @276
+    _ZN3SPK8Particle20setParamCurrentValueENS_10ModelParamEf @277
+    _ZN3SPK8Particle21changeParamFinalValueENS_10ModelParamEf @278
+    _ZN3SPK8Particle21interpolateParametersEv @279
+    _ZN3SPK8Particle23changeParamCurrentValueENS_10ModelParamEf @280
+    _ZN3SPK8Particle4initEv @281
+    _ZN3SPK8Particle6updateEf @282
+    _ZN3SPK8ParticleC1EPNS_5GroupEj @283
+    _ZN3SPK8ParticleC2EPNS_5GroupEj @284
+    _ZN3SPK8Renderer19enableRenderingHintENS_13RenderingHintEb @285
+    _ZN3SPK8Renderer21setAlphaTestThresholdEf @286
+    _ZN3SPK8RendererC1Ev @287
+    _ZN3SPK8RendererC2Ev @288
+    _ZN3SPK8RendererD0Ev @289
+    _ZN3SPK8RendererD1Ev @290
+    _ZN3SPK8RendererD2Ev @291
+    _ZN3SPK8Vector3D12crossProductERKS0_ @292
+    _ZN3SPK8Vector3D3absEv @293
+    _ZN3SPK8Vector3D3setEfff @294
+    _ZN3SPK8Vector3D6revertEv @295
+    _ZN3SPK8Vector3D9normalizeEv @296
+    _ZN3SPK8Vector3DC1Efff @297
+    _ZN3SPK8Vector3DC2Efff @298
+    _ZN3SPK8Vector3DdVEf @299
+    _ZN3SPK8Vector3DixEj @300
+    _ZN3SPK8Vector3DmIERKS0_ @301
+    _ZN3SPK8Vector3DmIEf @302
+    _ZN3SPK8Vector3DmLEf @303
+    _ZN3SPK8Vector3DpLERKS0_ @304
+    _ZN3SPK8Vector3DpLEf @305
+    _ZN3SPK9CollisionC1Eff @306
+    _ZN3SPK9CollisionC2Eff @307
+    _ZN3SPK9DestroyerC1EPNS_4ZoneENS_15ModifierTriggerE @308
+    _ZN3SPK9DestroyerC2EPNS_4ZoneENS_15ModifierTriggerE @309
+    _ZN3SPK9PointMass20innerUpdateTransformEv @310
+    _ZN3SPK9PointMassC1EPNS_4ZoneENS_15ModifierTriggerEff @311
+    _ZN3SPK9PointMassC2EPNS_4ZoneENS_15ModifierTriggerEff @312
+    _ZNK3SPK11LinearForce12getClassNameEv @313
+    _ZNK3SPK11LinearForce5cloneEb @314
+    _ZNK3SPK11LinearForce6modifyERNS_8ParticleEf @315
+    _ZNK3SPK12Interpolator11computeXAgeERKNS_8ParticleE @316
+    _ZNK3SPK12Interpolator13computeXParamERKNS_8ParticleE @317
+    _ZNK3SPK12Interpolator16computeXLifeTimeERKNS_8ParticleE @318
+    _ZNK3SPK12Interpolator16computeXVelocityERKNS_8ParticleE @319
+    _ZNK3SPK13ModifierGroup12getClassNameEv @320
+    _ZNK3SPK13ModifierGroup15modifyWrongSideERNS_8ParticleEb @321
+    _ZNK3SPK13ModifierGroup5cloneEb @322
+    _ZNK3SPK13ModifierGroup6modifyERNS_8ParticleEf @323
+    _ZNK3SPK13NormalEmitter12getClassNameEv @324
+    _ZNK3SPK13NormalEmitter16generateVelocityERNS_8ParticleEf @325
+    _ZNK3SPK13NormalEmitter5cloneEb @326
+    _ZNK3SPK13RandomEmitter12getClassNameEv @327
+    _ZNK3SPK13RandomEmitter16generateVelocityERNS_8ParticleEf @328
+    _ZNK3SPK13RandomEmitter5cloneEb @329
+    _ZNK3SPK14SphericEmitter12getClassNameEv @330
+    _ZNK3SPK14SphericEmitter16generateVelocityERNS_8ParticleEf @331
+    _ZNK3SPK14SphericEmitter5cloneEb @332
+    _ZNK3SPK15StraightEmitter12getClassNameEv @333
+    _ZNK3SPK15StraightEmitter16generateVelocityERNS_8ParticleEf @334
+    _ZNK3SPK15StraightEmitter5cloneEb @335
+    _ZNK3SPK4Line10intersectsERKNS_8Vector3DES3_PS1_S4_ @336
+    _ZNK3SPK4Line12getClassNameEv @337
+    _ZNK3SPK4Line12moveAtBorderERNS_8Vector3DEb @338
+    _ZNK3SPK4Line13computeNormalERKNS_8Vector3DE @339
+    _ZNK3SPK4Line16generatePositionERNS_8ParticleEb @340
+    _ZNK3SPK4Line5cloneEb @341
+    _ZNK3SPK4Line8containsERKNS_8Vector3DE @342
+    _ZNK3SPK4Ring10intersectsERKNS_8Vector3DES3_PS1_S4_ @343
+    _ZNK3SPK4Ring12getClassNameEv @344
+    _ZNK3SPK4Ring12moveAtBorderERNS_8Vector3DEb @345
+    _ZNK3SPK4Ring13computeNormalERKNS_8Vector3DE @346
+    _ZNK3SPK4Ring16generatePositionERNS_8ParticleEb @347
+    _ZNK3SPK4Ring5cloneEb @348
+    _ZNK3SPK4Ring8containsERKNS_8Vector3DE @349
+    _ZNK3SPK5AABox10intersectsERKNS_8Vector3DES3_PS1_S4_ @350
+    _ZNK3SPK5AABox12getClassNameEv @351
+    _ZNK3SPK5AABox12moveAtBorderERNS_8Vector3DEb @352
+    _ZNK3SPK5AABox13computeNormalERKNS_8Vector3DE @353
+    _ZNK3SPK5AABox16generatePositionERNS_8ParticleEb @354
+    _ZNK3SPK5AABox5cloneEb @355
+    _ZNK3SPK5AABox8containsERKNS_8Vector3DE @356
+    _ZNK3SPK5Group12createBufferERKSsRKNS_13BufferCreatorEjb @357
+    _ZNK3SPK5Group12getClassNameEv @358
+    _ZNK3SPK5Group13destroyBufferERKSs @359
+    _ZNK3SPK5Group14getParamStrideEv @360
+    _ZNK3SPK5Group15getParamAddressENS_10ModelParamE @361
+    _ZNK3SPK5Group17destroyAllBuffersEv @362
+    _ZNK3SPK5Group5cloneEb @363
+    _ZNK3SPK5Group9getBufferERKSs @364
+    _ZNK3SPK5Group9getBufferERKSsj @365
+    _ZNK3SPK5Model11getNbValuesENS_10ModelParamE @366
+    _ZNK3SPK5Model12getClassNameEv @367
+    _ZNK3SPK5Model13getParamValueENS_10ModelParamEj @368
+    _ZNK3SPK5Model5cloneEb @369
+    _ZNK3SPK5Plane10intersectsERKNS_8Vector3DES3_PS1_S4_ @370
+    _ZNK3SPK5Plane12getClassNameEv @371
+    _ZNK3SPK5Plane12moveAtBorderERNS_8Vector3DEb @372
+    _ZNK3SPK5Plane13computeNormalERKNS_8Vector3DE @373
+    _ZNK3SPK5Plane16generatePositionERNS_8ParticleEb @374
+    _ZNK3SPK5Plane5cloneEb @375
+    _ZNK3SPK5Plane8containsERKNS_8Vector3DE @376
+    _ZNK3SPK5Point10intersectsERKNS_8Vector3DES3_PS1_S4_ @377
+    _ZNK3SPK5Point12getClassNameEv @378
+    _ZNK3SPK5Point12moveAtBorderERNS_8Vector3DEb @379
+    _ZNK3SPK5Point13computeNormalERKNS_8Vector3DE @380
+    _ZNK3SPK5Point16generatePositionERNS_8ParticleEb @381
+    _ZNK3SPK5Point5cloneEb @382
+    _ZNK3SPK5Point8containsERKNS_8Vector3DE @383
+    _ZNK3SPK6Sphere10intersectsERKNS_8Vector3DES3_PS1_S4_ @384
+    _ZNK3SPK6Sphere12getClassNameEv @385
+    _ZNK3SPK6Sphere12moveAtBorderERNS_8Vector3DEb @386
+    _ZNK3SPK6Sphere13computeNormalERKNS_8Vector3DE @387
+    _ZNK3SPK6Sphere16generatePositionERNS_8ParticleEb @388
+    _ZNK3SPK6Sphere5cloneEb @389
+    _ZNK3SPK6Sphere8containsERKNS_8Vector3DE @390
+    _ZNK3SPK6System12getClassNameEv @391
+    _ZNK3SPK6System5cloneEb @392
+    _ZNK3SPK6System6renderEv @393
+    _ZNK3SPK6Vortex12getClassNameEv @394
+    _ZNK3SPK6Vortex5cloneEb @395
+    _ZNK3SPK6Vortex6modifyERNS_8ParticleEf @396
+    _ZNK3SPK7Emitter16generateVelocityERNS_8ParticleE @397
+    _ZNK3SPK8Cylinder10intersectsERKNS_8Vector3DES3_PS1_S4_ @398
+    _ZNK3SPK8Cylinder12getClassNameEv @399
+    _ZNK3SPK8Cylinder12moveAtBorderERNS_8Vector3DEb @400
+    _ZNK3SPK8Cylinder13computeNormalERKNS_8Vector3DE @401
+    _ZNK3SPK8Cylinder16generatePositionERNS_8ParticleEb @402
+    _ZNK3SPK8Cylinder5cloneEb @403
+    _ZNK3SPK8Cylinder8containsERKNS_8Vector3DE @404
+    _ZNK3SPK8Modifier15modifyWrongSideERNS_8ParticleEb @405
+    _ZNK3SPK8Obstacle12getClassNameEv @406
+    _ZNK3SPK8Obstacle15modifyWrongSideERNS_8ParticleEb @407
+    _ZNK3SPK8Obstacle5cloneEb @408
+    _ZNK3SPK8Obstacle6modifyERNS_8ParticleEf @409
+    _ZNK3SPK8Particle18getParamFinalValueENS_10ModelParamE @410
+    _ZNK3SPK8Particle20getParamCurrentValueENS_10ModelParamE @411
+    _ZNK3SPK8Particle8getModelEv @412
+    _ZNK3SPK8Renderer22isRenderingHintEnabledENS_13RenderingHintE @413
+    _ZNK3SPK8Vector3DixEj @414
+    _ZNK3SPK9Collision12getClassNameEv @415
+    _ZNK3SPK9Collision5cloneEb @416
+    _ZNK3SPK9Collision6modifyERNS_8ParticleEf @417
+    _ZNK3SPK9Destroyer12getClassNameEv @418
+    _ZNK3SPK9Destroyer15modifyWrongSideERNS_8ParticleEb @419
+    _ZNK3SPK9Destroyer5cloneEb @420
+    _ZNK3SPK9Destroyer6modifyERNS_8ParticleEf @421
+    _ZNK3SPK9PointMass12getClassNameEv @422
+    _ZNK3SPK9PointMass5cloneEb @423
+    _ZNK3SPK9PointMass6modifyERNS_8ParticleEf @424
+    _ZTVN3SPK11LinearForceE @425 DATA
+    _ZTVN3SPK12RegisterableE @426 DATA
+    _ZTVN3SPK13BufferHandlerE @427 DATA
+    _ZTVN3SPK13ModifierGroupE @428 DATA
+    _ZTVN3SPK13NormalEmitterE @429 DATA
+    _ZTVN3SPK13RandomEmitterE @430 DATA
+    _ZTVN3SPK13TransformableE @431 DATA
+    _ZTVN3SPK14SphericEmitterE @432 DATA
+    _ZTVN3SPK15StraightEmitterE @433 DATA
+    _ZTVN3SPK21QuadRendererInterfaceE @434 DATA
+    _ZTVN3SPK27Oriented3DRendererInterfaceE @435 DATA
+    _ZTVN3SPK4LineE @436 DATA
+    _ZTVN3SPK4RingE @437 DATA
+    _ZTVN3SPK4ZoneE @438 DATA
+    _ZTVN3SPK5AABoxE @439 DATA
+    _ZTVN3SPK5GroupE @440 DATA
+    _ZTVN3SPK5ModelE @441 DATA
+    _ZTVN3SPK5PlaneE @442 DATA
+    _ZTVN3SPK5PointE @443 DATA
+    _ZTVN3SPK6SphereE @444 DATA
+    _ZTVN3SPK6SystemE @445 DATA
+    _ZTVN3SPK6VortexE @446 DATA
+    _ZTVN3SPK7EmitterE @447 DATA
+    _ZTVN3SPK8CylinderE @448 DATA
+    _ZTVN3SPK8ModifierE @449 DATA
+    _ZTVN3SPK8ObstacleE @450 DATA
+    _ZTVN3SPK8RendererE @451 DATA
+    _ZTVN3SPK9CollisionE @452 DATA
+    _ZTVN3SPK9DestroyerE @453 DATA
+    _ZTVN3SPK9PointMassE @454 DATA
+    _ZThn172_N3SPK11LinearForceD0Ev @455
+    _ZThn172_N3SPK11LinearForceD1Ev @456
+    _ZThn172_N3SPK13ModifierGroup12checkBuffersERKNS_5GroupE @457
+    _ZThn172_N3SPK13ModifierGroup13createBuffersERKNS_5GroupE @458
+    _ZThn172_N3SPK13ModifierGroup14destroyBuffersERKNS_5GroupE @459
+    _ZThn172_N3SPK13ModifierGroupD0Ev @460
+    _ZThn172_N3SPK13ModifierGroupD1Ev @461
+    _ZThn172_N3SPK6VortexD0Ev @462
+    _ZThn172_N3SPK6VortexD1Ev @463
+    _ZThn172_N3SPK8ModifierD0Ev @464
+    _ZThn172_N3SPK8ModifierD1Ev @465
+    _ZThn172_N3SPK8ObstacleD0Ev @466
+    _ZThn172_N3SPK8ObstacleD1Ev @467
+    _ZThn172_N3SPK9CollisionD0Ev @468
+    _ZThn172_N3SPK9CollisionD1Ev @469
+    _ZThn172_N3SPK9DestroyerD0Ev @470
+    _ZThn172_N3SPK9DestroyerD1Ev @471
+    _ZThn172_N3SPK9PointMassD0Ev @472
+    _ZThn172_N3SPK9PointMassD1Ev @473
+    _ZThn20_N3SPK11LinearForce20innerUpdateTransformEv @474
+    _ZThn20_N3SPK11LinearForceD0Ev @475
+    _ZThn20_N3SPK11LinearForceD1Ev @476
+    _ZThn20_N3SPK13ModifierGroupD0Ev @477
+    _ZThn20_N3SPK13ModifierGroupD1Ev @478
+    _ZThn20_N3SPK13NormalEmitterD0Ev @479
+    _ZThn20_N3SPK13NormalEmitterD1Ev @480
+    _ZThn20_N3SPK13RandomEmitterD0Ev @481
+    _ZThn20_N3SPK13RandomEmitterD1Ev @482
+    _ZThn20_N3SPK14SphericEmitter20innerUpdateTransformEv @483
+    _ZThn20_N3SPK14SphericEmitterD0Ev @484
+    _ZThn20_N3SPK14SphericEmitterD1Ev @485
+    _ZThn20_N3SPK15StraightEmitter20innerUpdateTransformEv @486
+    _ZThn20_N3SPK15StraightEmitterD0Ev @487
+    _ZThn20_N3SPK15StraightEmitterD1Ev @488
+    _ZThn20_N3SPK4Line20innerUpdateTransformEv @489
+    _ZThn20_N3SPK4LineD0Ev @490
+    _ZThn20_N3SPK4LineD1Ev @491
+    _ZThn20_N3SPK4Ring20innerUpdateTransformEv @492
+    _ZThn20_N3SPK4RingD0Ev @493
+    _ZThn20_N3SPK4RingD1Ev @494
+    _ZThn20_N3SPK4Zone20innerUpdateTransformEv @495
+    _ZThn20_N3SPK4ZoneD0Ev @496
+    _ZThn20_N3SPK4ZoneD1Ev @497
+    _ZThn20_N3SPK5AABoxD0Ev @498
+    _ZThn20_N3SPK5AABoxD1Ev @499
+    _ZThn20_N3SPK5Group24propagateUpdateTransformEv @500
+    _ZThn20_N3SPK5GroupD0Ev @501
+    _ZThn20_N3SPK5GroupD1Ev @502
+    _ZThn20_N3SPK5Plane20innerUpdateTransformEv @503
+    _ZThn20_N3SPK5PlaneD0Ev @504
+    _ZThn20_N3SPK5PlaneD1Ev @505
+    _ZThn20_N3SPK5PointD0Ev @506
+    _ZThn20_N3SPK5PointD1Ev @507
+    _ZThn20_N3SPK6SphereD0Ev @508
+    _ZThn20_N3SPK6SphereD1Ev @509
+    _ZThn20_N3SPK6System24propagateUpdateTransformEv @510
+    _ZThn20_N3SPK6SystemD0Ev @511
+    _ZThn20_N3SPK6SystemD1Ev @512
+    _ZThn20_N3SPK6Vortex20innerUpdateTransformEv @513
+    _ZThn20_N3SPK6VortexD0Ev @514
+    _ZThn20_N3SPK6VortexD1Ev @515
+    _ZThn20_N3SPK7Emitter24propagateUpdateTransformEv @516
+    _ZThn20_N3SPK7EmitterD0Ev @517
+    _ZThn20_N3SPK7EmitterD1Ev @518
+    _ZThn20_N3SPK8Cylinder20innerUpdateTransformEv @519
+    _ZThn20_N3SPK8CylinderD0Ev @520
+    _ZThn20_N3SPK8CylinderD1Ev @521
+    _ZThn20_N3SPK8Modifier24propagateUpdateTransformEv @522
+    _ZThn20_N3SPK8ModifierD0Ev @523
+    _ZThn20_N3SPK8ModifierD1Ev @524
+    _ZThn20_N3SPK8ObstacleD0Ev @525
+    _ZThn20_N3SPK8ObstacleD1Ev @526
+    _ZThn20_N3SPK8RendererD0Ev @527
+    _ZThn20_N3SPK8RendererD1Ev @528
+    _ZThn20_N3SPK9CollisionD0Ev @529
+    _ZThn20_N3SPK9CollisionD1Ev @530
+    _ZThn20_N3SPK9DestroyerD0Ev @531
+    _ZThn20_N3SPK9DestroyerD1Ev @532
+    _ZThn20_N3SPK9PointMass20innerUpdateTransformEv @533
+    _ZThn20_N3SPK9PointMassD0Ev @534
+    _ZThn20_N3SPK9PointMassD1Ev @535

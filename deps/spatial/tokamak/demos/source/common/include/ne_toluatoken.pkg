@@ -1,0 +1,67 @@
+$#include "ne_toluatokenX.h"
+$#include "ne_beforestd.h"
+$#include "ne_gameworld.h"
+
+//////////////////////////////////////////////////////
+//
+//	testing stuff
+//
+//////////////////////////////////////////////////////
+
+typedef struct
+{
+	float v[3];
+} float3;
+
+class testClass
+{
+public:
+	testClass();
+	int i;
+};
+
+char mm[60];
+
+void Func1(float3 f);
+
+float3 Func2();
+
+void Func3(float v[3]);
+
+//////////////////////////////////////////////////////
+//
+//	NullEngine Functions
+//
+//////////////////////////////////////////////////////
+
+neToken * neGetToken(const char * name);
+
+//////////////////////////////////////////////////////
+//
+//	neToken
+//
+//////////////////////////////////////////////////////
+
+class neToken
+{
+public:
+	char * GetNamePtr();
+
+	void SetPos(float pos[3]);
+	
+	void GetPos(float pos[3]);
+
+	void SetMatrix(float col1[3], float col2[3], float col3[3], float col4[3]);
+
+	void LookAt(float from[3], float at[3], float worldUp[3]);
+
+	void GetMatrix(float col1[3], float col2[3], float col3[3], float col4[3]);
+
+	void SetVisible(bool vis);
+
+	bool GetVisible();
+
+	void RotateYDegree(float degree);
+};
+
+neToken * neConvertToToken(void * ptr);
