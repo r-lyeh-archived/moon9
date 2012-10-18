@@ -5,9 +5,9 @@ moon9
 A game framework. Warning: wip, dev, unstable, radiation hazard, defcon 3
 
 ## Subframeworks
-[memtracer](https://github.com/r-lyeh/moon9/tree/master/src/moon9/memtracer)
-[spatial](https://github.com/r-lyeh/moon9/tree/master/src/moon9/spatial)
-[test](https://github.com/r-lyeh/moon9/tree/master/src/moon9/test)
+- [memtracer](https://github.com/r-lyeh/moon9/tree/master/src/moon9/memtracer)
+- [spatial](https://github.com/r-lyeh/moon9/tree/master/src/moon9/spatial)
+- [test](https://github.com/r-lyeh/moon9/tree/master/src/moon9/test)
 
 ## Features
 - To write
