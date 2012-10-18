@@ -7,6 +7,6 @@ Features collision.
 - Pathfinding
 - Physics
 
-## Requeriments
+## Dependencies 
 - GLM
 - MSGPACK (optional)
