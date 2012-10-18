@@ -13,10 +13,16 @@ Another game framework. Warning: wip, dev, unstable, radiation hazard, defcon 3
 - To write
 
 ## Supported Desktop Platforms
-- Microsoft Windows 7 (using Microsoft Visual Studio 2012)
+- Microsoft Windows XP+
 
 ## Supported Mobile Platforms
 - None :D
+
+## Supported compilers
+- Microsoft Visual Studio 2012
+
+## Supported build systems
+- CMake
 
 ## License
 The project is open sourced under the MIT license.
