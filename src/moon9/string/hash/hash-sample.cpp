@@ -1,8 +1,9 @@
+#include <cassert>
+
 #include <iostream>
 #include <string>
 
-#include <moon9/math/hash.hpp>
-#include <cassert>
+#include "hash.hpp"
 
 int main(int argc, char* argv[])
 {

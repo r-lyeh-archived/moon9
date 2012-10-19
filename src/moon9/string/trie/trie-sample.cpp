@@ -1,6 +1,16 @@
+#include <algorithm>
+#include <cctype>
+#include <string>
+
+std::string lowercase( std::string s )
+{
+    std::transform( s.begin(), s.end(), s.begin(), (int(*)(int)) std::tolower );
+
+    return s;
+}
+
 #include <iostream>
 
-#include "string.hpp"
 #include "trie.hpp"
 
 int main( int argc, char **argv )
@@ -13,31 +23,37 @@ int main( int argc, char **argv )
     {
         std::cout << '>';
 
-        moon9::string line;
+        std::string line;
         std::getline( std::cin, line );
 
         if( line.size() )
         {
-            line = line.lowercase();
+            line = lowercase(line);
 
             if( line == "exit" )
                 return 0;
 
-            if( line.at(-1) == '*' )
+            if( line.size() > 0 && line.at( line.size() - 1 ) == '*' )
             {
                 line.pop_back();
-                std::cout << moon9::string("Words found: \1", moon9::strings( t.autocomplete( line ) ).str( "\1," ) ) << std::endl;
+
+                std::cout << "Words found: ";
+
+                for( auto &it : t.autocomplete( line ) )
+                    std::cout << it << ',';
+
+                std::cout << std::endl;
             }
             else
             {
                 if( !t.find( line ) )
                 {
                     t.insert( line );
-                    std::cout << moon9::string("'\1' inserted", line ) << std::endl;
+                    std::cout << "'" << line << "' inserted" << std::endl;
                 }
                 else
                 {
-                    std::cout << moon9::string("'\1' already exists", line ) << std::endl;
+                    std::cout << "'" << line << "' already exists" << std::endl;
                 }
             }
         }
