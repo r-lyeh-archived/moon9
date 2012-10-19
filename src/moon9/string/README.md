@@ -10,13 +10,14 @@ A lightwight string library with no dependencies. MIT licensed.
 - [moon9::id](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/id), compile-time string to id (size_t) conversion
 - moon9::markov, procedural strings generator based on a few examples
 - moon9::metrics, time/bits/money/decimate beautifier
+- [moon9::roman](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/roman), integer to roman library
 - moon9::string, handy std::string replacement class
 - moon9::strings, handy deque of moon9::string classes
 - [moon9::trie](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/trie), string autocompletion
 - [moon9::unicode](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/unicode), vector of unicode codepoints
 
 ## To do:
-- [moon9::roman](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/roman), integer to roman library; a toy that was fun to code. Might get improved someday.
+- [moon9::roman](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/roman), a toy that was fun to code. Might get improved someday.
 
 ## Dependencies
 - None
