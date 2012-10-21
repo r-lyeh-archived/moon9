@@ -7,6 +7,7 @@ A lightwight string library with no dependencies. MIT licensed.
 - moon9::dictionary, powerful i18n/L10n/g11n dictionary/localization class
 - [moon9::format](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/format), safe C-style string formatter
 - [moon9::hash](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/hash), uniform hash class; provides interface for CRC32, GCRC, RS, JS, PJW, ELF, BKDR, SBDM, DJB, DJB2, BP, FNV, AP, BJ1, MH2, SHA1
+- moon9::hexdump, stringifies a memory hex dump
 - [moon9::id](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/id), compile-time string to id (size_t) conversion
 - moon9::markov, procedural strings generator based on a few examples
 - moon9::metrics, time/bits/money/decimate beautifier
