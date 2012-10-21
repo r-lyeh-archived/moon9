@@ -1,12 +1,13 @@
 ## Moon9 framework: spatial library
-Simple geometry framework.
-Features collision.
+- Simple geometry library.
+- Features collision.
+- MIT licensed.
 
 ## Roadmap for 'next' branch
 - Navmesh
 - Pathfinding
 - Physics
 
-## Dependencies 
+## Dependencies
 - GLM
 - MSGPACK (optional)
