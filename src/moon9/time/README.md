@@ -1,4 +1,14 @@
-moon9-time
-==========
+## Moon9 framework: time library
+Simple time library. No dependencies. MIT licensed.
 
-moon9 framework: time library 
+## Components
+- moon9::chrono
+- moon9::clock
+- [moon9::dt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/dt)
+- moon9::fps
+- moon9::now
+- moon9::rtc
+- [moon9::sleep](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/sleep)
+- moon9::timer
+- moon9::tweener
+- [moon9::wink](https://github.com/r-lyeh/moon9/tree/master/src/moon9/wink/sleep)
