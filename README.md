@@ -7,6 +7,8 @@ Another game framework. Warning: wip, dev, unstable, radiation hazard, defcon 3
 - [moon9::spatial](https://github.com/r-lyeh/moon9/tree/master/src/moon9/spatial)
 - [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string)
 - [moon9::test](https://github.com/r-lyeh/moon9/tree/master/src/moon9/test)
+- [moon9::time](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time)
+
 
 ## Features
 - To write
