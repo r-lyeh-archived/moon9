@@ -10,4 +10,5 @@
 - [moon9::demangle](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug/demangle), a library to demangle mangled C++ symbols
 - moon9::die, shutdowns app gracefully
 - moon9::errorbox, system error dialog
-- [moon9::levels](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug/levels), handy is_debug/is_release boolean flags
+- [moon9::is_debug](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug/is_debug), handy is_debug boolean flag
+- [moon9::is_release](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug/is_release), handy is_release boolean flag
