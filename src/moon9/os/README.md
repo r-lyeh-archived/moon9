@@ -14,7 +14,9 @@ A basic OS library with no dependencies. MIT licensed.
 - [moon9::environment](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/levels/environment), an environment getter/setter
 - [moon9::error](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/error), human readable os errors
 - [moon9::headers](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/headers), platform specific OS headers
-- [moon9::levels](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/levels), handy is_enduser/is_tester/is_coder boolean flags
+- moon9::is_coder, handy is_coder boolean flag
+- moon9::is_enduser, handy is_enduser boolean flag
+- moon9::is_tester, handy is_tester boolean flag
 - [moon9::mutex](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/mutex), an improved mutex class
 - [moon9::prompt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/prompt), a string prompt dialog
 - [moon9::types](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/endian/types), hopefully portable types
