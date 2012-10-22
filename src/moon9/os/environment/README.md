@@ -1,1 +1,4 @@
-## moon9 framework: os library
+## Moon9 framework: environment library
+- An environment getter/setter.
+- No dependencies.
+- MIT licensed.

@@ -1,1 +1,4 @@
-## moon9 framework: os library
+## Moon9 framework: error library
+- Human readable OS errors.
+- No dependencies.
+- MIT licensed.

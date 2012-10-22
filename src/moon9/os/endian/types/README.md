@@ -1,1 +1,4 @@
-## moon9 framework: os library
+## Moon9 framework: types library
+- Hopefully portable types.
+- No dependencies.
+- MIT licensed.

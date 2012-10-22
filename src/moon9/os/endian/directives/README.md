@@ -1,1 +1,4 @@
-## moon9 framework: os library
+## Moon9 framework: directives library
+- Compiler/os directives header.
+- No dependencies.
+- MIT licensed.
