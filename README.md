@@ -3,6 +3,7 @@ Another game framework. Warning: wip, dev, unstable, radiation hazard, defcon 3
 
 ## Subframeworks
 - [moon9::memtracer](https://github.com/r-lyeh/moon9/tree/master/src/moon9/memtracer)
+- [moon9::os](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os)
 - [moon9::play](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play)
 - [moon9::spatial](https://github.com/r-lyeh/moon9/tree/master/src/moon9/spatial)
 - [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string)
