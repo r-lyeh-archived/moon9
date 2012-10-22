@@ -1,6 +1,24 @@
 ## Moon9
 Another game framework. Warning: wip, dev, unstable, radiation hazard, defcon 3
 
+## Supported Desktop Platforms
+- Microsoft Windows XP+
+
+## Supported Mobile Platforms
+- None :D
+
+## Supported compilers
+- Microsoft Visual Studio 2012
+
+## Supported build systems
+- CMake
+
+## Features
+- To write
+
+## Roadmap for 'next' branch
+- To write
+
 ## Subframeworks
 - [moon9::memtracer](https://github.com/r-lyeh/moon9/tree/master/src/moon9/memtracer)
 - [moon9::os](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os)
@@ -9,9 +27,6 @@ Another game framework. Warning: wip, dev, unstable, radiation hazard, defcon 3
 - [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string)
 - [moon9::test](https://github.com/r-lyeh/moon9/tree/master/src/moon9/test)
 - [moon9::time](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time)
-
-## Features
-- To write
 
 ## Sublibraries included
 - [moon9::alert](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/alert), a popup alert dialog
@@ -50,29 +65,14 @@ Another game framework. Warning: wip, dev, unstable, radiation hazard, defcon 3
 - [moon9::unicode](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/unicode), vector of unicode codepoints
 - [moon9::wink](https://github.com/r-lyeh/moon9/tree/master/src/moon9/wink/sleep)
 
-## Roadmap for 'next' branch
-- To write
-
-## Supported Desktop Platforms
-- Microsoft Windows XP+
-
-## Supported Mobile Platforms
-- None :D
-
-## Supported compilers
-- Microsoft Visual Studio 2012
-
-## Supported build systems
-- CMake
-
-## License
-The project is open sourced under the MIT license.
-
 ## Bug Reporting and Feature Requests
 If you find a bug in a Sample, or have an enhancement request, simply file an
 [Issue](https://github.com/r-lyeh/moon9/issues) and send a message (via github messages)
 to the Committers to the project to let them know that you have filed
 an [Issue](https://github.com/r-lyeh/moon9/issues).
+
+## License
+The project is open sourced under the MIT license.
 
 ## Disclaimer
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
