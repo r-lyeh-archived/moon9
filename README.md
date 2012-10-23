@@ -76,6 +76,7 @@ Moon9 is a game oriented collection of C++ frameworks. Warning: wip, dev, unstab
 - [moon9::stream](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/stream), attach/detach loggers to ostreams. Also create ostreams.
 - [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/string), extended C++ standard string
 - [moon9::tcp](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/tcp), TCP based client/server.
+- [moon9::tree](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/tree),
 - [moon9::trie](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/trie), string autocompletion
 - [moon9::types](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/endian/types), hopefully portable types
 - [moon9::udp](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/udp), UDP based client/server. ENet library required.
