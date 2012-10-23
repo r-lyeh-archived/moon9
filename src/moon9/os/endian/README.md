@@ -1,5 +1,5 @@
-## Moon9 framework: endian library
-- A few handy functions to handle endianness.
+## moon9::endian
+- A few handy library to handle endianness.
 - MIT licensed.
 
 ## Requeriments

@@ -1,4 +1,4 @@
-## Moon9 framework: browse library
+## moon9::browse
 - An URL browser.
 - No dependencies.
 - MIT licensed.

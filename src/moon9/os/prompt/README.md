@@ -1,4 +1,4 @@
-## Moon9 framework: prompt library
+## moon9::prompt
 - A string prompt dialog.
 - No dependencies.
 - MIT licensed.

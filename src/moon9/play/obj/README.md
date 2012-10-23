@@ -1,5 +1,5 @@
-## Moon9 framework: obj library
-- A dynamic/agnostic/serializable object class for POD data.
+## moon9::obj
+- A dynamic/agnostic/serializable object library for POD data.
 - MIT licensed.
 
 ## Features

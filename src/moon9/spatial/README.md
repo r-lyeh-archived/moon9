@@ -1,5 +1,5 @@
-## Moon9 framework: spatial library
-- Simple geometry library.
+## Moon9 framework: spatial framework
+- Simple geometry framework.
 - Features collision.
 - MIT licensed.
 

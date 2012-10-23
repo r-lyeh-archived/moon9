@@ -1,4 +1,4 @@
-## Moon9 framework: string library
-- Extended C++ standard string library.
+## moon9::string
+- An extended C++ standard string library.
 - No dependencies.
 - MIT licensed.

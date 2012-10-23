@@ -1,4 +1,4 @@
-## Moon9 framework: headers library
+## moon9::headers
 - Platform specific OS headers.
 - No dependencies.
 - MIT licensed.

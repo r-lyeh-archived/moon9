@@ -1,5 +1,5 @@
-## Moon9 framework: play library
-A gameplay library with no major dependencies. MIT licensed.
+## Moon9 framework: play framework
+A gameplay framework with no major dependencies. MIT licensed.
 
 ## Features
 - [moon9::any](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/factory/any), an opaque container library

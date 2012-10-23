@@ -1,4 +1,4 @@
-## Moon9 framework: mutex library
+## moon9::mutex
 - An improved mutex class.
 - No dependencies.
 - MIT licensed.

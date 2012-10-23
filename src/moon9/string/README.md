@@ -1,11 +1,11 @@
-## Moon9 framework: string library
-A lightwight string library with no dependencies. MIT licensed.
+## Moon9 framework: string framework
+A lightwight string framework with no dependencies. MIT licensed.
 
 ## Features
 - [moon9::arc4](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/arc4), ARC4 encryptor/decryptor
 - [moon9::base91](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/base91), custom base91 encoder/decoder (XML friendly)
 - moon9::dictionary, powerful i18n/L10n/g11n dictionary/localization class
-- [moon9::format](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/format), safe C-style string formatter
+- [moon9::format](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/format), C-formatted C++ standard string
 - [moon9::hash](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/hash), uniform hash class; provides interface for CRC32, GCRC, RS, JS, PJW, ELF, BKDR, SBDM, DJB, DJB2, BP, FNV, AP, BJ1, MH2, SHA1
 - moon9::hexdump, stringifies a memory hex dump
 - [moon9::id](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/id), compile-time string to id (size_t) conversion

@@ -1,4 +1,4 @@
-/* C formatted std::strings
+/* C-formatted C++ standard string
  * Based on code by Tom Distler. [ref] http://tdistler.com/2010/01/11/cc-writing-printf-style-functions
  * Based on code by Adam Rosenfield. [ref] http://stackoverflow.com/questions/558223/va-copy-porting-to-visual-c#comment4881125_558259
  * - rlyeh

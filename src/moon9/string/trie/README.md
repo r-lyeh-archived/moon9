@@ -1,3 +1,4 @@
-## moon9::trie, a string autocompletion library
-- No dependencies. 
+## moon9::trie
+- A string autocompletion library.
+- No dependencies.
 - MIT licensed.

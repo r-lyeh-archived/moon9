@@ -46,13 +46,13 @@ Moon9 is another C++ game framework. Warning: wip, dev, unstable, radiation haza
 - [moon9::dialog](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/dialog), a file pickup dialog
 - [moon9::directives](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/endian/directives), compiler/os directives header
 - [moon9::dll](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/dll), a dynamic library loader/caller
-- [moon9::dt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/dt)
+- [moon9::dt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/dt), measure time diff in seconds
 - [moon9::endian](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/endian), a few handy functions to handle endianness
 - [moon9::environment](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/levels/environment), an environment getter/setter
 - [moon9::error](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/error), human readable os errors
 - [moon9::event](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/event), a simple event library
 - [moon9::factory](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/factory), a lightweight abstract factory
-- [moon9::format](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/format), safe C-style string formatter
+- [moon9::format](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/format), C-formatted C++ standard string
 - [moon9::fsm](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/fsm), a safe finite state machine implementation
 - [moon9::hash](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/hash), uniform hash class; provides interface for CRC32, GCRC, RS, JS, PJW, ELF, BKDR, SBDM, DJB, DJB2, BP, FNV, AP, BJ1, MH2, SHA1
 - [moon9::headers](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/headers), platform specific OS headers
@@ -65,11 +65,12 @@ Moon9 is another C++ game framework. Warning: wip, dev, unstable, radiation haza
 - [moon9::obj](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/obj), an dynamic/agnostic/serializable object class for POD data
 - [moon9::prompt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/prompt), a string prompt dialog
 - [moon9::roman](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/roman), integer to roman library
-- [moon9::sleep](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/sleep)
+- [moon9::sleep](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/sleep), sleep a thread for given seconds
+- [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/string), extended C++ standard string
 - [moon9::trie](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/trie), string autocompletion
 - [moon9::types](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/endian/types), hopefully portable types
 - [moon9::unicode](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/unicode), vector of unicode codepoints
-- [moon9::wink](https://github.com/r-lyeh/moon9/tree/master/src/moon9/wink/sleep)
+- [moon9::wink](https://github.com/r-lyeh/moon9/tree/master/src/moon9/wink/sleep), sleep a thread for shortest time
 
 ## Bug Reporting and Feature Requests
 If you find a bug in a Sample, or have an enhancement request, simply file an

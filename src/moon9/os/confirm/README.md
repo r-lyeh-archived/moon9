@@ -1,4 +1,4 @@
-## Moon9 framework: confirm library
+## moon9::confirm
 - A yes/no confirm dialog.
 - No dependencies.
 - MIT licensed.

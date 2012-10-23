@@ -1,5 +1,5 @@
 /*
- * Extended C++ standard strings & variants
+ * Extended C++ standard string
  * Copyright (c) 2010-2012, Mario 'rlyeh' Rodriguez
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -66,6 +66,14 @@ namespace moon9
 
         string( const bool &val ) : std::string( val ? "true" : "false" )
         {}
+
+        // constructor sugar
+
+        template< typename T >
+        string( const T &t ) : std::string()
+        {
+            operator=(t);
+        }
 
         // extended constructors; safe formatting
 
@@ -314,15 +322,6 @@ namespace moon9
         string &operator <<( std::ostream& ( *pf )(std::ostream&))
         {
             return *pf == static_cast<std::ostream& ( * )(std::ostream&)>( std::endl ) ? (*this) += "\n", *this : *this;
-        }
-
-        // constructor sugar
-
-        template< typename T >
-        explicit
-        string( const T &t ) : std::string()
-        {
-            operator=(t);
         }
 
         // assignment sugars

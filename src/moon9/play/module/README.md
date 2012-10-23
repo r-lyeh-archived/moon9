@@ -1,4 +1,4 @@
-## Moon9 framework: module library
-- A lightweight game module state manager.
+## moon9::module
+- A lightweight game module state manager library.
 - No dependencies.
 - MIT licensed.

@@ -1,4 +1,4 @@
-## Moon9 framework: clipboard library
+## moon9::clipboard
 - A clipboard getter/setter.
 - No dependencies.
 - MIT licensed.

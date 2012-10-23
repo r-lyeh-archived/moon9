@@ -1,5 +1,5 @@
-## Moon9 framework: debug library
-- A debugging library.
+## Moon9 framework: debug framework
+- A debugging framework.
 - No dependencies.
 - MIT licensed.
 

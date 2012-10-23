@@ -1,4 +1,4 @@
-## Moon9 framework: types library
+## moon9::types
 - Hopefully portable types.
 - No dependencies.
 - MIT licensed.
