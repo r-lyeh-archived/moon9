@@ -1,7 +1,6 @@
 #include <cassert>
 
 #include "string.hpp"
-#include "format.hpp"
 
 struct ctest_stream1
 {

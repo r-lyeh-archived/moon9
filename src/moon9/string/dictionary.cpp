@@ -44,7 +44,7 @@ void moon9::dictionary::set_symbol( const std::string &text, const std::string &
 
 std::string moon9::dictionary::translate( const std::string &text ) const
 {
-	moon9::strings out, tokens = moon9::string( text ).tokenize_incl_separators("[]");
+	moon9::strings out, tokens = moon9::string( text ).split("[]");
 
 	bool open = false;
 

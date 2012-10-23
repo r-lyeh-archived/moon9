@@ -1,3 +1,4 @@
-## moon9::format, a safe C-style string formatter
+## Moon9 framework: format library
+- C-formatted C++ standard string.
 - No dependencies.
 - MIT licensed.
