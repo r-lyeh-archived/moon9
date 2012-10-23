@@ -381,3 +381,45 @@ xml::attribute_iterator xml::attribute_end() const
 
 
 } //namespace moon9
+
+namespace pack
+{
+    std::string xml( const bistrings &p )
+    {
+        moon9::xml xml;
+
+        xml.push("root");
+
+        for( auto &it : p )
+        {
+            xml.node( "i" );
+            xml.set( "key", it.first );
+            xml.set( "val", it.second );
+        }
+
+        return xml.str();
+    }
+}
+
+namespace unpack
+{
+    bistrings xml( const std::string &s )
+    {
+        bistrings bs;
+
+        moon9::xml xml;
+        xml.str( s );
+
+        for( size_t it = 1, end = xml.query<size_t>("count(/root/i)") ; it <= end ; ++it )
+        {
+            bistring b;
+
+            b.first  = xml.query<std::string>( moon9::string( "string(/root/i[\1]/@key)", it ) );
+            b.second = xml.query<std::string>( moon9::string( "string(/root/i[\1]/@val)", it ) );
+
+            bs.push_back( b );
+        }
+
+        return bs;
+    }
+}

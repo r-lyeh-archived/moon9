@@ -1,5 +1,5 @@
 /*
- * Hashing algorithms algamation
+ * Hashing algorithms amalgamation
  * CRC32, GCRC, RS, JS, PJW, ELF, BKDR, SBDM, DJB, DJB2, BP, FNV, AP, BJ1, MH2, SHA1
 
  * Copyright (c) 2010 Mario 'rlyeh' Rodriguez

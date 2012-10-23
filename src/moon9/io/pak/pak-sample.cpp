@@ -1,11 +1,14 @@
+#include <cassert>
+
 #include <iostream>
 #include <string>
 
-#include "file.hpp"
 #include "pak.hpp"
 
 int main( int argc, char **argv )
 {
+    std::string binary;
+
     if( const bool saving_test = true )
     {
         moon9::pak pak;
@@ -15,27 +18,34 @@ int main( int argc, char **argv )
         pak[0]["filename"] = "test.txt";
         pak[0]["content"] = "hello world";
 
-        pak[1]["filename"] = "pak-sample.exe";
-        pak[1]["content"] = moon9::file( "pak-sample.exe" ).read();
+        pak[1]["filename"] = "test2.txt";
+        pak[1]["content"] = 1337;
 
         std::cout << "zipping files..." << std::endl;
 
-        moon9::file( "test.zip" ).overwrite( pak.bin() );
+        // save zip archive to memory string (then optionally to disk)
+        binary = pak.bin();
 
         std::cout << "saving test:\n" << pak.debug() << std::endl;
     }
 
     if( const bool loading_test = true )
     {
-        std::string binary = moon9::file("test.zip").read();
-
         std::cout << "unzipping files..." << std::endl;
 
         moon9::pak pak;
-        pak.bin( std::string( binary.begin(), binary.end() ) );
+        pak.bin( binary );
 
         std::cout << "loading test:\n" << pak.debug() << std::endl;
+
+        assert( pak[0]["filename"] == "test.txt" );
+        assert( pak[0]["content"] == "hello world" );
+
+        assert( pak[1]["filename"] == "test2.txt" );
+        assert( pak[1]["content"] == "1337" );
     }
+
+    std::cout << "All ok." << std::endl;
 
     return 0;
 }

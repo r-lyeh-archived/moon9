@@ -1,5 +1,6 @@
 /* C formatted std::strings
  * Based on code by Tom Distler. [ref] http://tdistler.com/2010/01/11/cc-writing-printf-style-functions
+ * Based on code by Adam Rosenfield. [ref] http://stackoverflow.com/questions/558223/va-copy-porting-to-visual-c#comment4881125_558259
  * - rlyeh
  */
 
@@ -59,7 +60,7 @@ namespace moon9
         protected:
 
         // This constructor is intentionally private to prevent potential bugs
-        format( const char * );
+        format( const char *fmt );
 
         // Copy-constructor
         // format( const format & );
@@ -87,4 +88,36 @@ namespace moon9
     static std::string right( int n, const std::string &arg, char filler = ' ' ) {
         int amount = n - arg.size();
         return amount >= 0 ? std::string( amount, filler ) + arg : std::string();
-    } */
+    }
+
+    static
+    std::string list( const char *fmt, va_list args ) : std::string()
+    {
+        int len;
+        using namespace std;
+
+        // Copy the va_list args
+#ifdef va_copy
+        va_list copy;
+        va_copy( copy, args );
+#else
+        va_list copy = args;
+#endif
+
+        // Calculate the final length of the formatted string
+        len = kMoon9VSNPrintf( 0, 0, fmt, args );
+
+        // Allocate a buffer (including room for null termination)
+        char* target_string = new char[++len];
+
+        // Generate the formatted string
+        kMoon9VSNPrintf( target_string, len, fmt, copy );
+
+        // Assign the formatted string
+        this->assign( target_string );
+
+        // Clean up
+        delete [] target_string;
+    }
+
+*/

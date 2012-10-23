@@ -11,13 +11,17 @@ std::vector<std::string> from_netstrings( const std::string &line );
 
 namespace pack
 {
-    // <moon9/io/bistring.hpp> defines a handy 'bistrings' type to next argument type
-    std::string netstring( const std::vector< std::pair<std::string,std::string> > &bs );
+    // note: <moon9/io/bistring.hpp> defines also a compatible 'bistring(s)' type
+    typedef std::pair<std::string,std::string> bistring;
+    typedef std::vector< bistring > bistrings;
+    std::string netstring( const bistrings &bs );
 }
 
 namespace unpack
 {
-    // <moon9/io/bistring.hpp> defines a handy 'bistrings' type to next return type
-    std::vector< std::pair<std::string,std::string> > netstring( const std::string &s );
+    // note: <moon9/io/bistring.hpp> defines also a compatible 'bistring(s)' type
+    typedef std::pair<std::string,std::string> bistring;
+    typedef std::vector< bistring > bistrings;
+    bistrings netstring( const std::string &s );
 }
 

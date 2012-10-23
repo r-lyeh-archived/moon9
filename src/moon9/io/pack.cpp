@@ -6,20 +6,6 @@
 
 namespace pack
 {
-    std::string zip( const bistrings &p )
-    {
-       // @todo: allow content.size() == 0 @ pak.cpp -> xzip :s
-       moon9::pak pak;
-        for( auto &it : p )
-        {
-            moon9::pakfile pf;
-            pf["filename"] = it.first;
-            pf["content"] = it.second;
-            pak.push_back( pf );
-        }
-        return pak.bin();
-    }
-
     std::string json( const bistrings &p )
     {
         #if 0
@@ -55,67 +41,10 @@ namespace pack
 
         #endif
     }
-
-    std::string xml( const bistrings &p )
-    {
-        moon9::xml xml;
-
-        xml.push("root");
-
-        for( auto &it : p )
-        {
-            xml.node( "i" );
-            xml.set( "key", it.first );
-            xml.set( "val", it.second );
-        }
-
-        return xml.str();
-    }
 }
 
 namespace unpack
 {
-    bistrings zip( const std::string &s )
-    {
-        bistrings bs;
-
-        moon9::pak pak;
-        pak.bin( s );
-
-        for( auto &it : pak )
-        {
-            moon9::pakfile &pf = (it);
-            bistring b;
-
-            b.first = pf["filename"];
-            b.second = pf["content"];
-
-            bs.push_back( b );
-        }
-
-        return bs;
-    }
-
     bistrings json( const std::string &s ); // @todo :P
-
-    bistrings xml( const std::string &s )
-    {
-        bistrings bs;
-
-        moon9::xml xml;
-        xml.str( s );
-
-        for( size_t it = 1, end = xml.query<size_t>("count(/root/i)") ; it <= end ; ++it )
-        {
-            bistring b;
-
-            b.first  = xml.query<std::string>( moon9::string( "string(/root/i[\1]/@key)", it ) );
-            b.second = xml.query<std::string>( moon9::string( "string(/root/i[\1]/@val)", it ) );
-
-            bs.push_back( b );
-        }
-
-        return bs;
-    }
 }
 

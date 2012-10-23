@@ -166,3 +166,19 @@ namespace moon9
 
 } //namespace moon9
 
+namespace pack
+{
+    // note: <moon9/io/bistring.hpp> defines also a compatible 'bistring(s)' type
+    typedef std::pair<std::string,std::string> bistring;
+    typedef std::vector< bistring > bistrings;
+    std::string xml( const bistrings &bs );
+}
+
+namespace unpack
+{
+    // note: <moon9/io/bistring.hpp> defines also a compatible 'bistring(s)' type
+    typedef std::pair<std::string,std::string> bistring;
+    typedef std::vector< bistring > bistrings;
+    bistrings xml( const std::string &s );
+}
+

@@ -70,75 +70,6 @@
 
 namespace moon9
 {
-    namespace detail
-    {
-        struct tokenize // iago gayoso's tokenizer
-        {
-            size_t index;
-            bool hole, escape;
-            std::string fsm, word;
-
-            tokenize( const std::string& str = std::string() ) : index(0), hole(false), escape(false), fsm(str)
-            {}
-
-            void init()
-            {
-                index = 0;
-                word = "";
-                escape = hole = false;
-            }
-
-            void transition( const char symbol )
-            {
-                word += symbol;
-
-                if( !is_hole() && !is_accepted() )
-                {
-                    if( fsm[ index ] == '*' )
-                    {
-                        while( index != std::string::npos && fsm[ index ] == '*' )
-                            index++;
-
-                        escape = true;
-                    }
-
-                    if( fsm[ index ] == symbol )
-                    {
-                        index++;
-                        escape = false;
-                    }
-                    else hole = !escape;
-                }
-            }
-
-            bool is_accepted() const
-            {
-                struct local
-                {
-                    static bool match( const char *pattern, const char *str )
-                    {
-                        if( *pattern=='\0' ) return !*str;
-                        if( *pattern=='*' )  return match(pattern+1, str) || *str && match(pattern, str+1);
-                        if( *pattern=='?' )  return *str && (*str != '.') && match(pattern+1, str+1);
-                        return (*str == *pattern) && match(pattern+1, str+1);
-                    }
-                };
-
-                return local::match( fsm.c_str(), word.c_str() );
-            }
-
-            bool is_hole() const
-            {
-                return hole;
-            }
-
-            size_t get_word_size() const
-            {
-                return word.size();
-            }
-        };
-    }
-
     class string : public std::string
     {
         public:
@@ -151,7 +82,10 @@ namespace moon9
         string( const std::string &s ) : std::string( s )
         {}
 
-        string( const char &c, size_t n ) : std::string( c, n )
+        string( const char &c, size_t n ) : std::string( n, c )
+        {}
+
+        string( size_t n, const char &c ) : std::string( n, c )
         {}
 
         /*
@@ -483,13 +417,79 @@ namespace moon9
 
         std::deque< moon9::string > parse( const std::vector< std::string >& delimiters ) const
         {
-            std::vector< detail::tokenize > vFSM;
+            struct tokenizer // iago gayoso's tokenizer
+            {
+                size_t index;
+                bool hole, escape;
+                std::string fsm, word;
+
+                tokenizer( const std::string& str = std::string() ) : index(0), hole(false), escape(false), fsm(str)
+                {}
+
+                void init()
+                {
+                    index = 0;
+                    word = "";
+                    escape = hole = false;
+                }
+
+                void transition( const char symbol )
+                {
+                    word += symbol;
+
+                    if( !is_hole() && !is_accepted() )
+                    {
+                        if( fsm[ index ] == '*' )
+                        {
+                            while( index != std::string::npos && fsm[ index ] == '*' )
+                                index++;
+
+                            escape = true;
+                        }
+
+                        if( fsm[ index ] == symbol )
+                        {
+                            index++;
+                            escape = false;
+                        }
+                        else hole = !escape;
+                    }
+                }
+
+                bool is_accepted() const
+                {
+                    struct local
+                    {
+                        static bool match( const char *pattern, const char *str )
+                        {
+                            if( *pattern=='\0' ) return !*str;
+                            if( *pattern=='*' )  return match(pattern+1, str) || *str && match(pattern, str+1);
+                            if( *pattern=='?' )  return *str && (*str != '.') && match(pattern+1, str+1);
+                            return (*str == *pattern) && match(pattern+1, str+1);
+                        }
+                    };
+
+                    return local::match( fsm.c_str(), word.c_str() );
+                }
+
+                bool is_hole() const
+                {
+                    return hole;
+                }
+
+                size_t get_word_size() const
+                {
+                    return word.size();
+                }
+            };
+
+            std::vector< tokenizer > vFSM;
             std::deque< moon9::string > tokens;
 
             size_t base = 0, index = 0, size = (*this).size();
 
             for( size_t i = 0; i < delimiters.size(); i++ )
-                vFSM.push_back( detail::tokenize( delimiters[i] ) );
+                vFSM.push_back( tokenizer( delimiters[i] ) );
 
             while( index < size )
             {
@@ -1230,13 +1230,13 @@ namespace moon9
             return is_case_sensitive ? ends_with( suffix ) : uppercase().ends_with( suffix.uppercase() );
         }
 
-        moon9::string left_of( const moon9::string &substring ) const
+        moon9::string left_of( const std::string &substring ) const
         {
             std::string::size_type pos = this->find( substring );
             return pos == std::string::npos ? *this : this->substr(0, pos);
         }
 
-        moon9::string right_of( const moon9::string &substring ) const
+        moon9::string right_of( const std::string &substring ) const
         {
             std::string::size_type pos = this->find( substring );
             return pos == std::string::npos ? *this : this->substr(pos + 1); //, pos + substring.size());

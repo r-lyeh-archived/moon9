@@ -106,7 +106,7 @@ std::vector<std::string> from_netstrings( const std::string &_line )
 
 namespace pack
 {
-    std::string netstring( const std::vector< std::pair<std::string,std::string> > &p )
+    std::string netstring( const bistrings &p )
     {
         std::string out;
 
@@ -122,16 +122,16 @@ namespace pack
 
 namespace unpack
 {
-    std::vector< std::pair<std::string,std::string> > netstring( const std::string &s )
+    bistrings netstring( const std::string &s )
     {
-        std::vector< std::pair<std::string,std::string > > bs;
+        bistrings bs;
         std::string line = s;
 
         while( line.size() > 0 )
         {
             size_t offset;
 
-            std::pair<std::string,std::string> b;
+            bistring b;
 
                 b.first = from_netstring( line, &offset );
                 line = line.substr( offset );
