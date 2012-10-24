@@ -64,7 +64,6 @@ Moon9 is a game oriented collection of C++ frameworks. Warning: wip, dev, unstab
 - [moon9::id](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/id), compile-time string to id (size_t) conversion
 - [moon9::is_debug](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug/is_debug), handy is_debug boolean flag
 - [moon9::is_release](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug/is_release), handy is_release boolean flag
-- [moon9::levels](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/levels), handy is_enduser/is_tester/is_coder boolean flags
 - [moon9::module](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/module), a lightweight game module state manager
 - [moon9::mutex](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/mutex), an improved mutex class
 - [moon9::netstring](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/netstring), a netstring serializer.
