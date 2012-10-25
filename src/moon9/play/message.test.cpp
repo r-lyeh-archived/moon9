@@ -1,6 +1,7 @@
-#ifdef test3
+#include <moon9/test/test.hpp>
 
-#include <moon9/io/message.hpp>
+#include <moon9/play/message.hpp>
+#include <moon9/play/message.cpp>
 
 namespace
 {
@@ -55,8 +56,6 @@ namespace
 
     const bool tested = (msg1(), msg2(), true);
 }
-
-#endif
 
 #if 0
 

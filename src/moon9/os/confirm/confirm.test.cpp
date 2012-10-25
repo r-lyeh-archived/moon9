@@ -1,18 +1,15 @@
-#ifdef test3
+#include <moon9/test/test.hpp>
 
-#include <iostream>
-
-#include "confirm.hpp"
+#include <moon9/os/confirm.hpp>
+#include <moon9/os/confirm.cpp>
 
 namespace
 {
-    void test()
+    void unittest()
     {
         test3( confirm( "Is this window visible?", "Test" ), ==, true );
         test3( confirm( "Has this window title?" ), ==, false );
     }
 
-    const bool done = ( test(), true );
+    const bool tested = ( unittest(), true );
 }
-
-#endif

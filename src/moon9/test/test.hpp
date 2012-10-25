@@ -42,8 +42,8 @@ namespace tests
 
 #	define test3(A,op,B) do { \
 		std::string &errors = tests::errors(); \
-		auto a = A; auto b = B; \
-		if( (a op b) ) { \
+		auto __a__ = (A); auto __b__ = (B); \
+		if( __a__ op __b__ ) { \
 			tests::executed++; \
 			tests::passed++; \
 		} else { \
@@ -51,7 +51,7 @@ namespace tests
 			tests::failed++; \
 			std::stringstream ss; \
 			ss  << "Test #" << tests::executed << " failed at " << __FILE__ << ':' << __LINE__ << std::endl \
-				<< #A << " (" << (a) << ") " << #op << ' ' << #B << " (" << (b) << ") "; \
+				<< #A << " (" << __a__ << ") " << #op << ' ' << #B << " (" << __b__ << ") "; \
 			if( tests::warning_cb ) (*tests::warning_cb)( ss.str() ); \
 			errors += ss.str() + '\n'; \
 	} } while(0)

@@ -155,6 +155,7 @@ IDC_SE between two sticked frames -> sticky off
 #include <vector>
 #include <string>
 #include <sstream>
+#include <deque>
 
 #include <moon9/spatial/vec.hpp> // vec3, for glass class
 
@@ -239,6 +240,8 @@ namespace imgui
             return this->c_str();
         }
     };
+
+    typedef std::deque<string> strings;
 
     enum
     {

@@ -14,8 +14,8 @@ file(GLOB MOON9_TEST_SAMPLES *.sample.cpp)
 file(GLOB MOON9_TEST_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_TEST_SRCS "" ${MOON9_TEST_SAMPLES} ${MOON9_TEST_TESTS})
 ## list(APPEND MOON9_TEST_SRCS platform/w32/others.cpp)
-add_library(moon9-time-static STATIC ${MOON9_TEST_SRCS})
+add_library(moon9-test-static STATIC ${MOON9_TEST_SRCS})
 
 add_executable(test.sample                 test.sample.cpp)
 
-target_link_libraries(test.sample          moon9-time-static)
+target_link_libraries(test.sample          moon9-test-static)
