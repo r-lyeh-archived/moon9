@@ -13,4 +13,4 @@
 ## To do:
 
 ## Dependencies
-- moon9::windows::mouse, requires [ManyMouse](https://github.com/r-lyeh/moon9/tree/master/deps/moon9/hid/manymouse)
+- moon9::windows::mouse, requires [ManyMouse](https://github.com/r-lyeh/moon9/tree/master/deps/hid/manymouse)
