@@ -1,7 +1,8 @@
 #include <iostream>
 
 #include "string.hpp"
-
+namespace
+{
 #ifdef _WIN32  // start of Peter Kankowski's expression evaluator
 
 	// (c) Peter Kankowski, 2007. http://smallcode.weblogs.us mailto:kankowski@narod.ru
@@ -611,7 +612,7 @@
 	}
 
 	#endif
-
+}
 #endif // end of Peter Kankowski's expression evaluator
 
 moon9::io::string moon9::io::string::eval() const

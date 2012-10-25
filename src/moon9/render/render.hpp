@@ -1519,7 +1519,7 @@ namespace moon9
                 glBegin( GL_LINE_STRIP );
 
                     for( size_t i = 0; i < N; ++i )
-                        glVertex3fv( pointList[i].data );
+                        glVertex3fv( pointList[i].data() );
 
                 glEnd();
             }

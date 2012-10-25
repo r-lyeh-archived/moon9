@@ -40,8 +40,10 @@
 
 namespace moon9
 {
-    struct image : public std::vector<pixel>
+    class image : public std::vector<pixel>
     {
+        public:
+
         size_t w, h;
         float delay; // frame delay, when loading an animation
 

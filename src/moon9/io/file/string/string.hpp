@@ -367,6 +367,13 @@ namespace io
             return *this;
         }
 
+        // comparison sugars
+
+        operator const bool() const
+        {
+            return as<bool>();
+        }
+
         // extra methods
 
         const char &at( const int &pos ) const

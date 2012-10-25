@@ -3,7 +3,8 @@
 #include "string.hpp"
 
 #ifdef _WIN32  // start of Peter Kankowski's expression evaluator
-
+namespace
+{
 	// (c) Peter Kankowski, 2007. http://smallcode.weblogs.us mailto:kankowski@narod.ru
 
 	// The character type used in the evaluator
@@ -611,7 +612,7 @@
 	}
 
 	#endif
-
+}
 #endif // end of Peter Kankowski's expression evaluator
 
 
