@@ -292,6 +292,12 @@ namespace moon9
             return this->c_str();
         }
 
+        template<>
+        std::string as() const
+        {
+            return *this;
+        }
+
         template< typename T >
         operator T() const
         {

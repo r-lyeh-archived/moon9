@@ -1,0 +1,37 @@
+cmake_minimum_required(VERSION 2.8)
+project(MOON9_STRING C CXX)
+
+if(MSVC)
+  add_definitions(/EHsc)
+  add_definitions(/D_CRT_SECURE_NO_WARNINGS)
+  add_definitions(/wd4244) # dear MSVC, im fully aware and confident about my type conversions. stop hammering me. kthx :s
+endif(MSVC)
+
+## include_directories( "../../../deps/string" )
+
+file(GLOB MOON9_STRING_SRCS *.cpp *.hpp)
+file(GLOB MOON9_STRING_SAMPLES *.sample.cpp)
+file(GLOB MOON9_STRING_TESTS *.test.cpp)
+list(REMOVE_ITEM MOON9_STRING_SRCS "" ${MOON9_STRING_SAMPLES} ${MOON9_STRING_TESTS})
+## list(APPEND MOON9_STRING_SRCS platform/w32/others.cpp)
+add_library(moon9-time-static STATIC ${MOON9_STRING_SRCS})
+
+add_executable(arc4.sample                  arc4/arc4.sample.cpp)
+add_executable(dictionary.sample            dictionary.sample.cpp)
+add_executable(format.sample                format/format.sample.cpp)
+add_executable(hash.sample                  hash/hash.sample.cpp)
+add_executable(id.sample                    id/id.sample.cpp)
+add_executable(markov.sample                markov.sample.cpp)
+add_executable(roman.sample                 roman/roman.sample.cpp)
+add_executable(string.sample                string/string.sample.cpp)
+add_executable(trie.sample                  trie/trie.sample.cpp)
+
+target_link_libraries(arc4.sample           moon9-time-static)
+target_link_libraries(dictionary.sample     moon9-time-static)
+target_link_libraries(format.sample         moon9-time-static)
+target_link_libraries(hash.sample           moon9-time-static)
+target_link_libraries(id.sample             moon9-time-static)
+target_link_libraries(markov.sample         moon9-time-static)
+target_link_libraries(roman.sample          moon9-time-static)
+target_link_libraries(string.sample         moon9-time-static)
+target_link_libraries(trie.sample           moon9-time-static)

@@ -44,9 +44,13 @@
 #include <memory>
 #include <new>
 
-#include <moon9/core/callstack.hpp>
-#include <moon9/core/mutex.hpp>
-#include <moon9/core/string.hpp>
+#include <moon9/debug/callstack.hpp>
+#include <moon9/os/mutex.hpp>
+#include <moon9/string/string.hpp>
+
+#ifdef _WIN32
+#   include <windows.h> // AllocConsole()
+#endif
 
 //    flag  | directives            | working?
 // ---------+-----------------------+-------------

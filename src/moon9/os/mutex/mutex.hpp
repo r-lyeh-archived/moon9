@@ -32,22 +32,19 @@
 
 #pragma once
 
-#include "os.hpp"
-#include "directives.hpp"
-
 #include <algorithm>
 #include <map>
 #include <vector>
 
 #include <cassert>
 
-#if kBooCompilerCxx11 // c++11
+#if 1 // kMoon9CompilerCxx11 // c++11
 #   include <mutex>
 #   include <thread>
-#   define thread_ns std
+#   define MOON9_THREAD_NS std
 #else
 #   include <tinythread.h>
-#   define thread_ns tthread
+#   define MOON9_THREAD_NS tthread
 #endif
 
 namespace moon9
@@ -105,11 +102,11 @@ namespace moon9
         private:
 
 #ifdef __linux__
-        typedef thread_ns::recursive_mutex mutex_type; // or tthread::fast_mutex, or std::mutex, ...
+        typedef MOON9_THREAD_NS::recursive_mutex mutex_type; // or tthread::fast_mutex, or std::mutex, ...
 #else
-        typedef thread_ns::mutex mutex_type; // or tthread::fast_mutex, or std::mutex, ...
+        typedef MOON9_THREAD_NS::mutex mutex_type; // or tthread::fast_mutex, or std::mutex, ...
 #endif
-        typedef thread_ns::thread::id thread_id;
+        typedef MOON9_THREAD_NS::thread::id thread_id;
 
         thread_id locked_by;
         mutex_type self;
@@ -121,7 +118,7 @@ namespace moon9
 
         thread_id me() const // return current thread id
         {
-            return thread_ns::this_thread::get_id();
+            return MOON9_THREAD_NS::this_thread::get_id();
         }
 
         // Private copy-constructor, copy-assignment
@@ -157,9 +154,9 @@ namespace moon9
         static bool manager( const void *ptr, lock_mode mode )
         {
 #ifdef __linux__
-            typedef thread_ns::recursive_mutex mutex_type; // or tthread::fast_mutex, or std::mutex, ...
+            typedef MOON9_THREAD_NS::recursive_mutex mutex_type; // or tthread::fast_mutex, or std::mutex, ...
 #else
-            typedef thread_ns::mutex mutex_type; // or tthread::fast_mutex, or std::mutex, ...
+            typedef MOON9_THREAD_NS::mutex mutex_type; // or tthread::fast_mutex, or std::mutex, ...
 #endif
             static struct container : public std::map< const void *, mutex_type * >
             {
@@ -198,4 +195,4 @@ namespace moon9
     };
 }
 
-#undef thread_ns
+#undef MOON9_THREAD_NS

@@ -105,7 +105,7 @@ namespace moon9
         spline( const int &N = 0, const vec3 &V = vec3() ) : moon9::detail::vector<vec3>(N, V)
         {}
 
-        static vec3 SplinePos (const spline_t & spline, float dt01)
+        static vec3 SplinePos (const spline & spline, float dt01)
         {
             assert( spline.size() >= 4 );
             assert( dt01 >= 0 && dt01 <= 1.0 );
@@ -136,7 +136,7 @@ namespace moon9
             return P0 * hP0 + P1 * hP1 + T0 * hT0 + T1 * hT1;
         }
 
-        static vec3 SplineTangent (const spline_t & spline, float dt01)
+        static vec3 SplineTangent (const spline & spline, float dt01)
         {
             assert( spline.size() >= 4 );
             assert( dt01 >= 0 && dt01 <= 1.0 );
@@ -166,7 +166,7 @@ namespace moon9
             return P0 * hP0 + P1 * hP1 + T0 * hT0 + T1 * hT1;
         }
 
-        static vec3 BSplinePos (const spline_t & spline, float dt01)
+        static vec3 BSplinePos (const spline & spline, float dt01)
         {
             assert( spline.size() >= 4 );
             assert( dt01 >= 0 && dt01 <= 1.0 );
@@ -201,13 +201,13 @@ namespace moon9
             return vec3( result.x / 6.0f, result.y / 6.0f, result.z / 6.0f );
         }
 
-        static vec3 SplinePosIncludingEdges( const spline_t &pointList, float dt01 )
+        static vec3 SplinePosIncludingEdges( const spline &pointList, float dt01 )
         {
             // spline pos (border knots included)
 
             assert( pointList.size() >= 1 );
 
-            spline_t knotList;
+            spline knotList;
 
             knotList.push_back( pointList.front() );
             knotList.append( pointList );
@@ -216,13 +216,13 @@ namespace moon9
             return /*B*/SplinePos( knotList, dt01 );
         }
 
-        static vec3 SplineTangentIncludingEdges( const spline_t &pointList, float dt01 )
+        static vec3 SplineTangentIncludingEdges( const spline &pointList, float dt01 )
         {
             // spline pos (border knots included)
 
             assert( pointList.size() >= 1 );
 
-            spline_t knotList;
+            spline knotList;
 
             knotList.push_back( pointList.front() );
             knotList.append( pointList );
@@ -252,7 +252,7 @@ namespace moon9
                 vec3 A = atdt( dt01 );
                 vec3 B = atdt( dt01 + ( 1.f / float(segments) ) );
 
-                overall += vec3( B - A ).magnitude();
+                overall += len( vec3( B - A ) );
             }
 
             return overall;

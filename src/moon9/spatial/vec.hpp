@@ -9,13 +9,86 @@ namespace moon9
 {
     // http://bullet.googlecode.com/svn/trunk/Extras/vectormathlibrary/
 
+    struct vec2 : public glm::vec2
+    {
+#ifdef MSGPACK_DEFINE
+        MSGPACK_DEFINE( x, y );
+#endif
+
+        vec2() : glm::vec2( 0, 0 )
+        {}
+
+        vec2( float x, float y = 0 ) : glm::vec2( x, y )
+        {}
+
+        vec2( const float *ptr ) : glm::vec2( ( assert(ptr), ptr[0] ), ptr[1] )
+        {}
+
+        vec2( const glm::vec2 &other )
+        {
+            operator=( other );
+        }
+
+        template< typename T >
+        explicit vec2( const T &t )
+        {
+            operator=( t );
+        }
+
+        template< typename T >
+        vec2 &operator=( const T &t )
+        {
+            x = t.x;
+            y = t.y;
+            return *this;
+        }
+
+        // conversion
+
+        template <typename T>
+        T as()
+        {
+           return T( x, y );
+        }
+
+        // swizzles
+
+        vec2 xx() const { return vec2( x, x ); }
+        vec2 yy() const { return vec2( y, y ); }
+
+        vec2 xy() const { return vec2( x, y ); }
+        vec2 yx() const { return vec2( y, x ); }
+
+        vec2 lx() const { return vec2( 1, x ); }
+        vec2 ly() const { return vec2( 1, y ); }
+        vec2 xl() const { return vec2( x, 1 ); }
+        vec2 yl() const { return vec2( y, 1 ); }
+
+        vec2 ox() const { return vec2( 0, x ); }
+        vec2 oy() const { return vec2( 0, y ); }
+        vec2 xo() const { return vec2( x, 0 ); }
+        vec2 yo() const { return vec2( y, 0 ); }
+
+        // tools
+
+        const float *data() const
+        {
+            return &x; // @todo: assert x,y,z are contigous!
+        }
+
+        float *data()
+        {
+            return &x; // @todo: assert x,y,z are contigous!
+        }
+    };
+
     struct vec3 : public glm::vec3
     {
 #ifdef MSGPACK_DEFINE
         MSGPACK_DEFINE( x, y, z );
 #endif
 
-        vec3() : glm::vec3(0,0,0)
+        vec3() : glm::vec3( 0, 0, 0 )
         {}
 
         vec3( float x, float y, float z = 0 ) : glm::vec3( x, y, z )
@@ -43,6 +116,30 @@ namespace moon9
             z = t.z;
             return *this;
         }
+
+        #define with(oper) \
+        template< typename T > \
+        vec3 &operator oper ( const T &t ) \
+        { \
+            x oper t.x; \
+            y oper t.y; \
+            z oper t.z; \
+            return *this; \
+        } \
+        template<> \
+        vec3 &operator oper ( const float &f ) \
+        { \
+            x oper f; \
+            y oper f; \
+            z oper f; \
+            return *this; \
+        }
+        with(+=)
+        with(-=)
+        with(*=)
+        with(/=)
+        #undef with
+
 
         // conversion
 
@@ -111,6 +208,18 @@ namespace moon9
         vec3  xx() const { return vec3( x, x, 0 ); }
         vec3  yy() const { return vec3( y, y, 0 ); }
         vec3  zz() const { return vec3( z, z, 0 ); }
+
+        // tools
+
+        const float *data() const
+        {
+            return &x; // @todo: assert x,y,z are contigous!
+        }
+
+        float *data()
+        {
+            return &x; // @todo: assert x,y,z are contigous!
+        }
     };
 
     // used for code clarifications, ie, move_to( point& ), push_from( point &pos, vector &dir ), etc...
