@@ -77,179 +77,179 @@ namespace moon9
 
         // extended constructors; safe formatting
 
-        template< typename T0 >
-        string( const std::string &_fmt, const T0 &t0 ) : std::string()
+        template< typename T1 >
+        string( const std::string &_fmt, const T1 &t1 ) : std::string()
         {
-            std::string out, t[1] = { string(t0) };
+            std::string t[] = { std::string(), string(t1) };
 
             for( const char *fmt = _fmt.c_str(); *fmt; ++fmt )
             {
                 if( *fmt == '\1' )
-                    out += t[0];
+                    t[0] += t[1];
                 else
-                    out += *fmt;
+                    t[0] += *fmt;
             }
 
-            this->assign( out );
+            this->assign( t[0] );
         }
 
-        template< typename T0, typename T1 >
-        string( const std::string &_fmt, const T0 &t0, const T1 &t1 ) : std::string()
+        template< typename T1, typename T2 >
+        string( const std::string &_fmt, const T1 &t1, const T2 &t2 ) : std::string()
         {
-            std::string out, t[2] = { string(t0), string(t1) };
+            std::string t[] = { std::string(), string(t1), string(t2) };
 
             for( const char *fmt = _fmt.c_str(); *fmt; ++fmt )
             {
                 if( *fmt == '\1' )
-                    out += t[0];
+                    t[0] += t[1];
                 else
                 if( *fmt == '\2' )
-                    out += t[1];
+                    t[0] += t[2];
                 else
-                    out += *fmt;
+                    t[0] += *fmt;
             }
 
-            this->assign( out );
+            this->assign( t[0] );
         }
 
-        template< typename T0, typename T1, typename T2 >
-        string( const std::string &_fmt, const T0 &t0, const T1 &t1, const T2 &t2 ) : std::string()
+        template< typename T1, typename T2, typename T3 >
+        string( const std::string &_fmt, const T1 &t1, const T2 &t2, const T3 &t3 ) : std::string()
         {
-            std::string out, t[3] = { string(t0), string(t1), string(t2) };
+            std::string t[] = { std::string(), string(t1), string(t2), string(t3) };
 
             for( const char *fmt = _fmt.c_str(); *fmt; ++fmt )
             {
                 if( *fmt == '\1' )
-                    out += t[0];
+                    t[0] += t[1];
                 else
                 if( *fmt == '\2' )
-                    out += t[1];
+                    t[0] += t[2];
                 else
                 if( *fmt == '\3' )
-                    out += t[2];
+                    t[0] += t[3];
                 else
-                    out += *fmt;
+                    t[0] += *fmt;
             }
 
-            this->assign( out );
+            this->assign( t[0] );
         }
 
-        template< typename T0, typename T1, typename T2, typename T3 >
-        string( const std::string &_fmt, const T0 &t0, const T1 &t1, const T2 &t2, const T3 &t3 ) : std::string()
+        template< typename T1, typename T2, typename T3, typename T4 >
+        string( const std::string &_fmt, const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4 ) : std::string()
         {
-            std::string out, t[4] = { string(t0), string(t1), string(t2), string(t3) };
+            std::string t[] = { std::string(), string(t1), string(t2), string(t3), string(t4) };
 
             for( const char *fmt = _fmt.c_str(); *fmt; ++fmt )
             {
                 if( *fmt == '\1' )
-                    out += t[0];
+                    t[0] += t[1];
                 else
                 if( *fmt == '\2' )
-                    out += t[1];
+                    t[0] += t[2];
                 else
                 if( *fmt == '\3' )
-                    out += t[2];
+                    t[0] += t[3];
                 else
                 if( *fmt == '\4' )
-                    out += t[3];
+                    t[0] += t[4];
                 else
-                    out += *fmt;
+                    t[0] += *fmt;
             }
 
-            this->assign( out );
+            this->assign( t[0] );
         }
 
-        template< typename T0, typename T1, typename T2, typename T3, typename T4 >
-        string( const std::string &_fmt, const T0 &t0, const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4 ) : std::string()
+        template< typename T1, typename T2, typename T3, typename T4, typename T5 >
+        string( const std::string &_fmt, const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4, const T5 &t5 ) : std::string()
         {
-            std::string out, t[5] = { string(t0), string(t1), string(t2), string(t3), string(t4) };
+            std::string t[] = { std::string(), string(t1), string(t2), string(t3), string(t4), string(t5) };
 
             for( const char *fmt = _fmt.c_str(); *fmt; ++fmt )
             {
                 if( *fmt == '\1' )
-                    out += t[0];
+                    t[0] += t[1];
                 else
                 if( *fmt == '\2' )
-                    out += t[1];
+                    t[0] += t[2];
                 else
                 if( *fmt == '\3' )
-                    out += t[2];
+                    t[0] += t[3];
                 else
                 if( *fmt == '\4' )
-                    out += t[3];
+                    t[0] += t[4];
                 else
                 if( *fmt == '\5' )
-                    out += t[4];
+                    t[0] += t[5];
                 else
-                    out += *fmt;
+                    t[0] += *fmt;
             }
 
-            this->assign( out );
+            this->assign( t[0] );
         }
 
-        template< typename T0, typename T1, typename T2, typename T3, typename T4, typename T5 >
-        string( const std::string &_fmt, const T0 &t0, const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4, const T5 &t5 ) : std::string()
+        template< typename T1, typename T2, typename T3, typename T4, typename T5, typename T6 >
+        string( const std::string &_fmt, const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4, const T5 &t5, const T6 &t6 ) : std::string()
         {
-            std::string out, t[6] = { string(t0), string(t1), string(t2), string(t3), string(t4), string(t5) };
+            std::string t[] = { std::string(), string(t1), string(t2), string(t3), string(t4), string(t5), string(t6) };
 
             for( const char *fmt = _fmt.c_str(); *fmt; ++fmt )
             {
                 if( *fmt == '\1' )
-                    out += t[0];
+                    t[0] += t[1];
                 else
                 if( *fmt == '\2' )
-                    out += t[1];
+                    t[0] += t[2];
                 else
                 if( *fmt == '\3' )
-                    out += t[2];
+                    t[0] += t[3];
                 else
                 if( *fmt == '\4' )
-                    out += t[3];
+                    t[0] += t[4];
                 else
                 if( *fmt == '\5' )
-                    out += t[4];
+                    t[0] += t[5];
                 else
                 if( *fmt == '\6' )
-                    out += t[5];
+                    t[0] += t[6];
                 else
-                    out += *fmt;
+                    t[0] += *fmt;
             }
 
-            this->assign( out );
+            this->assign( t[0] );
         }
 
-        template< typename T0, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6 >
-        string( const std::string &_fmt, const T0 &t0, const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4, const T5 &t5, const T6 &t6 ) : std::string()
+        template< typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7 >
+        string( const std::string &_fmt, const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4, const T5 &t5, const T6 &t6, const T7 &t7 ) : std::string()
         {
-            std::string out, t[7] = { string(t0), string(t1), string(t2), string(t3), string(t4), string(t5), string(t6) };
+            std::string t[] = { std::string(), string(t1), string(t2), string(t3), string(t4), string(t5), string(t6), string(t7) };
 
             for( const char *fmt = _fmt.c_str(); *fmt; ++fmt )
             {
                 if( *fmt == '\1' )
-                    out += t[0];
+                    t[0] += t[1];
                 else
                 if( *fmt == '\2' )
-                    out += t[1];
+                    t[0] += t[2];
                 else
                 if( *fmt == '\3' )
-                    out += t[2];
+                    t[0] += t[3];
                 else
                 if( *fmt == '\4' )
-                    out += t[3];
+                    t[0] += t[4];
                 else
                 if( *fmt == '\5' )
-                    out += t[4];
+                    t[0] += t[5];
                 else
                 if( *fmt == '\6' )
-                    out += t[5];
+                    t[0] += t[6];
                 else
                 if( *fmt == '\7' )
-                    out += t[6];
+                    t[0] += t[7];
                 else
-                    out += *fmt;
+                    t[0] += *fmt;
             }
 
-            this->assign( out );
+            this->assign( t[0] );
         }
 
         // conversion
