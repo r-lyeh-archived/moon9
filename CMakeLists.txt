@@ -17,11 +17,12 @@ endif(MSVC)
 include_directories("src")
 
 if(BUILD_FRAMEWORKS)
+
 ##  add_subdirectory("src/moon9/core")
     add_subdirectory("src/moon9/debug")
     add_subdirectory("src/moon9/hid")
     add_subdirectory("src/moon9/io")
-##  add_subdirectory("src/moon9/math")
+    add_subdirectory("src/moon9/math")
     add_subdirectory("src/moon9/memtracer")
     add_subdirectory("src/moon9/os")
     add_subdirectory("src/moon9/play")
@@ -33,6 +34,7 @@ if(BUILD_FRAMEWORKS)
 
     file(GLOB_RECURSE ALL_SAMPLES_BINS "*.sample.exe")
     foreach(f ${ALL_SAMPLES_BINS})
+        message("" ${f})
         file(COPY ${f} DESTINATION ./)
     endforeach(f)
 
