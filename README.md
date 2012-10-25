@@ -21,6 +21,7 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 
 ## Frameworks included
 - [moon9::debug](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug)
+- [moon9::hid](https://github.com/r-lyeh/moon9/tree/master/src/moon9/hid)
 - [moon9::io](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io)
 - [moon9::memtracer](https://github.com/r-lyeh/moon9/tree/master/src/moon9/memtracer)
 - [moon9::os](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os)
@@ -64,6 +65,7 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 - [moon9::id](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/id), compile-time string to id (size_t) conversion
 - [moon9::is_debug](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug/is_debug), handy is_debug boolean flag
 - [moon9::is_release](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug/is_release), handy is_release boolean flag
+- [moon9::keycodes](https://github.com/r-lyeh/moon9/tree/master/src/moon9/hid/keycodes), portable keyboard codes
 - [moon9::module](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/module), a lightweight game module state manager
 - [moon9::mutex](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/mutex), an improved mutex class
 - [moon9::netstring](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/netstring), a netstring serializer.
@@ -77,6 +79,7 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 - [moon9::tcp](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/tcp), TCP based client/server.
 - [moon9::tree](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/tree),
 - [moon9::trie](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/trie), string autocompletion
+- [moon9::types](https://github.com/r-lyeh/moon9/tree/master/src/moon9/hid/types), abstract and portable HID types
 - [moon9::types](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/endian/types), hopefully portable types
 - [moon9::udp](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/udp), UDP based client/server. ENet library required.
 - [moon9::unicode](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/unicode), vector of unicode codepoints

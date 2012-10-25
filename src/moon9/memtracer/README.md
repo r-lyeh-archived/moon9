@@ -1,5 +1,5 @@
-## moon9 framework: memtracer library
-- Simple and lightweight memory tracer
+## Moon9 framework: memtracer framework
+- Simple and lightweight memory tracing framework
 
 ## Features
 - Tiny

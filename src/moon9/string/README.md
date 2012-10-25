@@ -1,5 +1,5 @@
 ## Moon9 framework: string framework
-A lightwight string framework with no dependencies. MIT licensed.
+A lightwight string framework with no extra dependencies. MIT licensed.
 
 ## Features
 - [moon9::arc4](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/arc4), ARC4 encryptor/decryptor

@@ -1,5 +1,5 @@
 ## Moon9 framework: io framework
-- An IO framework.
+- An Input/Output framework.
 - MIT licensed.
 
 ## Features

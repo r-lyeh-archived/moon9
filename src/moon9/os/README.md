@@ -1,5 +1,6 @@
-## Moon9 framework: OS library
-A basic OS library with no dependencies. MIT licensed.
+## Moon9 framework: OS framework
+- A basic OS framework with no extra dependencies.
+- MIT licensed.
 
 ## Features
 - [moon9::alert](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/alert), a popup alert dialog

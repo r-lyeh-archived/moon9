@@ -3,6 +3,18 @@
 - Features collision.
 - MIT licensed.
 
+## Features
+- aabox,
+- bvh,
+- frustum,
+- plane,
+- point,
+- ray,
+- sphere,
+- spline,
+- utils,
+- vec,
+
 ## Roadmap for 'next' branch
 - Navmesh
 - Pathfinding

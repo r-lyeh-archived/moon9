@@ -1,7 +1,8 @@
 ## Moon9 framework: time framework
-Simple time framework. No dependencies. MIT licensed.
+- Simple time framework with no extra dependencies.
+- MIT licensed.
 
-## Components
+## Features
 - moon9::chrono
 - moon9::clock
 - [moon9::dt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/dt), measure time diff in seconds
