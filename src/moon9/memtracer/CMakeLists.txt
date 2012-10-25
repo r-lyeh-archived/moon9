@@ -17,6 +17,6 @@ list(REMOVE_ITEM MOON9_MEMTRACER_SRCS "" ${MOON9_MEMTRACER_SAMPLES} ${MOON9_MEMT
 ## list(APPEND MOON9_MEMTRACER_SRCS platform/w32/others.cpp)
 add_library(moon9-memtracer-static STATIC ${MOON9_MEMTRACER_SRCS})
 
-add_executable(memtracer.sample.cpp             memtracer.sample.cpp ../debug/callstack.cpp)
+add_executable(memtracer.sample                  memtracer.sample.cpp ../debug/callstack.cpp)
 
-target_link_libraries(memtracer.sample.cpp      moon9-memtracer-static)
+target_link_libraries(memtracer.sample           moon9-memtracer-static)

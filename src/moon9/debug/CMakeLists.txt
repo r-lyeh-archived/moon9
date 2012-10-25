@@ -14,10 +14,10 @@ list(REMOVE_ITEM MOON9_DEBUG_SRCS "" ${MOON9_DEBUG_SAMPLES} ${MOON9_DEBUG_TESTS}
 ## list(APPEND MOON9_DEBUG_SRCS platform/w32/others.cpp)
 add_library(moon9-debug-static STATIC ${MOON9_DEBUG_SRCS})
 
-add_executable(assert.sample.cpp                    assert.sample.cpp)
-add_executable(debugger.sample.cpp                  debugger.sample.cpp)
-add_executable(callstack.sample.cpp                 callstack/callstack.sample.cpp)
+add_executable(assert.sample                     assert.sample.cpp)
+add_executable(debugger.sample                   debugger.sample.cpp)
+add_executable(callstack.sample                  callstack/callstack.sample.cpp)
 
-target_link_libraries(assert.sample.cpp             moon9-debug-static)
-target_link_libraries(debugger.sample.cpp           moon9-debug-static)
-target_link_libraries(callstack.sample.cpp          moon9-debug-static)
+target_link_libraries(assert.sample              moon9-debug-static)
+target_link_libraries(debugger.sample            moon9-debug-static)
+target_link_libraries(callstack.sample           moon9-debug-static)

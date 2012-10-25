@@ -31,10 +31,11 @@ if(BUILD_FRAMEWORKS)
     add_subdirectory("src/moon9/test")
     add_subdirectory("src/moon9/time")
 
-    file(GLOB_RECURSE ALL_BINARIES "*.sample.exe")
-    foreach(f ${ALL_BINARIES})
+    file(GLOB_RECURSE ALL_SAMPLES_BINS "*.sample.exe")
+    foreach(f ${ALL_SAMPLES_BINS})
         file(COPY ${f} DESTINATION ./)
     endforeach(f)
+
 endif()
 
 if(BUILD_TESTS)
@@ -42,5 +43,5 @@ if(BUILD_TESTS)
     file(GLOB msgpack-static "deps/play/msgpack/src/*.cpp")
 
 	file(GLOB_RECURSE ALL_TESTS 				"src/moon9/*.test.cpp")
-	add_executable(all.tests 					src/moon9/test/test.cpp ${msgpack-static} ${ALL_TESTS})
+	add_executable(ALL.TESTS 					src/moon9/test/test.cpp ${msgpack-static} ${ALL_TESTS})
 endif()
