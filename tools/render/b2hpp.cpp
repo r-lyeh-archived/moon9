@@ -1,7 +1,9 @@
 // - rlyeh
 
 #include <moon9/string/string.hpp>
+
 #include <moon9/io/file.hpp>
+#include <moon9/io/file.cpp>
 
 int main( int argc, char **argv )
 {

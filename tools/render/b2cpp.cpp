@@ -1,7 +1,10 @@
 // - rlyeh
 
 #include <moon9/string/string.hpp>
+#include <moon9/string/format.hpp>
+
 #include <moon9/io/file.hpp>
+#include <moon9/io/file.cpp>
 
 int main( int argc, char **argv )
 {
@@ -44,7 +47,7 @@ int main( int argc, char **argv )
 		end = ( i % width == width - 1 ? moon9::string(", // \1..\2\n", i-(width-1),i ) : "" );
 
 		if( i == data.size() - 1 )
-			end = "\n"; 
+			end = "\n";
 
 		std::cout << moon9::format( "%s0x%02x%s", begin.c_str(), (unsigned char)data[i], end.c_str() );
 	}
