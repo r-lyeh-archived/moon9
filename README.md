@@ -1,8 +1,8 @@
 ## Moon9
-Moon9 is a game oriented collection of C++ frameworks. Warning: wip, dev, unstable, radiation hazard, defcon 3
+Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocumented, unstable, radiation hazard, defcon 3
 
 ## Supported Desktop Platforms
-- Microsoft Windows XP+
+- Microsoft Windows XP, 7
 
 ## Supported Mobile Platforms
 - None :D
