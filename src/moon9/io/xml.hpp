@@ -53,15 +53,15 @@ namespace moon9
         // declarative construction
 
         // push a level of depth, then insert node
-        xml &push( const moon9::string &key, const moon9::string &text = "", const moon9::string &comment = "" );
+        xml &push( const moon9::iostring &key, const moon9::iostring &text = "", const moon9::iostring &comment = "" );
         xml &push( const pugi::xml_node &node );
 
         // insert node at current depth
-        xml &node( const moon9::string &key, const moon9::string &text = "", const moon9::string &comment = "" );
+        xml &node( const moon9::iostring &key, const moon9::iostring &text = "", const moon9::iostring &comment = "" );
         xml &node( const pugi::xml_node &node );
 
         // set attribute for current node
-        xml &set( const moon9::string &key, const moon9::string &value );
+        xml &set( const moon9::iostring &key, const moon9::iostring &value );
         xml &set( /*const*/ pugi::xml_attribute &attribute );
 
         // pop a level of depth back
@@ -79,7 +79,7 @@ namespace moon9
             {
                 std::string result = pugi::xpath_query( XPath.c_str() ).evaluate_string( doc );
 
-                return moon9::string( result ).as<T>();
+                return moon9::iostring( result ).as<T>();
             }
             catch (const pugi::xpath_exception& e)
             {
@@ -141,7 +141,7 @@ namespace moon9
         pugi::xml_node latest;
         std::vector< pugi::xml_node > parent;
 
-        void update_node( pugi::xml_node &node, const moon9::string &key, const moon9::string &text, const moon9::string &comment);
+        void update_node( pugi::xml_node &node, const moon9::iostring &key, const moon9::iostring &text, const moon9::iostring &comment);
         void update_node( pugi::xml_node &node, const pugi::xml_node &content );
 
         template <typename T>

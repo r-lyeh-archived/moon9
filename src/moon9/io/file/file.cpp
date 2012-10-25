@@ -74,7 +74,7 @@ namespace moon9
         return *this;
     }
 
-    std::pair<moon9::string,bool> pathfile::ioo2ioo( const moon9::string &dir ) const /* /g/Boot/ -> g:\\Boot\\ with no subfolders ; also /g/Boot// -> g:\Boot\ with subfolders */
+    std::pair<moon9::iostring,bool> pathfile::ioo2ioo( const moon9::iostring &dir ) const /* /g/Boot/ -> g:\\Boot\\ with no subfolders ; also /g/Boot// -> g:\Boot\ with subfolders */
     {
         bool subdirs = false;
 
@@ -83,10 +83,10 @@ namespace moon9
             if( idx > 0 && dir.at(idx-1) == '/' ) //&& dir.find_last_of('*') > idx && dir.find_last_of('*') < std::string::npos )
                 subdirs = true;
 
-        return std::pair<moon9::string,bool>(dir,subdirs);
+        return std::pair<moon9::iostring,bool>(dir,subdirs);
     }
 
-    std::pair<moon9::string,bool> pathfile::ioo2os( const moon9::string &dir ) const /* /g/Boot/ -> g:\\Boot\\ with no subfolders ; also /g/Boot// -> g:\Boot\ with subfolders */
+    std::pair<moon9::iostring,bool> pathfile::ioo2os( const moon9::iostring &dir ) const /* /g/Boot/ -> g:\\Boot\\ with no subfolders ; also /g/Boot// -> g:\Boot\ with subfolders */
     {
         bool subdirs = false;
 
@@ -98,19 +98,19 @@ namespace moon9
     #if defined(WIN32) || defined(_WIN32)
         if( dir.size() > 2 && dir.at(0) == '/' && dir.at(2) == '/' &&
          (( dir.at(1) >= 'a' && dir.at(1) <= 'z' ) || ( dir.at(1) >= 'A' && dir.at(1) <= 'Z' )) )
-            return std::pair<std::string,bool>( moon9::string( "\1:\2", dir.at(1), dir.replace("/","\\").substr(2) ), subdirs );
+            return std::pair<std::string,bool>( moon9::iostring( "\1:\2", dir.at(1), dir.replace("/","\\").substr(2) ), subdirs );
         else
             return std::pair<std::string,bool>( dir.replace("/", "\\"), subdirs );
     #else
             return std::pair<std::string,bool>( dir, subdirs );
     #endif
     }
-    moon9::string pathfile::os2ioo( const moon9::string &dir ) const /* g:\\Boot\\ -> /g/Boot/ */
+    moon9::iostring pathfile::os2ioo( const moon9::iostring &dir ) const /* g:\\Boot\\ -> /g/Boot/ */
     {
     #if defined(_WIN32)
         if( dir.size() > 2 && dir.at(1) == ':' && dir.at(2) == '\\' &&
          (( dir.at(0) >= 'a' && dir.at(0) <= 'z' ) || ( dir.at(0) >= 'A' && dir.at(0) <= 'Z' )) )
-            return moon9::string( "/\1\2", dir.at(0), dir.replace("\\","/").substr(2) );
+            return moon9::iostring( "/\1\2", dir.at(0), dir.replace("\\","/").substr(2) );
         return dir.replace("\\", "/");
     #else
         return dir;
@@ -353,14 +353,14 @@ namespace moon9
 
     // metadata api
 
-    moon9::string file::get( const moon9::string &property ) const
+    moon9::iostring file::get( const moon9::iostring &property ) const
     {
         //@todo: mutex
         metadata[ property ] = metadata[ property ];
         return metadata[ property ];
     }
 
-    void file::set( const moon9::string &property, const moon9::string &value )
+    void file::set( const moon9::iostring &property, const moon9::iostring &value )
     {
         //@todo: mutex
         metadata[ property ] = metadata[ property ];
@@ -369,9 +369,9 @@ namespace moon9
 
     std::string file::debug( const char *format12 )
     {
-        moon9::string out;
-        for( std::map< moon9::string, moon9::string >::iterator it = metadata.begin(); it != metadata.end(); ++it )
-            out << moon9::string(format12, it->first, it->second);
+        moon9::iostring out;
+        for( std::map< moon9::iostring, moon9::iostring >::iterator it = metadata.begin(); it != metadata.end(); ++it )
+            out << moon9::iostring(format12, it->first, it->second);
         return out;
     }
 
@@ -465,7 +465,7 @@ namespace moon9
         return success;
     }
 
-    std::string file::sanitize( moon9::string path )
+    std::string file::sanitize( moon9::iostring path )
     {
         #if defined(_WIN32)
         return path.replace("/", "\\");
@@ -503,9 +503,9 @@ namespace moon9
 
     std::string files::str( const char *format1 ) const
     {
-        moon9::string out;
+        moon9::iostring out;
         for( const_iterator it = this->begin(); it != this->end(); ++it )
-            out << moon9::string( format1, it->name() );
+            out << moon9::iostring( format1, it->name() );
         return out;
     }
 
@@ -554,19 +554,19 @@ namespace moon9
 
 #else
 
-        moon9::string out;
+        moon9::iostring out;
 
         FILE *fp;
         if( recursive)
-            fp = popen( moon9::string( "find \1 -type d -or -type f -name '\2'", sDir, mask ).c_str(), "r" );
+            fp = popen( moon9::iostring( "find \1 -type d -or -type f -name '\2'", sDir, mask ).c_str(), "r" );
         else
-            fp = popen( moon9::string( "find \1 -maxdepth 1 -type d -or -type f -name '\2'", sDir, mask ).c_str(), "r" );
+            fp = popen( moon9::iostring( "find \1 -maxdepth 1 -type d -or -type f -name '\2'", sDir, mask ).c_str(), "r" );
         if( fp )
         {
             while( !feof(fp) ) out << (unsigned char)(fgetc(fp));
             fclose(fp);
         }
-        moon9::strings found = out.tokenize("\n\r");
+        moon9::iostrings found = out.tokenize("\n\r");
         for( size_t i = 0; i < found.size(); ++i )
         {
             file entry( found[i] );

@@ -36,7 +36,7 @@ xml &xml::operator=( const xml &t )
 // declarative construction
 
 // push a level of depth, then insert node
-xml &xml::push( const moon9::string &key, const moon9::string &text, const moon9::string &comment )
+xml &xml::push( const moon9::iostring &key, const moon9::iostring &text, const moon9::iostring &comment )
 {
     if( latest.empty() || (!parent.size()) )
     {
@@ -86,7 +86,7 @@ xml &xml::push( const pugi::xml_node &node )
 }
 
 // insert node at current depth
-xml &xml::node( const moon9::string &key, const moon9::string &text, const moon9::string &comment )
+xml &xml::node( const moon9::iostring &key, const moon9::iostring &text, const moon9::iostring &comment )
 {
     if( latest.empty() || (!parent.size()) )
     {
@@ -132,7 +132,7 @@ xml &xml::node( const pugi::xml_node &node )
 }
 
 // set attribute for current node
-xml &xml::set( const moon9::string &key, const moon9::string &value )
+xml &xml::set( const moon9::iostring &key, const moon9::iostring &value )
 {
     if( verbose )
         std::cout << "set " << key << " = " << value << std::endl;
@@ -188,7 +188,7 @@ xml xml::subtree( const std::string &XPath ) const
     }
     catch (...)
     {
-        std::cout << moon9::string( "exception while xml.subtree( '\1' ) where xml = '\2'", XPath, str() ) << std::endl;
+        std::cout << moon9::iostring( "exception while xml.subtree( '\1' ) where xml = '\2'", XPath, str() ) << std::endl;
         assert( false );
     }
 
@@ -213,7 +213,7 @@ std::string xml::subtext( const std::string &XPath ) const
     }
     catch (...)
     {
-        std::cout << moon9::string( "exception while xml.subtext( '\1' ) where xml = '\2'", XPath, str() ) << std::endl;
+        std::cout << moon9::iostring( "exception while xml.subtext( '\1' ) where xml = '\2'", XPath, str() ) << std::endl;
         assert( false );
     }
 
@@ -240,7 +240,7 @@ xml xml::tree( const std::string &XPath ) const
     }
     catch (...)
     {
-        std::cout << moon9::string( "exception while xml.tree( '\1' ) where xml = '\2'", XPath, str() ) << std::endl;
+        std::cout << moon9::iostring( "exception while xml.tree( '\1' ) where xml = '\2'", XPath, str() ) << std::endl;
         assert( false );
     }
 
@@ -270,7 +270,7 @@ std::string xml::text( const std::string &XPath ) const
     }
     catch (...)
     {
-        std::cout << moon9::string( "exception while xml.text( '\1' ) where xml = '\2'", XPath, str() ) << std::endl;
+        std::cout << moon9::iostring( "exception while xml.text( '\1' ) where xml = '\2'", XPath, str() ) << std::endl;
         assert( false );
     }
 
@@ -303,14 +303,14 @@ T xml::query( const std::string &XPath_fmt, ... ) const
 {
     va_list args;
     va_start( args, XPath_fmt );
-    moon9::string XPath = moon9::format::list( XPath_fmt.c_str(), args );
+    moon9::iostring XPath = moon9::format::list( XPath_fmt.c_str(), args );
     va_end( args );
 
     try
     {
         std::string result = pugi::xpath_query( XPath.c_str() ).evaluate_string( doc );
 
-        return moon9::string( result ).as<T>();
+        return moon9::iostring( result ).as<T>();
     }
     catch (const pugi::xpath_exception& e)
     {
@@ -329,7 +329,7 @@ void xml::query( T &t, const std::string &XPath_fmt, ... ) const
 {
     va_list args;
     va_start( args, XPath_fmt );
-    moon9::string XPath = moon9::format::list( XPath_fmt.c_str(), args );
+    moon9::iostring XPath = moon9::format::list( XPath_fmt.c_str(), args );
     va_end( args );
 
     t = query<T>( XPath.c_str() );
@@ -337,7 +337,7 @@ void xml::query( T &t, const std::string &XPath_fmt, ... ) const
 
 #endif
 
-void xml::update_node( pugi::xml_node &node, const moon9::string &key, const moon9::string &text, const moon9::string &comment)
+void xml::update_node( pugi::xml_node &node, const moon9::iostring &key, const moon9::iostring &text, const moon9::iostring &comment)
 {
     node.set_name( key );
 
@@ -414,8 +414,8 @@ namespace unpack
         {
             bistring b;
 
-            b.first  = xml.query<std::string>( moon9::string( "string(/root/i[\1]/@key)", it ) );
-            b.second = xml.query<std::string>( moon9::string( "string(/root/i[\1]/@val)", it ) );
+            b.first  = xml.query<std::string>( moon9::iostring( "string(/root/i[\1]/@key)", it ) );
+            b.second = xml.query<std::string>( moon9::iostring( "string(/root/i[\1]/@val)", it ) );
 
             bs.push_back( b );
         }

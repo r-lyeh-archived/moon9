@@ -62,16 +62,16 @@ namespace moon9
 
         protected:
 
-        std::pair<moon9::string,bool> ioo2ioo( const moon9::string &dir ) const;
+        std::pair<moon9::iostring,bool> ioo2ioo( const moon9::iostring &dir ) const;
 
-        std::pair<moon9::string,bool> ioo2os( const moon9::string &dir ) const;
+        std::pair<moon9::iostring,bool> ioo2os( const moon9::iostring &dir ) const;
 
-        moon9::string os2ioo( const moon9::string &dir ) const;
+        moon9::iostring os2ioo( const moon9::iostring &dir ) const;
     };
 
     class file
     {
-        moon9::string pathfile;
+        moon9::iostring pathfile;
         bool is_temp_name;
 
         static void sleep( double seconds );
@@ -122,9 +122,9 @@ namespace moon9
 
         // metadata api
 
-        moon9::string get( const moon9::string &property ) const;
+        moon9::iostring get( const moon9::iostring &property ) const;
 
-        void set( const moon9::string &property, const moon9::string &value );
+        void set( const moon9::iostring &property, const moon9::iostring &value );
 
         std::string debug( const char *format12 = "\t.\1=\2\n" );
 
@@ -140,9 +140,9 @@ namespace moon9
 
         bool patch( const std::string &patch_data, bool delete_tempfile = true ) const;
 
-        private: mutable std::map< moon9::string /*property*/, moon9::string /*value*/ > metadata;
+        private: mutable std::map< moon9::iostring /*property*/, moon9::iostring /*value*/ > metadata;
 
-        std::string sanitize( moon9::string path );
+        std::string sanitize( moon9::iostring path );
     };
 
     class files : public std::set< file >

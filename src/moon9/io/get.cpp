@@ -17,8 +17,8 @@ namespace get
         }
     }
 
-    std::map<std::string,moon9::string>::const_iterator begin() { return map().begin(); }
-    std::map<std::string,moon9::string>::const_iterator end()   { return map().end();   }
+    std::map<std::string,moon9::iostring>::const_iterator begin() { return map().begin(); }
+    std::map<std::string,moon9::iostring>::const_iterator end()   { return map().end();   }
 
     std::string s( const std::string &var ) { return map()[var]; }
          size_t z( const std::string &var ) { return map()[var].as<size_t>(); }
@@ -32,7 +32,7 @@ namespace get
         std::vector<std::string> delimiters(2);
         delimiters[0] = "$(";
         delimiters[1] = ")";
-        moon9::strings parsed = moon9::string( text ).parse( delimiters );
+        moon9::iostrings parsed = moon9::iostring( text ).parse( delimiters );
 
         std::string out;
 

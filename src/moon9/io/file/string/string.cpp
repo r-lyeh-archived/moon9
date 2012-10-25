@@ -614,27 +614,23 @@
 
 #endif // end of Peter Kankowski's expression evaluator
 
-
-namespace moon9
+moon9::io::string moon9::io::string::eval() const
 {
-	moon9::string string::eval() const
-	{
 #ifndef _WIN32
-		return *this;
+	return *this;
 #else
-		ExprEval eval;
+	ExprEval eval;
 
-		moon9::string result( eval.Eval( (EVAL_CHAR *)this->c_str() ) );
+	moon9::io::string result( eval.Eval( (EVAL_CHAR *)this->c_str() ) );
 
-		if( eval.GetErr() == EEE_NO_ERROR)
-			return result;
-		else
-			return *this;
+	if( eval.GetErr() == EEE_NO_ERROR)
+		return result;
+	else
+		return *this;
 #endif
-	}
 }
 
-std::ostream &operator <<( std::ostream &os, const moon9::strings &s )
+std::ostream &operator <<( std::ostream &os, const moon9::iostrings &s )
 {
 	os << s.str();
 	return os;

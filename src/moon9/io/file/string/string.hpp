@@ -36,6 +36,8 @@
 
 namespace moon9
 {
+namespace io
+{
     class string : public std::string
     {
         public:
@@ -920,8 +922,11 @@ namespace moon9
                 return out;
             }
     };
-}
+} // namespace io
+typedef moon9::io::string  iostring;
+typedef moon9::io::strings iostrings;
+} // namespace moon9
 
 #include <iostream>
 
-std::ostream &operator <<( std::ostream &os, const moon9::strings &s );
+std::ostream &operator <<( std::ostream &os, const moon9::iostrings &s );
