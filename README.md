@@ -21,12 +21,13 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 
 ## Frameworks included
 - [moon9::debug](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug)
-- [moon9::hid](https://github.com/r-lyeh/moon9/tree/master/src/moon9/hid)
+- [moon9::hid](https://github.com/r-lyeh/moon9/tree/master/src/moon9/hid) *
 - [moon9::io](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io)
+- [moon9::math](https://github.com/r-lyeh/moon9/tree/master/src/moon9/math) *
 - [moon9::memtracer](https://github.com/r-lyeh/moon9/tree/master/src/moon9/memtracer)
 - [moon9::os](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os)
 - [moon9::play](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play)
-- [moon9::render](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render)
+- [moon9::render](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render) *
 - [moon9::spatial](https://github.com/r-lyeh/moon9/tree/master/src/moon9/spatial)
 - [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string)
 - [moon9::test](https://github.com/r-lyeh/moon9/tree/master/src/moon9/test)
