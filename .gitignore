@@ -10,3 +10,9 @@
 *.lai
 *.la
 *.a
+/build/release-trash
+/build/debug-bin
+/build/debug-lib
+/build/debug-trash
+/build/release-bin
+/build/release-lib

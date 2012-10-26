@@ -49,6 +49,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <mutex>
 
 #include "callstack.hpp"
 
@@ -159,28 +160,32 @@ namespace moon9
         #endif
         }
 
-#ifdef _WIN32
-        namespace
-        {
-            std::mutex mutex;
-//          int mutex;
-        }
-#endif
-
         detail::strings get_stack_trace(void **frames, int num_frames)
         {
 #ifdef _WIN32
+            // this mutex is used to prevent race conditions.
+            // however, it is constructed with heap based plus placement-new just to meet next features:
+            // a) ready to use before program begins.
+            // our memtracer uses callstack() and mutex is ready to use before the very first new() is made.
+            // b) ready to use after program ends.
+            // our memtracer uses callstack() when making the final report after the whole program has finished.
+            // c) allocations free: memory is taken from heap, and constructed thru placement new
+            // we will avoid recursive deadlocks that would happen in a new()->memtracer->callstack->new()[...] scenario.
+            // d) leaks free: zero global allocations are made.
+            // we don't polute memmanager/memtracer reports with false positives.
+            static std::mutex *mutex = 0;
+            if( !mutex )
+			{
+                static char placement[ sizeof(std::mutex) ];
+                mutex = (std::mutex *)placement; // no leak and no memory traced :P
+                new (mutex) std::mutex();        // memtraced recursion safe; we don't track placement-news
+			}
 
-            // this mutex is used to prevent race conditions. however, when our memmanager/memtracer is making the final report at the end of the
-            // program, it needs to retrieve a stack. mutex should be allocated at this stage but this wont happen unless a previous callstack has been made,
-            // and the memory management is disabled at this point. so, we put mutex in global scope so we ensure the mutex is properly created at the time
-            // the final callstack (via memtracer) is required.
-
-            std::lock_guard<std::mutex> lock(mutex);
+			mutex->lock();
 
             BOOL result = SymInitialize(GetCurrentProcess(), NULL, TRUE);
             if (!result)
-                return detail::strings();
+                return mutex->unlock(), detail::strings();
 
             detail::strings backtrace_text;
             for( int i = 0; i < num_frames; i++ )
@@ -213,7 +218,7 @@ namespace moon9
             }
 
             SymCleanup(GetCurrentProcess());
-            return backtrace_text;
+            return mutex->unlock(), backtrace_text;
 
 #elif !defined(__APPLE__)
 

@@ -42,7 +42,14 @@ class obj
     {
         // @todo threadsafe!
 
-        static std::map< const obj *, std::string > set;
+        static std::map< const obj *, std::string > *_set = 0;
+        if( !_set )
+		{
+			static char placement[ sizeof(std::map< const obj *, std::string >) ]; 
+			_set = (std::map< const obj *, std::string > *)placement; // no leak and no memory traced :P
+			new (_set) std::map< const obj *, std::string >();        // memtraced recursion safe; we don't track placement-news
+		}
+		std::map< const obj *, std::string > &set = *_set;
 
         std::string res;
 

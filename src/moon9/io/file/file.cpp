@@ -332,12 +332,13 @@ namespace moon9
         return utime( pathfile.c_str(), &tb ) != -1 ? true : false;
     }
 
-    bool file::has_changed() // check for external changes on file
+    bool file::has_changed() // check for external changes on file in runtime, first call on a file is always true
     {
         static std::map< std::string, time_t > cache;
         if( cache.find( pathfile ) == cache.end() )
         {
             ( cache[ pathfile ] = cache[ pathfile ] ) = date();
+			return true;
         }
 
         time_t modtime = cache[ pathfile ];
