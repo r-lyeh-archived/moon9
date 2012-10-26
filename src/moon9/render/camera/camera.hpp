@@ -165,9 +165,9 @@ namespace moon9
             offset = glm::vec3(0, 0, 0);
             noise = glm::vec3(0, 0, 0);
             angle = glm::vec3(0, 0, 0);
-            up = glm::vec3(0,0,1);
+            up = glm::vec3(0, 0, 1);
 
-            viewport = glm::vec4(0,0,w,h);
+            resize( w, h );
 
             distance = 1023.f;
             fov = 75.f * 0.5f; //37.5f;
@@ -235,7 +235,14 @@ namespace moon9
 
             // Update frustum
             frustum.setup( fov, viewport.z / viewport.w, 1.f, 1.f + distance );
-            frustum.update( position, position + direction, up );
+            frustum.update( position + offset, ( position + offset ) + ( direction + noise ), up );
+        }
+
+        void resize( int w, int h )
+        {
+            viewport = glm::vec4(0,0,w,h);
+
+            update();
         }
 
         void lookdir( const glm::vec3 &dir /*, glm::vec3 focus_dof */ )

@@ -83,7 +83,7 @@ namespace moon9
 
             for( int i = 0, end = text.size(); i < end; ++i )
             {
-                char c = text.at(i);
+                unsigned char c = text.at(i);
 
                 if( map.at(c) )
                     tokens.push_back( std::string() );

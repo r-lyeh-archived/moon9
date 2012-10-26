@@ -38,7 +38,7 @@ namespace moon9
 
             for( int i = 0, end = text.size(); i < end; ++i )
             {
-                char c = text.at(i);
+                unsigned char c = text.at(i);
 
                 if( map.at(c) )
                     tokens.push_back( std::string() );
@@ -112,7 +112,7 @@ protected:
             //wglSwapIntervalEXT(1);
             if( glfwOpenWindow( w, h, 0,0,0,0,0,0, fullscreen ? GLFW_FULLSCREEN : GLFW_WINDOW ) != GL_TRUE )
             {
-                std::cout << "<moon9/render/window.hpp> says: Cant create " << w << 'x' << h << " window!" << std::endl;
+                std::cerr << "<moon9/render/window.hpp> says: Cant create " << w << 'x' << h << " window!" << std::endl;
                 exit(1);
             }
 
@@ -127,7 +127,7 @@ protected:
                 if (GLEW_OK != err)
                 {
                 // Problem: glewInit failed, something is seriously wrong.
-                std::cerr << "Error: " << glewGetErrorString (err) << std::endl;
+                std::cerr << "<moon9/render/window.hpp> says: Error: " << glewGetErrorString (err) << std::endl;
                 throw "argh!";
                 }
                 // Print some infos about user's OpenGL implementation
@@ -280,6 +280,12 @@ public:
             return blur;
         }
 
+        virtual void update( double t, float dt ) = 0;
+        virtual void render( double t, float dt ) /*const*/ = 0;
+
+        virtual void update_idle( double t, float dt )       { update(t,dt); }
+        virtual void render_idle( double t, float dt ) /*const*/ { render(t,dt); }
+
         void flush()
         {
             glfwSetWindowTitle( title.c_str() );
@@ -288,6 +294,9 @@ public:
             dt = timer.s();
             timer = moon9::dt();
             t += dt;
+
+            update(t,dt);
+            render(t,dt);
 
             int nw, nh;
             glfwGetWindowSize( &nw, &nh );
@@ -625,6 +634,9 @@ public:
             bIsOpen = false;
         }
 
+        void flush()
+        {}
+
         static void destroy_cb()
         {
             window *win = instance( glutGetWindow() );
@@ -680,10 +692,8 @@ public:
             win->w = (x <= 0 ? 0 : x);
             win->h = (y <= 0 ? 1 : y);
 
-            //win->camera.resize( x, y );
-            win->camera.viewport.z = x;
-            win->camera.viewport.w = y;
-            win->camera.update();
+            win->camera.resize( x, y );
+            //win->camera.update();
         }
 
         virtual void update( double t, float dt ) = 0;

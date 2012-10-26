@@ -220,6 +220,14 @@ namespace moon9
         {
             return &x; // @todo: assert x,y,z are contigous!
         }
+
+        vec3 &operator()( const float &_x, const float &_y, const float &_z )
+        {
+            x = _x;
+            y = _y;
+            z = _z;
+            return *this;
+        }
     };
 
     // used for code clarifications, ie, move_to( point& ), push_from( point &pos, vector &dir ), etc...

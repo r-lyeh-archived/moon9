@@ -768,7 +768,7 @@ namespace io
 
             for( int i = 0, end = this->size(); i < end; ++i )
             {
-                char c = at(i);
+                unsigned char c = at(i);
 
                 if( map.at(c) )
                     tokens.push_back( std::string() );
