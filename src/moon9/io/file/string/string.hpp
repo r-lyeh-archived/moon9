@@ -762,19 +762,25 @@ namespace io
             for( auto it = chars.begin(), end = chars.end(); it != end; ++it )
                 map[ *it ] = '\1';
 
-            std::deque<string> tokens;
+            std::deque< string > tokens;
 
-            tokens.push_back( std::string() );
+            tokens.push_back( string() );
 
             for( int i = 0, end = this->size(); i < end; ++i )
             {
                 unsigned char c = at(i);
 
-                if( map.at(c) )
-                    tokens.push_back( std::string() );
-                else
-                    tokens.back().push_back( c );
+				std::string &str = tokens.back();
+
+                if( !map.at(c) )
+                    str.push_back( c );
+				else
+				if( str.size() )
+                    tokens.push_back( string() );
             }
+
+			while( tokens.size() && !tokens.back().size() )
+				tokens.pop_back();
 
             return tokens;
         }

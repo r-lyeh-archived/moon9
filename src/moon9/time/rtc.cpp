@@ -40,17 +40,23 @@ namespace moon9
 
                 std::deque<custom> tokens;
 
-                tokens.push_back( std::string() );
+                tokens.push_back( custom() );
 
                 for( int i = 0, end = this->size(); i < end; ++i )
                 {
                     unsigned char c = at(i);
 
-                    if( map.at(c) )
-                        tokens.push_back( std::string() );
+                    std::string &str = tokens.back();
+
+                    if( !map.at(c) )
+                        str.push_back( c );
                     else
-                        tokens.back().push_back( c );
+                    if( str.size() )
+                        tokens.push_back( custom() );
                 }
+
+                while( tokens.size() && !tokens.back().size() )
+                    tokens.pop_back();
 
                 return tokens;
             }
