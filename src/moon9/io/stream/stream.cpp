@@ -32,8 +32,6 @@
 #include <sstream>
 #include <string>
 
-#include "stream.hpp"
-
 // details
 
 #include <iostream>
@@ -42,34 +40,15 @@
 #include <set>
 #include <deque>
 
+#include "stream.hpp"
+#include "stream.inl"
+
 namespace moon9
 {
     namespace detail
     {
         class sbb : public std::streambuf
         {
-            std::deque<std::string> split( const std::string &str, char sep ) const
-            {
-                std::deque<std::string> tokens;
-
-                tokens.push_back( std::string() );
-
-                for( std::string::const_iterator it = str.begin(), end = str.end(); it != end; ++it )
-                {
-                    if( *it == sep )
-                    {
-                        tokens.push_back( std::string() + sep );
-                        tokens.push_back( std::string() );
-                    }
-                    else
-                    {
-                        tokens.back() += *it;
-                    }
-                }
-
-                return tokens;
-            }
-
             public:
 
             typedef void (*proc)( bool open, bool feed, bool close, const std::string &text );

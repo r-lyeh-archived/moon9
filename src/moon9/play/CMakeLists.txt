@@ -17,7 +17,7 @@ include_directories( "../../../deps/play/msgpack/src" )
 file(GLOB MSGPACK_SRCS "../../../deps/play/msgpack/src/*.cpp")
 add_library(msgpack-static STATIC ${MSGPACK_SRCS})
 
-file(GLOB MOON9_PLAY_SRCS *.cpp *.hpp)
+file(GLOB MOON9_PLAY_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_PLAY_SAMPLES *.sample.cpp)
 file(GLOB MOON9_PLAY_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_PLAY_SRCS "" ${MOON9_PLAY_SAMPLES} ${MOON9_PLAY_TESTS})

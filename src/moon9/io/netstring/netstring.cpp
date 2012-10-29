@@ -3,62 +3,11 @@
 #include <sstream>
 
 #include "netstring.hpp"
-
-namespace
-{
-    class custom : public std::string
-    {
-        public:
-
-        custom() : std::string()
-        {}
-
-        template <typename T>
-        custom( const T &t ) : std::string()
-        {
-            std::stringstream ss;
-            if( ss << t )
-                this->assign( ss.str() );
-        }
-
-        template<typename T>
-        T as() const
-        {
-            T t;
-            std::stringstream ss;
-            ss << *this;
-            if( ss >> t )
-                return t;
-            return T();
-        }
-
-        std::deque<custom> split( char separator ) const
-        {
-            std::deque<custom> cs;
-
-            cs.push_back( custom() );
-
-            for( auto it = this->begin(), end = this->end(); it != end; ++it )
-            {
-                if( *it == separator )
-                {
-                    cs.push_back( custom() );
-                    ++it;
-                }
-                else
-                {
-                    cs.back() += *it;
-                }
-            }
-
-            return cs;
-        }
-    };
-}
+#include "netstring.inl"
 
 std::string to_netstring( const std::string &line )
 {
-    return custom( line.size() ) + ":" + line + ";";
+    return moon9::custom( line.size() ) + ":" + line + ";";
 }
 
 std::string from_netstring( const std::string &line, size_t *offset )
@@ -66,7 +15,7 @@ std::string from_netstring( const std::string &line, size_t *offset )
     if( !line.size() )
         return std::string();
 
-    std::deque< custom > tokens = custom(line).split(':');
+    std::deque< moon9::custom > tokens = moon9::custom(line).split(':');
 
     if( tokens.size() < 2 )
         return std::string();

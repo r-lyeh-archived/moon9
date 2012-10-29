@@ -7,7 +7,7 @@ if(MSVC)
   add_definitions(/wd4244) # dear MSVC, im fully aware and confident about my type conversions. stop hammering me. kthx :s
 endif(MSVC)
 
-file(GLOB MOON9_DEBUG_SRCS *.cpp *.hpp)
+file(GLOB MOON9_DEBUG_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_DEBUG_SAMPLES *.sample.cpp)
 file(GLOB MOON9_DEBUG_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_DEBUG_SRCS "" ${MOON9_DEBUG_SAMPLES} ${MOON9_DEBUG_TESTS})

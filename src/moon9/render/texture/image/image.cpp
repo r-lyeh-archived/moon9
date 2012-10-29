@@ -12,92 +12,18 @@
 //#pragma comment( lib, "gdi32.lib" )
 //#pragma comment( lib, "shell32.lib" )
 
-#include "pixel/pixel.hpp"
-#include "image.hpp"
-
 #include <stb/stb_image.h>
 #include <stb/stb_image_write.h>
 
 #include <cimg/cimg.h>
 #pragma comment(lib,"shell32.lib")
 
+#include "pixel/pixel.hpp"
+#include "image.hpp"
+#include "image.inl"
+
 namespace
 {
-    namespace // taken from <moon9/render/image.cpp>
-    {
-        std::vector<std::string> tokenize( const std::string &text, const std::string &chars )
-        {
-            std::string map( 256, '\0' );
-
-            for( auto it = chars.begin(), end = chars.end(); it != end; ++it )
-                map[ *it ] = '\1';
-
-            std::vector<std::string> tokens;
-
-            tokens.push_back( std::string() );
-
-            for( int i = 0, end = text.size(); i < end; ++i )
-            {
-                unsigned char c = text.at(i);
-
-                std::string &str = tokens.back();
-
-                if( !map.at(c) )
-                    str.push_back( c );
-                else
-                if( str.size() )
-                    tokens.push_back( std::string() );
-            }
-
-            while( tokens.size() && !tokens.back().size() )
-                tokens.pop_back();
-
-            return tokens;
-        }
-
-        template<typename T>
-        T as( const std::string &text )
-        {
-            T t;
-            std::stringstream ss( text );
-            return ss >> t ? t : (T)(as<bool>(text));
-        }
-
-        template<>
-        bool as( const std::string &text )
-        {
-            return text.size() > 0 && text != "0" && text != "false";
-        }
-
-        class custom : public std::string
-        {
-            public:
-
-            template<typename T>
-            explicit
-            custom( const T &t ) : std::string()
-            {
-                std::stringstream ss;
-                if( ss << t )
-                    this->assign( ss.str() );
-            }
-
-            template <typename T1>
-            custom( const char *fmt, const T1 &t1 ) : std::string()
-            {
-                std::string t[] = { std::string(), custom(t1) };
-                for( ;*fmt; fmt++ )
-                {
-                    if( *fmt == '\1' )
-                        t[0] += t[1];
-                    else
-                        t[0] += *fmt;
-                }
-                this->assign( t[0] );
-            }
-        };
-    }
-
     std::string image_load( const std::string &pathFile, bool mirror_w, bool mirror_h, bool as_hsla, bool make_squared, size_t &w, size_t &h, float &delay, std::vector<pixel> &image )
     {
         if( !pathFile.size() )
@@ -110,8 +36,8 @@ namespace
         std::vector<stbi_uc> temp;
 
         {
-            std::vector<std::string> pathFileExt = tokenize( pathFile, "|" );
-            int subframe = ( pathFileExt.size() > 1 ? as<int>(pathFileExt[1]) : 0 );
+            std::vector<std::string> pathFileExt = moon9::tokenize( pathFile, "|" );
+            int subframe = ( pathFileExt.size() > 1 ? moon9::as<int>(pathFileExt[1]) : 0 );
 
             stbi_gif_subframe_delay = 0.f;
             stbi_gif_subframe_selector = subframe;
@@ -121,7 +47,7 @@ namespace
             {
                 // assert( false );
                 // yellow/black texture instead?
-                return custom( "Error: cant find/decode texture '\1'\n", pathFile );
+                return moon9::custom( "Error: cant find/decode texture '\1'\n", pathFile );
             }
 
             if( make_squared )

@@ -10,7 +10,7 @@ endif(MSVC)
 ## <moon9>
 include_directories("../../../src")
 
-file(GLOB MOON9_MEMTRACER_SRCS *.cpp *.hpp)
+file(GLOB MOON9_MEMTRACER_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_MEMTRACER_SAMPLES *.sample.cpp)
 file(GLOB MOON9_MEMTRACER_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_MEMTRACER_SRCS "" ${MOON9_MEMTRACER_SAMPLES} ${MOON9_MEMTRACER_TESTS})

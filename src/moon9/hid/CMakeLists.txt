@@ -12,7 +12,7 @@ include_directories("../../../deps/hid/manymouse")
 file(GLOB MANYMOUSE_SRCS "../../../deps/hid/manymouse/*.c")
 add_library(manymouse-static STATIC ${MANYMOUSE_SRCS})
 
-file(GLOB MOON9_HID_SRCS *.cpp *.hpp)
+file(GLOB MOON9_HID_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_HID_SAMPLES *.sample.cpp)
 file(GLOB MOON9_HID_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_HID_SRCS "" ${MOON9_HID_SAMPLES} ${MOON9_HID_TESTS})

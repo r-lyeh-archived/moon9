@@ -22,7 +22,7 @@ add_library(miniz-static STATIC ${MINIZ_SRCS})
 file(GLOB ENET_SRCS "../../../deps/io/enet/*.c")
 add_library(enet-static STATIC ${ENET_SRCS})
 
-file(GLOB MOON9_IO_SRCS *.cpp *.hpp)
+file(GLOB MOON9_IO_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_IO_SAMPLES *.sample.cpp)
 file(GLOB MOON9_IO_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_IO_SRCS "" ${MOON9_IO_SAMPLES} ${MOON9_IO_TESTS})

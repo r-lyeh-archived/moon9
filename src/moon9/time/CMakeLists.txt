@@ -9,7 +9,7 @@ endif(MSVC)
 
 ## include_directories( "../../../deps/time" )
 
-file(GLOB MOON9_TIME_SRCS *.cpp *.hpp)
+file(GLOB MOON9_TIME_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_TIME_SAMPLES *.sample.cpp)
 file(GLOB MOON9_TIME_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_TIME_SRCS "" ${MOON9_TIME_SAMPLES} ${MOON9_TIME_TESTS})

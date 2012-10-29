@@ -9,7 +9,7 @@ A lightwight string framework with no extra dependencies. MIT licensed.
 - [moon9::hash](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/hash), uniform hash class; provides interface for CRC32, GCRC, RS, JS, PJW, ELF, BKDR, SBDM, DJB, DJB2, BP, FNV, AP, BJ1, MH2, SHA1
 - moon9::hexdump, stringifies a memory hex dump
 - [moon9::id](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/id), compile-time string to id (size_t) conversion
-- moon9::markov, procedural strings generator based on a few examples
+- [moon9::markov](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/markov), procedural strings generator based on a few examples
 - moon9::metrics, time/bits/money/decimate beautifier
 - [moon9::roman](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/roman), integer to roman library
 - [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/string), extended C++ standard string

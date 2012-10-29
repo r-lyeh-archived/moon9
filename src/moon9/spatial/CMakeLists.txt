@@ -10,7 +10,7 @@ endif(MSVC)
 include_directories( "../../../deps/spatial/glm" )
 include_directories( "../../../deps/spatial/msgpack/src" )
 
-file(GLOB MOON9_SPATIAL_SRCS *.cpp *.hpp)
+file(GLOB MOON9_SPATIAL_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_SPATIAL_SAMPLES *.sample.cpp)
 file(GLOB MOON9_SPATIAL_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_SPATIAL_SRCS "" ${MOON9_SPATIAL_SAMPLES} ${MOON9_SPATIAL_TESTS})

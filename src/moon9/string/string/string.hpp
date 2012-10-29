@@ -578,7 +578,7 @@ namespace moon9
             }
 
             if( j - i == len ) return *this;
-        return this->substr( i, j - i );
+            return this->substr( i, j - i );
         }
 
         public: // based on python string and pystring

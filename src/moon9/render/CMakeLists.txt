@@ -34,7 +34,7 @@ add_library(glfw-static STATIC ${GLFW_SRCS})
 file(GLOB SPARK_SRCS "../../../deps/render/spark/src/SPK_All.cpp" "../../../deps/render/spark/src/SPK_GL_All.cpp")
 add_library(spark-static STATIC ${SPARK_SRCS})
 
-file(GLOB MOON9_RENDER_SRCS *.cpp *.hpp)
+file(GLOB MOON9_RENDER_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_RENDER_SAMPLES *.sample.cpp)
 file(GLOB MOON9_RENDER_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_RENDER_SRCS "" ${MOON9_RENDER_SAMPLES} ${MOON9_RENDER_TESTS})
