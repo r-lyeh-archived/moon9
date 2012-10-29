@@ -9,7 +9,7 @@ endif(MSVC)
 
 ## include_directories( "../../../deps/string" )
 
-file(GLOB MOON9_STRING_SRCS *.cpp *.hpp)
+file(GLOB MOON9_STRING_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_STRING_SAMPLES *.sample.cpp)
 file(GLOB MOON9_STRING_TESTS *.test.cpp)
 list(REMOVE_ITEM MOON9_STRING_SRCS "" ${MOON9_STRING_SAMPLES} ${MOON9_STRING_TESTS})
