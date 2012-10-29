@@ -18,8 +18,6 @@ add_library(moon9-math-static STATIC ${MOON9_MATH_SRCS})
 
 add_executable(burg.sample                 burg/burg.sample.cpp)
 add_executable(rand.sample                 rand/rand.sample.cpp)
-add_executable(stats.sample                stats/stats.sample.cpp)
 
 target_link_libraries(burg.sample          moon9-math-static)
 target_link_libraries(rand.sample          moon9-math-static)
-target_link_libraries(stats.sample         moon9-math-static)

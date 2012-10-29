@@ -1544,7 +1544,7 @@ namespace moon9
             // arrow spline
             // pointlist, true, detail
 
-            spliner( const spline &knotList, const float &detail01 = 0.5f )
+            spliner( const moon9::spline<moon9::vec3> &knotList, const float &detail01 = 0.5f )
             {
                 assert( knotList.size() >= 4 );
 
@@ -1908,8 +1908,8 @@ class mspline
     public:
 
     float road, roaderr;
-    moon9::spline highquality;   // - render
-    moon9::detail::vector<moon9::vec3> pos;  // knotlist for positions
+    moon9::spline<moon9::vec3> highquality;   // - render
+    moon9::spline<moon9::vec3>::vector pos;  // knotlist for positions
 
     enum type_enumeration
     {
@@ -1924,7 +1924,7 @@ class mspline
         // create spline
 
         {
-            moon9::spline &spline( highquality );
+            moon9::spline<moon9::vec3> &spline( highquality );
 
             //@todo: optimize following for
 
@@ -1954,7 +1954,7 @@ class mspline
 
         if( 1 )
         {
-            moon9::spline spline;
+            moon9::spline<moon9::vec3> spline;
 
             for( size_t i = 0; i < pos.size(); ++i )
                 spline.push_back( pos[i] );
@@ -1998,7 +1998,7 @@ class mspline
         // redistribute knots by creating a new spline
 
         {
-            moon9::spline spline;
+            moon9::spline<moon9::vec3> spline;
 
             for( size_t i = 0; i < pos.size(); ++i )
                 spline.push_back( pos[i] );

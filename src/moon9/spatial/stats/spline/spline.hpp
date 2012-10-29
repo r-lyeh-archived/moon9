@@ -19,6 +19,26 @@ namespace moon9
     {
         public:
 
+        class vector : public std::vector<T>
+        {
+            public:
+
+            vector( const size_t N = 0, const T& t = T() ) : std::vector<T>(N, t)
+            {}
+
+            template<typename S>
+            void append( const S &t )
+            {
+                /*
+                size_t pos = this->size() ? this->size() - 1 : 0;
+                this->resize( this->size() + t.size() );
+                std::copy( t.begin(), t.end(), this->begin() + pos );
+                */
+                for( size_t i = 0; i < t.size(); ++i)
+                    this->push_back( t[i] );
+            }
+        };
+
         spline() : container_t<T>()
         {}
 
@@ -125,6 +145,37 @@ namespace moon9
 
             return knotList.tangent( dt01 );
         }
+
+        // legacy {
+
+        T tandt( float dt01 ) const
+        {
+            return tangent_w_edges( dt01 );
+        }
+
+        T atdt( float dt01 ) const
+        {
+            return position_w_edges( dt01 );
+        }
+
+        float length( size_t segments /* >= 1 */ )
+        {
+            float overall = 0.f;
+
+            for (size_t i = 0; i < segments; ++i)
+            {
+                float dt01 = i / (float)segments;
+
+                vec3 A = atdt( dt01 );
+                vec3 B = atdt( dt01 + ( 1.f / float(segments) ) );
+
+                overall += len( B - A ); // this is not portable!
+            }
+
+            return overall;
+        }
+
+        // }
     };
 }
 

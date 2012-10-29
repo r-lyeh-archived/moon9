@@ -8,7 +8,13 @@ if(MSVC)
 endif(MSVC)
 
 include_directories( "../../../deps/spatial/glm" )
-include_directories( "../../../deps/spatial/msgpack/src" )
+include_directories( "../../../deps/spatial/tokamak/include" )
+
+## file(GLOB GLM_SRCS "../../../deps/spatial/glm/*.cpp")
+## add_library(glm-static STATIC ${GLM_SRCS})
+
+file(GLOB TOKAMAK_SRCS "../../../deps/spatial/tokamak/src/*.cpp")
+add_library(tokamak-static STATIC ${TOKAMAK_SRCS})
 
 file(GLOB MOON9_SPATIAL_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_SPATIAL_SAMPLES *.sample.cpp)
@@ -19,6 +25,8 @@ add_library(moon9-spatial-static STATIC ${MOON9_SPATIAL_SRCS})
 
 add_executable(bvh.sample                   bvh.sample.cpp)
 add_executable(sphere.sample                sphere.sample.cpp)
+add_executable(stats.sample                 stats/stats.sample.cpp)
 
 target_link_libraries(bvh.sample            moon9-spatial-static)
 target_link_libraries(sphere.sample         moon9-spatial-static)
+target_link_libraries(stats.sample          moon9-spatial-static)
