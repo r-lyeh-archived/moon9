@@ -1,4 +1,4 @@
 ## moon9::base91
-- A custom base91 encoder/decoder library (XML friendly).
+- A custom base91 encoding/decoding library (XML friendly).
 - No dependencies.
 - MIT licensed.

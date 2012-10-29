@@ -1,8 +1,8 @@
 /*
- * Extended C++ standard strings & variants
- * Copyright (c) 2010-2011, Mario 'rlyeh' Rodriguez
+ * A custom base91 encoder/decoder (XML friendly).
+ * Copyright (c) 2011, Mario 'rlyeh' Rodriguez
  *
- * Custom basE91 encoding/decoding based on code by Joachim Henke
+ * Original basE91 encoder/decoder by Joachim Henke
  * Copyright (c) 2000-2006 Joachim Henke
  * http://base91.sourceforge.net/ (v0.6.0)
 
