@@ -144,9 +144,15 @@ namespace moon9
         // conversion
 
         template <typename T>
-        T as()
+        T as() const
         {
            return T( x, y, z );
+        }
+
+        template <typename T> // implicit conversion. handy to convert automatically to glm::vec3, btVector3, vector3, Vector3f, vec3f, etc!
+        operator T() const
+        {
+            return T( x, y, z );
         }
 
         // swizzles

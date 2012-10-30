@@ -79,6 +79,8 @@
 #include <nanosvg/nanosvg.h>
 
 
+#include <glm/gtc/type_ptr.hpp>
+
 
 
 namespace moon9
@@ -275,6 +277,12 @@ namespace moon9
             {
                 glPushMatrix();
                 glMultMatrixf(m);
+            }
+
+            explicit transform( const glm::mat4 &matrix )
+            {
+                glPushMatrix();
+                glMultMatrixf(/*(GLfloat*)*/glm::value_ptr(matrix) );
             }
 
             ~transform()
@@ -1522,6 +1530,33 @@ namespace moon9
                         glVertex3fv( pointList[i].data() );
 
                 glEnd();
+            }
+
+            explicit lines( const float *pointList, size_t N )
+            {
+                assert( pointList != 0 );
+                assert( N >= 3 );
+
+#if 1
+                if( N < 3 ) return;
+
+                glBegin( GL_LINE_STRIP );
+
+                    for( size_t i = 0, end = N/3; i < end; ++i )
+                        glVertex3fv( &pointList[i*3] );
+
+                glEnd();
+#else
+                // activate and specify pointer to vertex array
+                glEnableClientState(GL_VERTEX_ARRAY);
+                glVertexPointer(3, GL_FLOAT, 0, pointList);
+
+                // draw a cube
+                glDrawArrays(GL_TRIANGLES, 0, N/3);
+
+                // deactivate vertex arrays after drawing
+                glDisableClientState(GL_VERTEX_ARRAY);
+#endif
             }
 
             explicit lines( const std::vector< moon9::vec3 > &pointList )

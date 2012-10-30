@@ -40,17 +40,17 @@ bool is_asserting();
 #else
 #   define assert1(A)                       assert2(A,"")
 #   define assert2(A,description)           \
-    do { auto a = A; if( (a) != true ) { \
+    do { auto __a__ = A; if( (__a__) != true ) { \
         std::stringstream ss; ss << "Assertion failed: " \
-            << #A << "(" << (a) << ") at " << __FILE__ << ":" << __LINE__ \
+            << #A << "(" << (__a__) << ") at " << __FILE__ << ":" << __LINE__ \
             << " ; " << description; \
         if( cb::custom_assert_cb ) (*cb::custom_assert_cb)( ss.str(), __FILE__, __LINE__ ); \
         } } while(0)
 #   define assert3(A,op,B)                  assert4(A,op,B,"")
 #   define assert4(A,op,B,description)      \
-    do { auto a = A; auto b = B; if( !(a op b) ) { \
+    do { auto __a__ = A; auto __b__ = B; if( !(__a__ op __b__) ) { \
         std::stringstream ss; ss << "Assertion failed: " \
-            << #A << "(" << (a) << ") " << #op << " " << #B << "(" << (b) << ") at " << __FILE__ << ':' << __LINE__ \
+            << #A << "(" << (__a__) << ") " << #op << " " << #B << "(" << (__b__) << ") at " << __FILE__ << ':' << __LINE__ \
             << " ; " << description; \
         if( cb::custom_assert_cb ) (*cb::custom_assert_cb)( ss.str(), __FILE__, __LINE__ ); \
         } } while(0)

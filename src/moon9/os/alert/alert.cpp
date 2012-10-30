@@ -8,32 +8,11 @@
 #include <string>
 #include <sstream>
 
+#include "alert.inl"
+
 namespace
 {
-    class custom : public std::string
-    {
-        public:
-
-        custom() : std::string()
-        {}
-
-        template<typename T>
-        custom( const T &t ) : std::string()
-        {
-            std::stringstream ss;
-            ss.precision( 20 );
-            if( ss << t )
-                this->assign( ss.str() );
-        }
-
-        template<>
-        custom( const bool &b ) : std::string()
-        {
-            this->assign( b ? "true" : "false" );
-        }
-    };
-
-	void show( const custom &text = std::string(), const std::string &title = std::string() )
+	void show( const moon9::custom &text = std::string(), const std::string &title = std::string() )
 	{
 #ifdef _WIN32
 		MessageBoxA( 0, text.c_str(), title.size() ? title.c_str() : "", 0 | MB_SYSTEMMODAL );
@@ -46,6 +25,7 @@ namespace
 }
 
 void alert(                                                   ) { show(); }
+void alert( const        void *addr, const std::string &title ) { show( addr, title ); }
 void alert( const std::string &text, const std::string &title ) { show( text, title ); }
 void alert( const      size_t &text, const std::string &title ) { show( text, title ); }
 void alert( const      double &text, const std::string &title ) { show( text, title ); }

@@ -3,6 +3,7 @@
 #include <string>
 
 void alert();
+void alert( const  void *address, const std::string &title = std::string() );
 void alert( const std::string &t, const std::string &title = std::string() );
 void alert( const      size_t &t, const std::string &title = std::string() );
 void alert( const      double &t, const std::string &title = std::string() );
