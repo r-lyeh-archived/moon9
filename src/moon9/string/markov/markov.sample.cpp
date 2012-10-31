@@ -30,7 +30,7 @@ int main( int argc, char **argv )
             "Ugluk" // Uglúk,
         ;
 
-        moon9::markov mkv( list );
+        moon9::markov mkv( list, " ,;\r\n\t" );
 
         std::cout << "Orc-ish names: ";
 
@@ -53,7 +53,7 @@ int main( int argc, char **argv )
         " SUMATI, SUNDARA, SUNITA, SURESHA, SURYA, SUSHILA, TARA, UMA, USHA, USHAS, VALLI, VASANTA, VASU, VIDYA, VIJAYA, "
         " VIKRAMA, VISHNU, YAMA, YAMI";
 
-        moon9::markov mkv( list );
+        moon9::markov mkv( list, " ,;\r\n\t" );
 
         std::cout << "Hindu-ish names: ";
 

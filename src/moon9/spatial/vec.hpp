@@ -111,9 +111,9 @@ namespace moon9
         template< typename T >
         vec3 &operator=( const T &t )
         {
-            x = t.x;
-            y = t.y;
-            z = t.z;
+            x = t[0]; //t.x;
+            y = t[1]; //t.y;
+            z = t[2]; //t.z;
             return *this;
         }
 
@@ -124,6 +124,14 @@ namespace moon9
             x oper t.x; \
             y oper t.y; \
             z oper t.z; \
+            return *this; \
+        } \
+        template<> \
+        vec3 &operator oper ( const int &f ) \
+        { \
+            x oper f; \
+            y oper f; \
+            z oper f; \
             return *this; \
         } \
         template<> \
@@ -140,6 +148,27 @@ namespace moon9
         with(/=)
         #undef with
 
+        #define with(oper) \
+        template< typename T > \
+        vec3 operator oper ( const T &t ) const \
+        { \
+            return vec3( x oper t.x, y oper t.y, z oper t.z); \
+        } \
+        template<> \
+        vec3 operator oper ( const int &f ) const \
+        { \
+            return vec3( x oper f, y oper f, z oper f); \
+        } \
+        template<> \
+        vec3 operator oper ( const float &f ) const \
+        { \
+            return vec3( x oper f, y oper f, z oper f); \
+        }
+        with(+)
+        with(-)
+        with(*)
+        with(/)
+        #undef with
 
         // conversion
 

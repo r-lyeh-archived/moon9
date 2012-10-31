@@ -19,12 +19,12 @@ namespace moon9
     markov::markov()
     {}
 
-    markov::markov( const std::string &list_of_names, size_t minLength, size_t order )
+    markov::markov( const std::string &list_of_names, const std::string &separators, size_t minLength, size_t order )
     {
-        setup( list_of_names, minLength, order );
+        setup( list_of_names, separators, minLength, order );
     }
 
-    void markov::setup( const std::string &list_of_names, size_t minLength, size_t order )
+    void markov::setup( const std::string &list_of_names, const std::string &separators, size_t minLength, size_t order )
     {
         // clean up
         *this = markov();
@@ -42,7 +42,7 @@ namespace moon9
         _order = order;
         _minLength = minLength;
 
-        std::vector<std::string> sampleNames = tokenize( list_of_names, " ,;\r\n\t" );
+        std::vector<std::string> sampleNames = tokenize( list_of_names, separators );
 
         size_t smallest = ~0;
         size_t longest = 0;

@@ -186,6 +186,11 @@ namespace moon9
                 glTranslatef( v.x, v.y, v.z );
                 position += v;
             }
+            explicit translate( const float &x, const float &y, const float &z ) : v( x,y,z )
+            {
+                glTranslatef( v.x, v.y, v.z );
+                position += v;
+            }
             ~translate()
             {
                 position -= v;
@@ -985,6 +990,105 @@ namespace moon9
             }
         };
 
+        struct line : moon9::render_detail::nocopy
+        {
+            explicit line( const moon9::vec3 &v = moon9::vec3(1,1,0) )
+            {
+                glBegin(GL_LINES);
+                    glVertex3f(0,0,0);
+                    glVertex3f(v.x,v.y,v.z);
+                glEnd();
+            }
+        };
+
+        //line?
+
+        struct lines : moon9::render_detail::nocopy
+        {
+            // arrow line
+
+            template< typename T, const size_t N >
+            explicit lines( const T (&pointList)[ N ] )
+            {
+                if( N < 2 ) return;
+
+                glBegin( GL_LINE_STRIP );
+
+                    for( size_t i = 0; i < N; ++i )
+                        glVertex3fv( pointList[i].data() );
+
+                glEnd();
+            }
+
+            explicit lines( const float *pointList, size_t N )
+            {
+                assert( pointList != 0 );
+                assert( N >= 3 );
+
+#if 1
+                if( N < 3 ) return;
+
+                glBegin( GL_LINE_STRIP );
+
+                    for( size_t i = 0, end = N/3; i < end; ++i )
+                        glVertex3fv( &pointList[i*3] );
+
+                glEnd();
+#else
+                // activate and specify pointer to vertex array
+                glEnableClientState(GL_VERTEX_ARRAY);
+                glVertexPointer(3, GL_FLOAT, 0, pointList);
+
+                // draw a cube
+                glDrawArrays(GL_TRIANGLES, 0, N/3);
+
+                // deactivate vertex arrays after drawing
+                glDisableClientState(GL_VERTEX_ARRAY);
+#endif
+            }
+
+            explicit lines( const std::vector< moon9::vec3 > &pointList )
+            {
+                size_t N = pointList.size();
+
+                if( N < 2 ) return;
+
+                glBegin( GL_LINE_STRIP );
+
+                    for( size_t i = 0; i < N; ++i )
+                        glVertex3fv( pointList[i].data() );
+
+                glEnd();
+            }
+        };
+
+        struct curve : moon9::render_detail::nocopy // spliner
+        {
+            // arrow spline
+            // pointlist, true, detail
+
+            explicit
+            curve( const moon9::spline<moon9::vec3> &knotList, const float &detail01 = 0.5f )
+            {
+                assert( knotList.size() >= 4 );
+
+                const int STEPS = knotList.size() * int(detail01 * 7.0f + 1.f); //0..1 -> 1..8 -> size..size*8
+
+                glBegin( GL_LINE_STRIP );
+
+                    for (int i = 0; i <= STEPS; ++i)
+                    {
+                        float dt01 = i / (float)STEPS;
+
+                        moon9::vec3 point = knotList.atdt( dt01 );
+
+                        glVertex3fv( &point.x );
+                    }
+
+                glEnd();
+            }
+        };
+
         struct pyramid : moon9::render_detail::nocopy
         {
             pyramid()
@@ -1005,7 +1109,67 @@ namespace moon9
         {
             cube()
             {
+#if 1
                 glutSolidCube( 1.0 );
+#else
+                float pointList[] =
+                {
+                    +0.5f, +0.5f, +0.5f, //9 up
+                    +0.5f, -0.5f, +0.5f, //3 up
+                    -0.5f, -0.5f, +0.5f, //1 up
+                    -0.5f, +0.5f, +0.5f, //7 up
+                    +0.5f, +0.5f, +0.5f, //9 up
+
+                    +0.5f, +0.5f, -0.5f, //9 down
+                    +0.5f, -0.5f, -0.5f, //3 down
+                    -0.5f, -0.5f, -0.5f, //1 down
+                    -0.5f, +0.5f, -0.5f, //7 down
+                    +0.5f, +0.5f, -0.5f  //9 down
+                };
+
+                lines ln( pointList, sizeof(pointList) / sizeof(pointList[0]) );
+
+                glBegin(GL_LINES);
+                    glVertex3f(+0.5f,-0.5f,+0.5f); // 3 up
+                    glVertex3f(+0.5f,-0.5f,-0.5f); // 3 down
+                    glVertex3f(-0.5f,-0.5f,+0.5f); // 1 up
+                    glVertex3f(-0.5f,-0.5f,-0.5f); // 1 down
+                    glVertex3f(-0.5f,+0.5f,+0.5f); // 7 up
+                    glVertex3f(-0.5f,+0.5f,-0.5f); // 7 down
+                glEnd();
+
+#endif
+            }
+        };
+
+        struct semicircle : moon9::render_detail::nocopy
+        {
+            explicit semicircle( bool closed, const float &detail01 = 0.5f )
+            {
+                //detail -> [16..32] segments
+                int segments = int( detail01 * 16 + 16.0 );
+
+                float theta = 2.f * 3.1415926f / float( segments );
+                float c = std::cosf( theta );
+                float s = std::sinf( theta );
+                float t;
+
+                float x = 1.0;//we start at angle = 0
+                float y = 0;
+
+                segments = ( segments / 2 ) + 1;
+
+                glBegin( closed ? GL_LINE_LOOP : GL_LINE_STRIP );
+                for( int i = 0; i < segments; i++ )
+                {
+                    glVertex3f(x, y, 0);//output vertex
+
+                    //apply the rotation matrix
+                    t = x;
+                    x = c * x - s * y;
+                    y = s * t + c * y;
+                }
+                glEnd();
             }
         };
 
@@ -1015,8 +1179,8 @@ namespace moon9
             {
                 //glutSolidSphere( 3.0, 2, 6 );
 
-                //detail -> [8..32] segments
-                int segments = int( detail01 * 24 + 8.0 );
+                //detail -> [16..32] segments
+                int segments = int( detail01 * 16 + 16.f );
 
                 float theta = 2.f * 3.1415926f / float( segments );
                 float c = std::cosf( theta );
@@ -1041,22 +1205,20 @@ namespace moon9
         };
 
         // capsule2d
-        struct capsule : moon9::render_detail::nocopy
+        struct capsule2d : moon9::render_detail::nocopy
         {
-            //  0,2 -> 2 spheres up
-            // 0,-2 -> 2 spheres down
-            // -2,0 -> 2 spheres left
-            //  2,0 -> 2 spheres right
-            capsule( float qx, float qy, const float &detail01 = 0.5f )
+            capsule2d( float radius, float height, const float &detail01 = 0.5f )
             {
-                    const float px = 0.f, py = 0.f, r = 1.f;
+                    float qx = 0.f, qy = 0.f;
+                    float px = 0.f, py = height, r = radius;
                     float dx = qx-px;
                     float dy = qy-py;
                     float d = 1.0f/sqrtf(dx*dx+dy*dy);
                     dx*=d; dy*=d;
+                    py-=r/2; qy-=r/2;
                     float nx = dy;
                     float ny = -dx;
-                    int hn = ( detail01 * 16 + 16)/2;
+                    int hn = ( detail01 * 16 + 16 )/2;
                     glBegin(GL_LINE_LOOP);
                     for (int i = 0; i < hn; ++i)
                     {
@@ -1077,31 +1239,6 @@ namespace moon9
                             glVertex2f(x,y);
                     }
                     glEnd();
-            }
-        };
-
-        struct capsule3d : moon9::render_detail::nocopy
-        {
-            //  0,2 -> 2 spheres up
-            // 0,-2 -> 2 spheres down
-            // -2,0 -> 2 spheres left
-            //  2,0 -> 2 spheres right
-            capsule3d( float qx, float qy, const float &detail01 = 0.5f )
-            {
-                capsule c1( qx, qy, detail01 );
-                matrix::rotate_y r( 90 );
-                capsule c2( qx, qy, detail01 );
-            }
-        };
-
-        struct line : moon9::render_detail::nocopy
-        {
-            explicit line( const moon9::vec3 &v = moon9::vec3(1,1,0) )
-            {
-                glBegin(GL_LINES);
-                    glVertex3f(0,0,0);
-                    glVertex3f(v.x,v.y,v.z);
-                glEnd();
             }
         };
 
@@ -1217,9 +1354,59 @@ namespace moon9
         {
             explicit sphere( const float &detail01 = 0.5f )
             {
+#if 0
                 static render_detail::glQuadric quadric;
                 int idetail = int(detail01 * 10) + 6; //0..1 = 4..16
                 gluSphere(quadric(),1.0f,idetail,idetail);
+#else
+                geometry::circle cl1( detail01 );
+                matrix::rotate_x rx( 90.f );
+                geometry::circle cl2( detail01 );
+                matrix::rotate_y ry( 90.f );
+                geometry::circle cl3( detail01 );
+
+                enable::billboard bl( true );
+                geometry::circle outer( detail01 );
+
+#endif
+            }
+        };
+
+        struct semisphere : moon9::render_detail::nocopy
+        {
+            explicit semisphere( const float &detail01 = 0.5f )
+            {
+                geometry::semicircle scl1( false, detail01 );
+                matrix::rotate_y ry( 90.f );
+                geometry::semicircle scl2( false, detail01 );
+                matrix::rotate_x rx( 90.f );
+
+                geometry::circle cl1( detail01 );
+            }
+        };
+
+        struct capsule : moon9::render_detail::nocopy
+        {
+            capsule( float radius, float height, const float &detail01 = 0.5f )
+            {
+                // xyz
+                {
+                    capsule2d c1( radius, height, detail01 );
+                    matrix::rotate_y ry1( 60 );
+                    capsule2d c2( radius, height, detail01 );
+                    matrix::rotate_y ry2( 60 );
+                    capsule2d c3( radius, height, detail01 );
+                }
+                {
+                    matrix::translate tr( 0, height/2, 0 );
+                    enable::billboard bd( true );
+                    geometry::circle cl( detail01 );
+                }
+                {
+                    matrix::translate tr( 0, -height/2, 0 );
+                    enable::billboard bd( true );
+                    geometry::circle cl( detail01 );
+                }
             }
         };
 
@@ -1513,93 +1700,6 @@ namespace moon9
             }
         };
 
-        //line?
-
-        struct lines : moon9::render_detail::nocopy
-        {
-            // arrow line
-
-            template< typename T, const size_t N >
-            explicit lines( const T (&pointList)[ N ] )
-            {
-                if( N < 2 ) return;
-
-                glBegin( GL_LINE_STRIP );
-
-                    for( size_t i = 0; i < N; ++i )
-                        glVertex3fv( pointList[i].data() );
-
-                glEnd();
-            }
-
-            explicit lines( const float *pointList, size_t N )
-            {
-                assert( pointList != 0 );
-                assert( N >= 3 );
-
-#if 1
-                if( N < 3 ) return;
-
-                glBegin( GL_LINE_STRIP );
-
-                    for( size_t i = 0, end = N/3; i < end; ++i )
-                        glVertex3fv( &pointList[i*3] );
-
-                glEnd();
-#else
-                // activate and specify pointer to vertex array
-                glEnableClientState(GL_VERTEX_ARRAY);
-                glVertexPointer(3, GL_FLOAT, 0, pointList);
-
-                // draw a cube
-                glDrawArrays(GL_TRIANGLES, 0, N/3);
-
-                // deactivate vertex arrays after drawing
-                glDisableClientState(GL_VERTEX_ARRAY);
-#endif
-            }
-
-            explicit lines( const std::vector< moon9::vec3 > &pointList )
-            {
-                size_t N = pointList.size();
-
-                if( N < 2 ) return;
-
-                glBegin( GL_LINE_STRIP );
-
-                    for( size_t i = 0; i < N; ++i )
-                        glVertex3fv( pointList[i].data() );
-
-                glEnd();
-            }
-        };
-
-        struct spliner : moon9::render_detail::nocopy
-        {
-            // arrow spline
-            // pointlist, true, detail
-
-            spliner( const moon9::spline<moon9::vec3> &knotList, const float &detail01 = 0.5f )
-            {
-                assert( knotList.size() >= 4 );
-
-                const int STEPS = knotList.size() * int(detail01 * 7.0f + 1.f); //0..1 -> 1..8 -> size..size*8
-
-                glBegin( GL_LINE_STRIP );
-
-                    for (int i = 0; i <= STEPS; ++i)
-                    {
-                        float dt01 = i / (float)STEPS;
-
-                        moon9::vec3 point = knotList.atdt( dt01 );
-
-                        glVertex3fv( &point.x );
-                    }
-
-                glEnd();
-            }
-        };
-
         struct plane : moon9::render_detail::nocopy
         {
             explicit plane( float texture_scale = 1.f )
@@ -1841,6 +1941,8 @@ namespace moon9
 
     namespace util
     {
+        #define MOON9_COMPILE_LIST moon9::compile __comp__ = moon9::compile(__FILE__,__LINE__)
+
         class compile
         {
             /* usage:
@@ -1851,15 +1953,34 @@ namespace moon9
                     moon9::sphere sph;
                 }
 
+                or
+
+                if( moon9::compile comp = moon9::compile(__FILE__,__LINE__) )
+                {
+                    moon9::matrix::position p( vec3(1, 10, 0) );
+                    moon9::sphere sph;
+                }
+
+                or
+
+                if( MOON9_COMPILE_LIST )
+                {
+                    ...
+                }
+
             */
 
-            std::string id;
+            const char *file;
+            int line;
             bool compiled;
             void go( bool construct )
             {
-                static std::map< std::string, int > map;
-                //@todo: u32_id=hash(id)
-                std::map< std::string, int >::iterator it = map.find( id );
+                typedef std::pair<std::string,int> key_t;
+                typedef std::map<key_t, int> map_t;
+
+                static map_t map;
+                key_t id = key_t( file, line );
+                map_t::iterator it = map.find( id );
 
                 if( construct )
                 {
@@ -1868,7 +1989,7 @@ namespace moon9
                     {
                         static int list = 0;
                         list++;
-                        map.insert( std::pair<std::string,int>(id, list) );
+                        map.insert( std::pair<key_t,int>( id, list) );
                         glNewList( list, GL_COMPILE );
                     }
                 }
@@ -1884,15 +2005,26 @@ namespace moon9
                     glCallList( list );
                 }
             }
+
             public:
-            explicit compile( const char *_id ) : id(_id)
+
+            explicit
+            compile( const char *_id ) : file(_id), line(0), compiled(false)
             {
                 go( true );
             }
+
+            explicit
+            compile( const char *_file, int _line ) : file(_file), line(_line), compiled(false)
+            {
+                go( true );
+            }
+
             ~compile()
             {
                 go( false );
             }
+
             operator const bool() const
             { return !compiled; }
         };
@@ -2145,7 +2277,7 @@ class mspline
 
     void draw_hq( bool draw_knots = false )
     {
-        moon9::spliner spl( highquality );
+        moon9::curve spl( highquality );
 
         if( draw_knots )
         {

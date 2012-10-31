@@ -216,8 +216,14 @@ namespace imgui
         string( const std::string &s ) : std::string(s)
         {}
 
+        string( const char *str ) : std::string(str)
+        {}
+
+        template<size_t N>
+        string( const char (&str)[N] ) : std::string(str)
+        {}
+
         template<typename T>
-        explicit
         string( const T &t ) : std::string()
         {
             std::stringstream ss;

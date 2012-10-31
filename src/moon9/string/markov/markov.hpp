@@ -19,9 +19,9 @@ namespace moon9
         markov();
 
         explicit
-        markov( const std::string &list_of_names, size_t minLength = 4, size_t order = 1 );
+        markov( const std::string &list_of_names, const std::string &separators, size_t minLength = 4, size_t order = 1 );
 
-        void setup( const std::string &list_of_names, size_t minLength = 4, size_t order = 1 );
+        void setup( const std::string &list_of_names, const std::string &separators, size_t minLength = 4, size_t order = 1 );
 
         //Get the next random name
         std::string next();

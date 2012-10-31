@@ -127,16 +127,16 @@ namespace moon9
     struct minicam
     {
         // input values
-        glm::vec3 position;
-        glm::vec3 offset;
+        moon9::vec3 position;
+        moon9::vec3 offset;
 
-        glm::vec3 angle;        // radians (yaw,roll,pitch)
-        glm::vec3 up;
+        moon9::vec3 angle;        // radians (yaw,roll,pitch)
+        moon9::vec3 up;
         float yaw()   const { return angle.x; }
         float roll()  const { return angle.y; }
         float pitch() const { return angle.z; }
 
-        glm::vec3 noise;        // disturbs direction
+        moon9::vec3 noise;        // disturbs direction
 
         glm::vec4 viewport;     // viewport (x,y,w,h) ; (x:0, y:0) is bottom-left
 
@@ -145,7 +145,7 @@ namespace moon9
 
         // output values, after update()
         glm::mat4 projection, view, view90, mvp, mvp90;
-        glm::vec3 forward, right, direction;
+        moon9::vec3 forward, right, direction;
         moon9::frustum frustum;
 
         // final output tuples are:
@@ -161,11 +161,11 @@ namespace moon9
 
         minicam( float w = 640, float h = 480 )
         {
-            position = glm::vec3(0, 0, 10);
-            offset = glm::vec3(0, 0, 0);
-            noise = glm::vec3(0, 0, 0);
-            angle = glm::vec3(0, 0, 0);
-            up = glm::vec3(0, 0, 1);
+            position = moon9::vec3(0, 0, 10);
+            offset = moon9::vec3(0, 0, 0);
+            noise = moon9::vec3(0, 0, 0);
+            angle = moon9::vec3(0, 0, 0);
+            up = moon9::vec3(0, 0, 1);
 
             resize( w, h );
 
@@ -185,8 +185,8 @@ namespace moon9
             // Refresh forward, right and direction vectors
             float sinx = sinf( angle.x ), sinz = sinf( angle.z ), cosx = cosf( angle.x ), cosz = cosf( angle.z );
 
-            forward = glm::vec3( sinx, cosx, 0 );
-            right = glm::vec3( cosx, -sinx, 0 );
+            forward = moon9::vec3( sinx, cosx, 0 );
+            right = moon9::vec3( cosx, -sinx, 0 );
             direction = moon9::vec3( sinx * cosz, cosx * cosz, sinz );
 
             // Refresh matrices
@@ -210,7 +210,7 @@ namespace moon9
             mvp = projection * view;
 
             // Alternative matrix (right,forward,up) instead of (right,up,forward)
-            view90 = glm::rotate( view, -90.f, glm::vec3(-1.0f, 0.0f, 0.0f) );
+            view90 = glm::rotate( view, -90.f, moon9::vec3(-1.0f, 0.0f, 0.0f) );
             mvp90 = projection * view90;
 
             if( 0 )
@@ -245,9 +245,9 @@ namespace moon9
             update();
         }
 
-        void lookdir( const glm::vec3 &dir /*, glm::vec3 focus_dof */ )
+        void lookdir( const moon9::vec3 &dir /*, moon9::vec3 focus_dof */ )
         {
-            glm::vec3 _dir = glm::normalize( dir );
+            moon9::vec3 _dir = glm::normalize( dir.as<glm::vec3>() );
 
             angle.x = atan2( _dir.x, _dir.y );
             angle.z = atan2( _dir.z, sqrt( _dir.x * _dir.x + _dir.y * _dir.y ) );
@@ -255,7 +255,7 @@ namespace moon9
             update(); // recompute direction vector (and matrices)
         }
 
-        void lookat( const glm::vec3 &target /*, glm::vec3 focus_dof */ )
+        void lookat( const moon9::vec3 &target /*, moon9::vec3 focus_dof */ )
         {
             lookdir( target - ( position + offset ) );
         }
@@ -293,19 +293,50 @@ namespace moon9
 
             glMatrixMode( GL_MODELVIEW );
             glLoadMatrixf( glm::value_ptr( view ) );
+
+            // CCW
+            glFrontFace(GL_CCW);
         }
 
-        glm::vec3 unproject( float screen_x, float screen_y ) const //at_screen()
+        void apply90() const
+        {
+            apply();
+
+            // to xzy
+            glScalef( 1.f, 1.f, -1.f );
+            glRotatef(  90.f, 0.f, 0.f, 1.f );
+            glRotatef( -90.f, 1.f, 0.f, 0.f );
+
+            // CW
+            glFrontFace(GL_CW);
+        }
+
+        moon9::vec3 unproject( float screen_x, float screen_y ) const //at_screen()
         {
             //apply();
 
             float depth;
             glReadPixels( screen_x, viewport.w - screen_y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth );
 
-            glm::vec3 wincoord = glm::vec3( screen_x, screen_y, depth );
-            //glm::vec3 wincoord = glm::vec3( screen_x, screen_y, depth );
-            glm::vec3 ret = glm::unProject( wincoord, view, projection, viewport );
-            return glm::vec3( ret.x, ret.y, -ret.z );
+            moon9::vec3 wincoord = moon9::vec3( screen_x, screen_y, depth );
+            //moon9::vec3 wincoord = moon9::vec3( screen_x, screen_y, depth );
+            moon9::vec3 ret = glm::unProject( wincoord, view, projection, viewport );
+            return moon9::vec3( ret.x, ret.y, -ret.z );
+        }
+
+        // typical fps controller
+        void wsadec( int ws, int ad, int ec, int wheel )
+        {
+            position += forward * ws;
+            position += right * ad;
+            position += up * ec;
+
+            fov += -wheel;
+        }
+
+        void wsadec( int w, int s, int a, int d, int e, int c, int wheel )
+        {
+            wsadec( w-s, d-a, e-c, wheel );
         }
     };
 
