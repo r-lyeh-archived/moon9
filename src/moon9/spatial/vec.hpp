@@ -121,9 +121,9 @@ namespace moon9
         template< typename T > \
         vec3 &operator oper ( const T &t ) \
         { \
-            x oper t.x; \
-            y oper t.y; \
-            z oper t.z; \
+            x oper t[0]; \
+            y oper t[1]; \
+            z oper t[2]; \
             return *this; \
         } \
         template<> \
@@ -152,7 +152,7 @@ namespace moon9
         template< typename T > \
         vec3 operator oper ( const T &t ) const \
         { \
-            return vec3( x oper t.x, y oper t.y, z oper t.z); \
+            return vec3( x oper t[0], y oper t[1], z oper t[2]); \
         } \
         template<> \
         vec3 operator oper ( const int &f ) const \
@@ -175,13 +175,15 @@ namespace moon9
         template <typename T>
         T as() const
         {
-           return T( x, y, z );
+            T t;
+            t[0] = x, t[1] = y, t[2] = z;
+            return t;
         }
 
         template <typename T> // implicit conversion. handy to convert automatically to glm::vec3, btVector3, vector3, Vector3f, vec3f, etc!
         operator T() const
         {
-            return T( x, y, z );
+           return as<T>();
         }
 
         // swizzles
