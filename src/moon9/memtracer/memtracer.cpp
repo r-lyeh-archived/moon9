@@ -125,6 +125,13 @@ namespace moon9
             kBooPrint( body );
         }
 
+        void show_report( const std::string &header, const std::string &body, const std::string &footer )
+        {
+            kBooPrint( header );
+            kBooPrint( body );
+            kBooPrint( footer );
+        }
+
 		volatile size_t timestamp_id = 0;
 
 		size_t create_id()
@@ -219,68 +226,88 @@ namespace moon9
 						// this should happen at the very end of a program (even *after* static memory unallocation)
 						// @todo: avoid using any global object like std::cout/cerr (because some implementations like "cl /MT" will crash)
 
-						kBooPrint( moon9::string("<moon9/memtracer/memtracer.cpp> says: Generating report. Please wait...\n") );
+                        // count number of leaks, filter them and sort them.
 
-						moon9::string header, body;
+                        struct tuple
+                        {
+                            const void *addr;
+                            leak *lk;
+                            moon9::callstack *cs;
+                        };
 
-						std::map< size_t, std::string > sort_by_id;
+                        typedef std::map< size_t, tuple > map;
+                        map sort_by_id;
 
-						size_t ibegin = 0, iend = this->size(), percent = ~0, current = 0, wasted = 0, n_leak = 0;
-						for( const_iterator it = this->begin(), end = this->end(); it != end; ++it )
-						{
-							const void *the_address = it->first;
-							leak *the_leak = it->second.first;
-							moon9::callstack *the_callstack = it->second.second;
+                        size_t n_leak = 0, wasted = 0;
+                        for( const_iterator it = this->begin(), end = this->end(); it != end; ++it )
+                        {
+                            const void *the_address = it->first;
+                            leak *the_leak = it->second.first;
+                            moon9::callstack *the_callstack = it->second.second;
 
-							if( the_leak && the_callstack /* && it->second->size != ~0 */ )
-							{
-								if( the_leak->id >= moon9::detail::timestamp_id )
-								{
-									++n_leak;
-									wasted += the_leak->size;
+                            if( the_leak && the_callstack /* && it->second->size != ~0 */ )
+                            {
+                                if( the_leak->id >= moon9::detail::timestamp_id )
+                                {
+                                    ++n_leak;
+                                    wasted += the_leak->size;
 
-									moon9::string  line( "Leak \1 bytes [\2]\r\n", the_leak->size, the_address );
-									moon9::strings lines = moon9::string( the_callstack->str("\2\n", 2) ).tokenize("\n");
+                                    tuple t = { the_address, the_leak, the_callstack };
 
-									for( size_t i = 0; i < lines.size(); ++i )
-										line << moon9::string( "\t\t\1\r\n", lines[i] );
+                                    ( sort_by_id[ the_leak->id ] = sort_by_id[ the_leak->id ] ) = t;
+                                }
+                            }
+                        }
 
-									sort_by_id.insert( std::pair< size_t, std::string >( the_leak->id, line ) );
-								}
-							}
+                        // show score
 
-							if( percent != current )
-								kBooPrint( moon9::string("\r<moon9/memtracer/memtracer.cpp> says: Inspecting \1/\2 backtraces (\3%)", ibegin, iend, percent = current ) );
+                        double leaks_pct = this->size() ? n_leak * 100.0 / this->size() : 0.0;
+                        std::string score = "perfect!";
+                        if( leaks_pct >  0.00 ) score = "good";
+                        if( leaks_pct >  1.25 ) score = "excellent";
+                        if( leaks_pct >  2.50 ) score = "poor";
+                        if( leaks_pct >  5.00 ) score = "mediocre";
+                        if( leaks_pct > 10.00 ) score = "lame";
 
-							current = (size_t)( ++ibegin * 100.0 / iend );
-						}
+                        moon9::string header, body, footer;
 
-						kBooPrint( moon9::string("\r<moon9/memtracer/memtracer.cpp> says: Inspecting \1/\1 backtraces (100%)", iend ) );
+                        header = moon9::string( "<moon9/memtracer/memtracer.cpp> says: Beginning of report. \1, \2 leaks found; \3 bytes wasted ('\4' score)\r\n", !n_leak ? "Ok" : "Error", n_leak, wasted, score );
 
-						double leaks_pct = this->size() ? n_leak * 100.0 / this->size() : 0.0;
-						std::string score = "perfect!";
-						if( leaks_pct >  0.00 ) score = "good";
-						if( leaks_pct >  1.25 ) score = "excellent";
-						if( leaks_pct >  2.50 ) score = "poor";
-						if( leaks_pct >  5.00 ) score = "mediocre";
-						if( leaks_pct > 10.00 ) score = "lame";
+                        kBooPrint( header );
 
-						kBooPrint( moon9::string("\n<moon9/memtracer/memtracer.cpp> says: Done ('\1' score)\n", score ) );
+                        // inspect leaks (may take a while)
+
+                        size_t ibegin = 0, iend = sort_by_id.size(), percent = ~0, current = 0;
+                        for( map::const_iterator it = sort_by_id.begin(), end = sort_by_id.end(); it != end; ++it )
+                        {
+                            const void *the_address = it->second.addr;
+                            leak *the_leak = it->second.lk;
+                            moon9::callstack *the_callstack = it->second.cs;
+
+                            current = (size_t)( ++ibegin * 100.0 / iend );
+
+                            moon9::string  line( "\t\1) Leak \2 bytes [\3] backtrace \4/\5 (\6%)\r\n", ibegin, the_leak->size, the_address, ibegin, iend, percent = current );
+                            moon9::strings lines = moon9::string( the_callstack->str("\2\n", 2) ).tokenize("\n");
+
+                            for( size_t i = 0; i < lines.size(); ++i )
+                                line << moon9::string( "\t\t\1\r\n", lines[i] );
+
+                            kBooPrint( line );
+
+                            body << line;
+                        }
+
+                        footer = moon9::string( "<moon9/memtracer/memtracer.cpp> says: End of report. \1, \2 leaks found; \3 bytes wasted ('\4' score). Done!\r\n", !n_leak ? "Ok" : "Error", n_leak, wasted, score );
+
+                        kBooPrint( footer );
 
 						// body report (linux & macosx will display windows line endings right)
 
-						header = moon9::string("<moon9/memtracer/memtracer.cpp> says: Report: \1, \2 leaks found; \3 bytes wasted ('\4' score)\r\n", !n_leak ? "ok" : "error", n_leak, wasted, score );
-
-						n_leak = 0;
-						for( std::map< size_t, std::string >::const_iterator it = sort_by_id.begin(), end = sort_by_id.end(); it != end; ++it )
-							body << moon9::string("\t\1) ", ++n_leak ) << it->second;
-
 						sort_by_id.clear();
 
-						show_report( header, body );
+						// show_report( header, body, footer );
 					}
-				}
-				map;
+				} map;
 
                 container::iterator it = map.find( ptr );
                 bool found = ( map.find( ptr ) != map.end() );
