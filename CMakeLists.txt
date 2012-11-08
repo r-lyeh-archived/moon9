@@ -9,7 +9,7 @@ project(ROOT C CXX)
 
 option(BUILD_FRAMEWORKS "Enable this to build *all* frameworks" ON)
 option(BUILD_DEMOS      "Enable this to build *all* demos"      ON)
-option(BUILD_TESTS      "Enable this to build *all* tests"      ON)
+option(BUILD_TESTS      "Enable this to build *all* tests"      OFF)
 
 if(MSVC)
     add_definitions(/EHsc)

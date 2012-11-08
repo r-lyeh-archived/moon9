@@ -8,12 +8,10 @@
 #include "Gwen/UnitTest/UnitTest.h"
 #include "Gwen/Input/Windows.h"
 
-#define USE_DEBUG_FONT // @rlyeh: just for me!
-
 #ifdef USE_DEBUG_FONT
 	#include "Gwen/Renderers/OpenGL_DebugFont.h"
 #else
-	#include "Gwen/Renderers/OpenGL.h"
+	#include "Gwen/Renderers/OpenGL_TruetypeFont.h"
 #endif
 #include "gl/glew.h"
 
@@ -33,7 +31,7 @@ HWND CreateGameWindow( void )
 #ifdef USE_DEBUG_FONT
 	HWND hWindow = CreateWindowExW( (WS_EX_APPWINDOW | WS_EX_WINDOWEDGE) , wc.lpszClassName, L"GWEN - OpenGL Sample (Using embedded debug font renderer)", (WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN) & ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME), -1, -1, 1004, 650, NULL, NULL, GetModuleHandle(NULL), NULL );
 #else
-	HWND hWindow = CreateWindowExW( (WS_EX_APPWINDOW | WS_EX_WINDOWEDGE) , wc.lpszClassName, L"GWEN - OpenGL Sample (No cross platform way to render fonts in OpenGL)", (WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN) & ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME), -1, -1, 1004, 650, NULL, NULL, GetModuleHandle(NULL), NULL );
+	HWND hWindow = CreateWindowExW( (WS_EX_APPWINDOW | WS_EX_WINDOWEDGE) , wc.lpszClassName, L"GWEN - OpenGL Sample (Using portable STB_truetype library)", (WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN) & ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME), -1, -1, 1004, 650, NULL, NULL, GetModuleHandle(NULL), NULL );
 #endif
 
 	ShowWindow( hWindow, SW_SHOW );
@@ -43,7 +41,8 @@ HWND CreateGameWindow( void )
 	return hWindow;
 }
 
-HWND						g_pHWND = NULL;
+HWND g_pHWND = NULL;
+int width = 998, height = 650 - 24;
 
 HGLRC CreateOpenGLDeviceContext()
 {
@@ -59,19 +58,19 @@ HGLRC CreateOpenGLDeviceContext()
     pfd.cColorBits = 24;                // 24 bit == 8 bits for red, 8 for green, 8 for blue.
                                         // This count of color bits EXCLUDES alpha.
 
-    pfd.cDepthBits = 32;                // 32 bits to measure pixel depth.  
+    pfd.cDepthBits = 32;                // 32 bits to measure pixel depth.
 
 	int pixelFormat = ChoosePixelFormat( GetDC( g_pHWND ), &pfd );
-    
+
 	if ( pixelFormat == 0 )
     {
         FatalAppExit( NULL, TEXT("ChoosePixelFormat() failed!") );
-    }    
+    }
 
 	SetPixelFormat( GetDC( g_pHWND ), pixelFormat, &pfd );
 
 	HGLRC OpenGLContext = wglCreateContext( GetDC( g_pHWND ) );
-	    
+
 	wglMakeCurrent( GetDC( g_pHWND ), OpenGLContext );
 
 	RECT r;
@@ -81,16 +80,14 @@ HGLRC CreateOpenGLDeviceContext()
 		glLoadIdentity();
 		glOrtho( r.left, r.right, r.bottom, r.top, -1.0, 1.0);
 		glMatrixMode( GL_MODELVIEW );
-		glViewport(0, 0, r.right - r.left, r.bottom - r.top);
+		glViewport(0, 0, width = r.right - r.left, height = r.bottom - r.top);
 	}
 
 	return OpenGLContext;
 }
 
-
 int main()
 {
-
 	//
 	// Create a new window
 	//
@@ -99,7 +96,7 @@ int main()
 	//
 	// Create OpenGL Device
 	//
-	HGLRC OpenGLContext = CreateOpenGLDeviceContext();	
+	HGLRC OpenGLContext = CreateOpenGLDeviceContext();
 
 
 	//
@@ -108,7 +105,7 @@ int main()
 	#ifdef USE_DEBUG_FONT
 		Gwen::Renderer::OpenGL * pRenderer = new Gwen::Renderer::OpenGL_DebugFont();
 	#else
-		Gwen::Renderer::OpenGL * pRenderer = new Gwen::Renderer::OpenGL();
+		Gwen::Renderer::OpenGL * pRenderer = new Gwen::Renderer::OpenGL_TruetypeFont();
 	#endif
 
 		pRenderer->Init();
@@ -118,12 +115,14 @@ int main()
 	//
 	Gwen::Skin::TexturedBase* pSkin = new Gwen::Skin::TexturedBase( pRenderer );
 	pSkin->Init("DefaultSkin.png");
+	//pSkin->SetDefaultFont( L"OpenSans.ttf", 11 );
 
 	//
 	// Create a Canvas (it's root, on which all other GWEN panels are created)
 	//
+
 	Gwen::Controls::Canvas* pCanvas = new Gwen::Controls::Canvas( pSkin );
-	pCanvas->SetSize( 998, 650 - 24 );
+	pCanvas->SetSize( width, height );
 	pCanvas->SetDrawBackground( true );
 	pCanvas->SetBackgroundColor( Gwen::Color( 150, 170, 170, 255 ) );
 
@@ -134,7 +133,7 @@ int main()
 	pUnit->SetPos( 10, 10 );
 
 	//
-	// Create a Windows Control helper 
+	// Create a Windows Control helper
 	// (Processes Windows MSG's and fires input at GWEN)
 	//
 	Gwen::Input::Windows* pInput = new Gwen::Input::Windows();
