@@ -2,14 +2,12 @@
 - Unofficial mirror of GWEN - GUI Without Extravagant Nonsense
 
 ## Major changes
-- Image decoding through [stb_image library by Sean Barrett](http://nothings.org).
-- Truetype font support through [stb_truetype library by Sean Barrett](http://nothings.org).
-- FreeImage library removed.
+- Switched from FreeImage to [stb_image](http://nothings.org), an image decoding library by Sean Barrett.
+- Rendering with [stb_truetype](http://nothings.org), a truetype font library by Sean Barrett.
 
 ## Major issues to fix
-- Unicode strings are broken and wont render properly.
-- Dirty and hack-ish implementation right now. Needs cleaning.
 - Some truetype fonts make the app to crash (like Impact font).
+- Some glyphs will not render properly.
 
 ## Links
 - [Check also official GWEN repository](http://code.google.com/p/gwen/)

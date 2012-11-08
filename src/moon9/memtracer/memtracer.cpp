@@ -286,18 +286,18 @@ namespace moon9
 
                             current = (size_t)( ++ibegin * 100.0 / iend );
 
-                            moon9::string  line( "\t\1) Leak \2 bytes [\3] backtrace \4/\5 (\6%)\r\n", ibegin, the_leak->size, the_address, ibegin, iend, percent = current );
+                            moon9::string  line( "\1) Leak \2 bytes [\3] backtrace \4/\5 (\6%)\r\n", ibegin, the_leak->size, the_address, ibegin, iend, percent = current );
                             moon9::strings lines = moon9::string( the_callstack->str("\2\n", 2) ).tokenize("\n");
 
                             for( size_t i = 0; i < lines.size(); ++i )
-                                line << moon9::string( "\t\t\1\r\n", lines[i] );
+                                line << moon9::string( "\t\1\r\n", lines[i] );
 
                             kBooPrint( line );
 
                             body << line;
                         }
 
-                        footer = moon9::string( "<moon9/memtracer/memtracer.cpp> says: End of report. \1, \2 leaks found; \3 bytes wasted ('\4' score). Done!\r\n", !n_leak ? "Ok" : "Error", n_leak, wasted, score );
+                        footer = moon9::string( "<moon9/memtracer/memtracer.cpp> says: End of report. \1, \2 leaks found; \3 bytes wasted ('\4' score)\r\n", !n_leak ? "Ok" : "Error", n_leak, wasted, score );
 
                         kBooPrint( footer );
 

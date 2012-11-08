@@ -11,6 +11,7 @@
 #include "fontstash.hpp"
 #include "font.hpp"
 #include "system_fonts.hpp"
+#include "utf8.h"
 
 #define single(...) do { static struct _do_only_once_ { _do_only_once_() { __VA_ARGS__; } } _do_only_once__; } while(0)
 
@@ -23,6 +24,7 @@ namespace
     struct style
     {
         std::string name;
+        int height;
         int face;
         float pt;
     };
@@ -78,7 +80,7 @@ namespace
             // error, couldnt load fontface
             // try system font instead (just in case)
 
-            fontface = sth_add_font( stash, find_system_font(pathfile).c_str() );
+            fontface = sth_add_font( stash, locate_system_font( pathfile ).c_str() );
 
             if( !fontface )
                 return 0; // no luck :(
@@ -98,6 +100,7 @@ namespace
             invalid.name = std::string();
             invalid.pt = 0.f;
             invalid.face = 0;
+            invalid.height = 0;
 
             return invalid;
         }
@@ -135,13 +138,24 @@ namespace
         if( face <= 0 )
             return false; // invalid face
 
+        float minx = 0, miny = 0, maxx = 0, maxy = 0;
+        sth_dim_text( stash, face, pt, "|", &minx, &miny, &maxx, &maxy);
+
         style &s = ( styles[ id ] = styles[ id ] );
 
         s.name = pathfile;
         s.pt = pt;
         s.face = face;
+        s.height = int(maxy);
 
         return true;
+    }
+
+    std::string UTF16toUTF8(const std::wstring& utf16)
+    {
+        std::string utf8line;
+        utf8::utf16to8(utf16.begin(), utf16.end(), std::back_inserter(utf8line));
+        return utf8line;
     }
 }
 
@@ -155,36 +169,48 @@ namespace font
             return make_style( id, fontfile, pt );
         }
 
-        dims rect( const std::string &str, int style )
+        dims rect( const std::string &utf8, int style )
         {
             auto s = get_style( style );
-            auto result = make_rect( s.face, s.pt, str );
-            dims d = { result.first, result.second };
+            auto result = make_rect( s.face, s.pt, utf8 );
+            dims d = { result.first, utf8 == " " ? s.height : result.second };
             return d;
+        }
+
+        dims rect( const std::wstring &utf16, int style )
+        {
+            return rect( UTF16toUTF8(utf16), style );
+        }
+    }
+
+    namespace metrics
+    {
+        int height( int style_id )
+        {
+            return get_style( style_id ).height;
         }
     }
 
     void color( float r, float g, float b, float a )
     {
+        /*
+        We could fetch color directly from GL instead. Something like:
+
+        float currentColor[4];
+        glGetFloatv(GL_CURRENT_COLOR,currentColor);
+
+        However, a major drawback is that wont work unless some tinted geometry has been submitted already.
+        */
+
         rgba[0] = (GLubyte)(r);
         rgba[1] = (GLubyte)(g);
         rgba[2] = (GLubyte)(b);
         rgba[3] = (GLubyte)(a);
     }
 
-    void batch( const std::string &str, float x, float y, int style_id )
+    void batch( const std::string &utf8, float x, float y, int style_id )
     {
-#if 0
-        texts.push_back( text() );
-        text &t = texts.back();
-
-        t.str = str;
-        t.x = x;
-        t.y = y;
-        t.face = get_style( style ).face;
-        t.pt = get_style( style ).pt;
-#else
-        moon9::strings lines = moon9::string( str ).split("\n");
+        moon9::strings lines = moon9::string( utf8 ).split("\n");
 
         style st = get_style( style_id );
 
@@ -197,8 +223,9 @@ namespace font
                 text &t = texts.back();
 
                 t.str = *it;
+
                 t.x = x;
-                t.y = py;
+                t.y = y;
                 t.st = st;
                 t.rgba[0] = rgba[0];
                 t.rgba[1] = rgba[1];
@@ -214,7 +241,11 @@ namespace font
             py += 13 / 2;
     #endif
         }
-#endif
+    }
+
+    void batch( const std::wstring &utf16, float x, float y, int style_id )
+    {
+        batch( UTF16toUTF8(utf16), x, y, style_id );
     }
 
     void submit()

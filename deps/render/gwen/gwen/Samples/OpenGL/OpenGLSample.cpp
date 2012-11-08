@@ -86,7 +86,7 @@ HGLRC CreateOpenGLDeviceContext()
 	return OpenGLContext;
 }
 
-int main()
+int main( int argc, const char **argv )
 {
 	//
 	// Create a new window
@@ -115,7 +115,9 @@ int main()
 	//
 	Gwen::Skin::TexturedBase* pSkin = new Gwen::Skin::TexturedBase( pRenderer );
 	pSkin->Init("DefaultSkin.png");
-	//pSkin->SetDefaultFont( L"OpenSans.ttf", 11 );
+
+	if( argc >= 2 )
+		pSkin->SetDefaultFont( Gwen::Utility::StringToUnicode(argv[1]) /* L"OpenSans.ttf" */, 11 );
 
 	//
 	// Create a Canvas (it's root, on which all other GWEN panels are created)

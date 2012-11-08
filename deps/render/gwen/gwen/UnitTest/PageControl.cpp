@@ -11,7 +11,7 @@ class PageControl : public GUnit
 	{
 		Gwen::Controls::PageControl* control = new Gwen::Controls::PageControl( this );
 		control->SetSize( 500, 300 );
-		control->SetPageCount( 5 );
+		control->SetPageCount( 3 );
 		control->onPageChanged.Add( this, &ThisClass::OnPageChanged );
 		control->onFinish.Add( this, &ThisClass::OnFinish );
 

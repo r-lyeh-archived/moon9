@@ -9,13 +9,7 @@
 
 #include <sstream>
 
-#include "stb_truetype.h" // portable truetype library
-//#include "stb_truetype.c"
-
-#include "fontstash.hpp"  // opengl renderer for stb_truetype
-//#include "fontstash.cpp"
-
-#include "font.hpp"       // abstraction for fontstash
+#include "font.hpp"       // abstraction for fontstash, which is an abstraction for stb_truetype :D
 //#include "font.cpp"
 
 namespace Gwen
@@ -30,8 +24,6 @@ namespace Gwen
 
 		namespace
 		{
-			float fontZoomFactor = 1.0f, fontOffsetY = 2, fontHeight = 0; //1,2 -> ok si size = 11 ||
-
 			int getfaceid( const std::string &facename, float pt, float scale )
 			{
 				static std::map< std::string, int > faces;
@@ -46,6 +38,11 @@ namespace Gwen
 
 				return face;
 			}
+
+			namespace tweaks
+			{
+				float zoom = 1.0f, interlining = 2;
+			}
 		}
 
 		void OpenGL_TruetypeFont::RenderText( Gwen::Font* pFont, Gwen::Point pos, const Gwen::UnicodeString& text )
@@ -53,37 +50,28 @@ namespace Gwen
 			if ( !text.length() )
 				return;
 
-			float fScale = Scale() * fontZoomFactor;
-			int face = getfaceid( std::string( pFont->facename.begin(), pFont->facename.end() ), pFont->size, fScale );
+			float fScale = Scale() * tweaks::zoom;
+			int faceid = getfaceid( std::string( pFont->facename.begin(), pFont->facename.end() ), pFont->size, fScale );
 
 			Gwen::Rect r( pos.x, pos.y );
 			Translate( r );
 
-			std::string ctext( text.begin(), text.end() );
-//			std::string ctext = Gwen::Utility::UnicodeToString( text );
-
 			font::color( m_Color.r, m_Color.g, m_Color.b, m_Color.a );
-			font::batch( ctext, r.x, r.y + fontOffsetY - fontHeight * 0.5f, face );
+			font::batch( text, r.x, r.y + tweaks::interlining - font::metrics::height(faceid) * 0.5f, faceid );
 			font::submit();
 		}
 
 		Gwen::Point OpenGL_TruetypeFont::MeasureText( Gwen::Font* pFont, const Gwen::UnicodeString& text )
 		{
-			float fScale = Scale() * fontZoomFactor;
-			int face = getfaceid( std::string( pFont->facename.begin(), pFont->facename.end() ), pFont->size, fScale );
+			float fScale = Scale() * tweaks::zoom;
+			int faceid = getfaceid( std::string( pFont->facename.begin(), pFont->facename.end() ), pFont->size, fScale );
 
-			std::string ctext( text.begin(), text.end() );
-//			std::string ctext = Gwen::Utility::UnicodeToString( text );
+			// Gwen tries to retrieve font height by using a space
+			if( text == L" " )
+				Gwen::Point( 0, font::metrics::height(faceid) );
 
-			if( ctext == " " ) // Gwen uses a space to retrieve font height, but stb_truetype seems to
-				ctext = "|";   // return a null height, so we use a '|' char instead.
-
-			auto r = font::make::rect( ctext, face );
-
-			if( ctext == "|" )
-				fontHeight = r.h;
-
-			return Gwen::Point( r.w, r.h + fontOffsetY * 2 );
+			auto r = font::make::rect( text, faceid );
+			return Gwen::Point( r.w, r.h + tweaks::interlining * 2 ); // 2 = top + bottom
 		}
 
 	}
