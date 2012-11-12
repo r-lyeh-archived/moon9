@@ -16,89 +16,100 @@
 #pragma comment(lib, "Ole32.lib")
 #pragma comment(lib, "Shell32.lib")
 
-
-std::string get_system_fonts_path()
+namespace
 {
-    std::string out;
-
-    HRESULT hr;
-    PWSTR pszPath = NULL;
-
-    hr = SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &pszPath); // supported since Windows Vista
-    if( SUCCEEDED( hr ) )
+    std::string get_system_fonts_path()
     {
-        std::wstring ws( pszPath );
+        std::string out;
 
-        out = std::string(ws.begin(), ws.end());
+        HRESULT hr;
+        PWSTR pszPath = NULL;
 
-        CoTaskMemFree(pszPath);
-    }
-
-    return out;
-}
-
-std::map< std::string, std::string > get_system_fonts()
-{
-    enum { MAX_VALUE_NAME = 256 };
-
-    std::string fonts_folder = get_system_fonts_path() + "\\";
-    std::map< std::string, std::string > out;
-
-    // read font linking information from registry, and store in std::map
-
-    LONG ret;
-
-    const char *Fonts = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
-
-    HKEY key_ft;
-    ret = RegOpenKeyExA(HKEY_LOCAL_MACHINE, Fonts, 0, KEY_QUERY_VALUE, &key_ft);
-    if (ret != ERROR_SUCCESS)
-            return out;
-
-    DWORD value_count;
-    DWORD max_data_len;
-    char value_name[MAX_VALUE_NAME];
-    BYTE *value_data;
-
-    // get font_file_name -> font_face mapping from the "Fonts" registry key
-    ret = RegQueryInfoKeyA(key_ft, NULL, NULL, NULL, NULL, NULL, NULL, &value_count, NULL, &max_data_len, NULL, NULL);
-    //assert(ret == ERROR_SUCCESS);
-
-    // no font installed
-    if (value_count == 0)
-            return out;
-
-    // max_data_len is in BYTE
-    value_data = static_cast<BYTE *>(HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS, max_data_len));
-
-    if(value_data != NULL)
-    {
-        for (DWORD i = 0; i < value_count; ++i)
+        hr = SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &pszPath); // supported since Windows Vista
+        if( SUCCEEDED( hr ) )
         {
-            DWORD name_len = MAX_VALUE_NAME;
-            DWORD data_len = max_data_len;
+            std::wstring ws( pszPath );
 
-            ret = RegEnumValueA(key_ft, i, value_name, &name_len, NULL, NULL, value_data, &data_len);
-            //assert(ret == ERROR_SUCCESS);
+            out = std::string(ws.begin(), ws.end());
 
-            std::string curr_face = value_name;
-            std::string font_file = reinterpret_cast<char *>(value_data);
-            curr_face = curr_face.substr(0, curr_face.find('(') - 1);
-            out[curr_face] = fonts_folder + font_file;
+            CoTaskMemFree(pszPath);
         }
 
-        HeapFree(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS, value_data);
+        return out;
     }
-
-
-    ret = RegCloseKey(key_ft);
-
-    return out;
 }
 
-std::string locate_system_font( const std::string &ttfname )
+namespace moon9
 {
-    return get_system_fonts()[ ttfname ];
+    namespace font
+    {
+        namespace system
+        {
+            std::map< std::string, std::string > list()
+            {
+                enum { MAX_VALUE_NAME = 256 };
+
+                std::string fonts_folder = get_system_fonts_path() + "\\";
+                std::map< std::string, std::string > out;
+
+                // read font linking information from registry, and store in std::map
+
+                LONG ret;
+
+                const char *Fonts = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts";
+
+                HKEY key_ft;
+                ret = RegOpenKeyExA(HKEY_LOCAL_MACHINE, Fonts, 0, KEY_QUERY_VALUE, &key_ft);
+                if (ret != ERROR_SUCCESS)
+                        return out;
+
+                DWORD value_count;
+                DWORD max_data_len;
+                char value_name[MAX_VALUE_NAME];
+                BYTE *value_data;
+
+                // get font_file_name -> font_face mapping from the "Fonts" registry key
+                ret = RegQueryInfoKeyA(key_ft, NULL, NULL, NULL, NULL, NULL, NULL, &value_count, NULL, &max_data_len, NULL, NULL);
+                //assert(ret == ERROR_SUCCESS);
+
+                // no font installed
+                if (value_count == 0)
+                        return out;
+
+                // max_data_len is in BYTE
+                value_data = static_cast<BYTE *>(HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS, max_data_len));
+
+                if(value_data != NULL)
+                {
+                    for (DWORD i = 0; i < value_count; ++i)
+                    {
+                        DWORD name_len = MAX_VALUE_NAME;
+                        DWORD data_len = max_data_len;
+
+                        ret = RegEnumValueA(key_ft, i, value_name, &name_len, NULL, NULL, value_data, &data_len);
+                        //assert(ret == ERROR_SUCCESS);
+
+                        std::string curr_face = value_name;
+                        std::string font_file = reinterpret_cast<char *>(value_data);
+                        curr_face = curr_face.substr(0, curr_face.find('(') - 1);
+                        out[curr_face] = fonts_folder + font_file;
+                    }
+
+                    HeapFree(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS, value_data);
+                }
+
+
+                ret = RegCloseKey(key_ft);
+
+                return out;
+            }
+
+            std::string locate( const std::string &ttfname )
+            {
+                return list()[ ttfname ];
+            }
+        }
+    }
 }
 
 #else
@@ -106,14 +117,23 @@ std::string locate_system_font( const std::string &ttfname )
 #include <string>
 #include <map>
 
-std::map< std::string, std::string > get_system_fonts()
+namespace moon9
 {
-    return std::map< std::string, std::string >();
-}
+    namespace font
+    {
+        namespace system
+        {
+            std::map< std::string, std::string > list()
+            {
+                return std::map< std::string, std::string >();
+            }
 
-std::string locate_system_font( const std::string &ttfname )
-{
-    return std::string();
+            std::string locate( const std::string &ttfname )
+            {
+                return std::string();
+            }
+        }
+    }
 }
 
 #endif

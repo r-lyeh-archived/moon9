@@ -5,6 +5,7 @@
 ## Features
 - [moon9::camera](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/camera),
 - [moon9::float16](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/float16),
+- [moon9::font](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/font), render truetype fonts
 - moon9::frustum,
 - [moon9::image](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/texture/image),
 - [moon9::imgui](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/imgui),
@@ -24,6 +25,7 @@
 
 ## Dependencies
 - moon9::camera, requires GLM
+- moon9::font, requires stb_truetype, font-stash, utfcpp
 - moon9::image, requires stb_image
 - moon9::imgui, requires GLM
 - moon9::shader, requires GLEW

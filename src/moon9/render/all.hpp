@@ -1,6 +1,7 @@
 #pragma once
 
 #include "camera.hpp"
+#include "font.hpp"
 #include "float16.hpp"
 #include "frustum.hpp"
 #include "image.hpp"

@@ -60,6 +60,8 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 - [moon9::factory](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/factory), a lightweight abstract factory
 - [moon9::file](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/file), handy file class(es).
 - [moon9::format](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/format), C-formatted C++ standard string
+- [moon9::font](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/font), render truetype fonts
+- [moon9::font::system](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/font/system), locate system fonts
 - [moon9::fsm](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/fsm), a safe finite state machine implementation
 - [moon9::hash](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/hash), uniform hash class; provides interface for CRC32, GCRC, RS, JS, PJW, ELF, BKDR, SBDM, DJB, DJB2, BP, FNV, AP, BJ1, MH2, SHA1
 - [moon9::headers](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/headers), platform specific OS headers

@@ -11,7 +11,7 @@
 #include "system/system.hpp"
 #include "system/system.cpp"
 
-#include "utf/utf8.h"
+#include "utfcpp/utf8.h"
 
 #include "font.hpp"
 
@@ -82,7 +82,7 @@ namespace
             // error, couldnt load fontface
             // try system font instead (just in case)
 
-            fontface = sth_add_font( stash, locate_system_font( pathfile ).c_str() );
+            fontface = sth_add_font( stash, moon9::font::system::locate( pathfile ).c_str() );
 
             if( !fontface )
                 return 0; // no luck :(
