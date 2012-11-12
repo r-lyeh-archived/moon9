@@ -1,17 +1,17 @@
-#include <moon9/render/os.hpp>
-#include <moon9/render/render.hpp>
+#include <GL/glew.h>
 
-#include <moon9/play/component.hpp>
-#include <moon9/io/get.hpp>
+#include <assert.h>
 
-#include <moon9/string/string.hpp>
+#include <string>
+#include <vector>
 
-#include <moon9/os/alert.hpp>
+#include "fontstash/fontstash.hpp"
+#include "fontstash/fontstash.cpp"
 
-#include "fontstash.hpp"
-#include "font.hpp"
-#include "system_fonts.hpp"
-#include "utf8.h"
+#include "system/system.hpp"
+#include "system/system.cpp"
+
+#include "utf/utf8.h"
 
 #define single(...) do { static struct _do_only_once_ { _do_only_once_() { __VA_ARGS__; } } _do_only_once__; } while(0)
 
@@ -157,9 +157,78 @@ namespace
         utf8::utf16to8(utf16.begin(), utf16.end(), std::back_inserter(utf8line));
         return utf8line;
     }
+
+    std::vector<std::string> split( const std::string &text, const std::string &chars )
+    {
+        std::string map( 256, '\0' );
+
+        for( auto it = chars.begin(), end = chars.end(); it != end; ++it )
+            map[ *it ] = '\1';
+
+        std::vector<std::string> tokens;
+
+        tokens.push_back( std::string() );
+
+        for( int i = 0, end = text.size(); i < end; ++i )
+        {
+            unsigned char c = text.at(i);
+
+            std::string &str = tokens.back();
+
+            if( !map.at(c) )
+                str.push_back( c );
+            else
+            if( str.size() )
+                tokens.push_back( std::string() );
+        }
+
+        while( tokens.size() && !tokens.back().size() )
+            tokens.pop_back();
+
+        return tokens;
+    }
+
+    struct ortho
+    {
+        explicit ortho( const bool &topleft = true ) // false = bottom-left
+        {
+//                glPushAttrib( GL_TRANSFORM_BIT );
+
+            struct { GLint x, y, width, height; } viewport;
+            glGetIntegerv(GL_VIEWPORT, &viewport.x);
+
+            glMatrixMode(GL_PROJECTION);
+            glPushMatrix();
+            glLoadIdentity();
+
+            #if 1
+            if( topleft )
+            glOrtho(0,viewport.width,viewport.height,0,0,1);
+            else
+            glOrtho(0,viewport.width,0,viewport.height,0,1);
+            glMatrixMode(GL_MODELVIEW);
+            glPushMatrix();
+            glLoadIdentity();
+            //glTranslatef(0,0,0);
+            #else
+            gluOrtho2D( viewport.x, viewport.width, viewport.y, viewport.height );
+            #endif
+        }
+
+        ~ortho()
+        {
+            glMatrixMode(GL_MODELVIEW);
+            glPopMatrix();
+            glMatrixMode(GL_PROJECTION);
+            glPopMatrix();
+
+//                glPopAttrib();
+        }
+    };
 }
 
-
+namespace moon9
+{
 namespace font
 {
     namespace make
@@ -210,12 +279,12 @@ namespace font
 
     void batch( const std::string &utf8, float x, float y, int style_id )
     {
-        moon9::strings lines = moon9::string( utf8 ).split("\n");
+        std::vector<std::string> lines = split( utf8, "\n" );
 
-        style st = get_style( style_id );
+        ::style st = get_style( style_id );
 
         int py = y;
-        for( auto it = lines.begin(), end = lines.end(); it != end; ++it )
+        for( std::vector<std::string>::const_iterator it = lines.begin(), end = lines.end(); it != end; ++it )
         {
             if( *it != "\n" )
             {
@@ -263,29 +332,10 @@ namespace font
 
         // truetype
 
-        //moon9::disable::lighting no_lights;
-        //moon9::disable::depth on_top;
-
         glPushAttrib( GL_ALL_ATTRIB_BITS );
 
-        moon9::matrix::ortho flat(false);
-
-
-        //glViewport(0, 0, width, height);
-        //glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
-        //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-        //glEnable(GL_BLEND);
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //glDisable(GL_TEXTURE_2D);
-        //glMatrixMode(GL_PROJECTION);
-        //glLoadIdentity();
-        //glOrtho(0,width,0,height,-1,1);
-        //glMatrixMode(GL_MODELVIEW);
-        //glLoadIdentity();
-        //glDisable(GL_DEPTH_TEST);
-        //glColor4ub(255,255,255,255);
-        //glEnable(GL_BLEND);
-        //glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        {
+            ortho flat(false);
 
             float current_raster_position[4];
             glGetFloatv( GL_CURRENT_RASTER_POSITION, current_raster_position );
@@ -320,9 +370,12 @@ namespace font
             glEnable(GL_CULL_FACE);
 
             glRasterPos4fv( current_raster_position );
+        }
 
         glPopAttrib();
     }
 }
+}
 
 #undef single
+

@@ -9,7 +9,7 @@
 #include <iostream>
 #include <map>
 
-#include <winsock2.h> // instead of windows.h
+#include <windows.h>
 #include <shlobj.h>
 
 #pragma comment(lib, "Advapi32.lib")

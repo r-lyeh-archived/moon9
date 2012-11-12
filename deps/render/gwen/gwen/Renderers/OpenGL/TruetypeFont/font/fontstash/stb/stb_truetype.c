@@ -5,3 +5,9 @@
 #define STBTT_assert(...)    do {} while(0)
 
 #include "stb_truetype.h"
+
+#undef STBTT_assert
+#undef STBTT_free
+#undef STBTT_malloc
+
+#undef  STB_TRUETYPE_IMPLEMENTATION

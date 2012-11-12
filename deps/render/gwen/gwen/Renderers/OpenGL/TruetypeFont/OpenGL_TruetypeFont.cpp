@@ -9,8 +9,8 @@
 
 #include <sstream>
 
-#include "font.hpp"       // abstraction for fontstash, which is an abstraction for stb_truetype :D
-//#include "font.cpp"
+#include "font/font.hpp" // moon9::font is an abstraction for fontstash,
+#include "font/font.cpp" // which is itself an abstraction for stb_truetype :D
 
 namespace Gwen
 {
@@ -26,6 +26,8 @@ namespace Gwen
 		{
 			int getfaceid( const std::string &facename, float pt, float scale )
 			{
+				using namespace moon9;
+
 				static std::map< std::string, int > faces;
 
 				if( faces.find( facename ) == faces.end() )
@@ -47,6 +49,8 @@ namespace Gwen
 
 		void OpenGL_TruetypeFont::RenderText( Gwen::Font* pFont, Gwen::Point pos, const Gwen::UnicodeString& text )
 		{
+			using namespace moon9;
+
 			if ( !text.length() )
 				return;
 
@@ -63,10 +67,12 @@ namespace Gwen
 
 		Gwen::Point OpenGL_TruetypeFont::MeasureText( Gwen::Font* pFont, const Gwen::UnicodeString& text )
 		{
+			using namespace moon9;
+
 			float fScale = Scale() * tweaks::zoom;
 			int faceid = getfaceid( std::string( pFont->facename.begin(), pFont->facename.end() ), pFont->size, fScale );
 
-			// Gwen tries to retrieve font height by using a space
+			// Gwen gets font height by measuring a single space
 			if( text == L" " )
 				Gwen::Point( 0, font::metrics::height(faceid) );
 
