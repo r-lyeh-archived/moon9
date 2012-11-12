@@ -103,6 +103,10 @@ namespace moon9
 
         return coord;
     }
+    void shader::uniform( const std::string &name, float value )
+    {
+        glUniform1f( uniform(name), GLfloat(value) );
+    }
     void shader::uniform( const std::string &name, const glm::vec2 &vec )
     {
         glUniform2fv( uniform(name), 1, glm::value_ptr(vec) );

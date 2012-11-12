@@ -39,7 +39,7 @@ add_library(glfw-static STATIC ${GLFW_SRCS})
 file(GLOB SPARK_SRCS "../../../deps/render/spark/src/SPK_All.cpp" "../../../deps/render/spark/src/SPK_GL_All.cpp")
 add_library(spark-static STATIC ${SPARK_SRCS})
 
-file(GLOB GWEN_SRCS "../../../deps/render/gwen/gwen/src/*.cpp" "../../../deps/render/gwen/gwen/src/Platforms/*.cpp" "../../../deps/render/gwen/gwen/src/Controls/*.cpp" "../../../deps/render/gwen/gwen/src/Controls/Dialog/*.cpp" "../../../deps/render/gwen/gwen/src/Platforms/W*.cpp" "../../../deps/render/gwen/gwen/UnitTest/*.cpp" "../../../deps/render/gwen/gwen/Renderers/OpenGL/*.c*" "../../../deps/render/gwen/gwen/Renderers/OpenGL/DebugFont/*.cpp" "../../../deps/render/gwen/gwen/Renderers/OpenGL/TruetypeFont/*.c*")
+file(GLOB GWEN_SRCS "../../../deps/render/gwen/gwen/src/*.cpp" "../../../deps/render/gwen/gwen/src/Platforms/*.cpp" "../../../deps/render/gwen/gwen/src/Controls/*.cpp" "../../../deps/render/gwen/gwen/src/Controls/Dialog/*.cpp" "../../../deps/render/gwen/gwen/src/Platforms/W*.cpp" "../../../deps/render/gwen/gwen/UnitTest/*.cpp" "../../../deps/render/gwen/gwen/Renderers/Moon9/*.cpp*")
 add_library(gwen-static STATIC ${GWEN_SRCS})
 
 file(GLOB MOON9_RENDER_SRCS *.cpp *.hpp *.inl)

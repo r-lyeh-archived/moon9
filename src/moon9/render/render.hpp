@@ -1676,15 +1676,6 @@ namespace moon9
             }
         };
 
-        struct font : moon9::render_detail::nocopy
-        {
-            // fixme: get me to work
-            // check: http://digestingduck.blogspot.com/2009/08/font-stash.html
-            // check: http://bjoern.hoehrmann.de/utf-8/decoder/dfa/
-
-            font( const std::string &str, const std::string &fontface = "c:/windows/fonts/times.ttf", const vec2 &pos = vec2(0,0) );
-        };
-
         //vectors?
 
         struct vector : moon9::render_detail::nocopy

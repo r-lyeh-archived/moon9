@@ -35,8 +35,8 @@ void die( const std::string &reason, int errorcode )
     std::exit( errorcode );
 }
 
-void die( int errorcode )
+void die( int errorcode, const std::string &reason )
 {
-    die( std::string(), errorcode );
+    die( reason, errorcode );
 }
 

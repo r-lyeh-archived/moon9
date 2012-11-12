@@ -25,6 +25,9 @@
 
 namespace moon9
 {
+    void init_glut();
+    void init_glew();
+
     class miniwin
     {
         enum /*settings*/ { full_antialias = false };
@@ -51,12 +54,7 @@ protected:
 
         void init( float normsize, bool fullscreen )
         {
-            static struct install_1 { install_1() {
-                int argc = 0;
-                glutInit( &argc, 0 );
-                glfwInit();
-				atexit( glfwTerminate );
-            }} _1;
+            init_glut();
 
             screen_w = glutGet( GLUT_SCREEN_WIDTH );
             screen_h = glutGet( GLUT_SCREEN_HEIGHT );
@@ -81,22 +79,7 @@ protected:
 
             resize( w, h );
 
-            static struct install_2 { install_2() {
-                // Initialize GLEW
-                glewExperimental= GL_TRUE;
-                GLenum err = glewInit ();
-                if (GLEW_OK != err)
-                {
-                // Problem: glewInit failed, something is seriously wrong.
-                std::cerr << "<moon9/render/window.hpp> says: Error: " << glewGetErrorString (err) << std::endl;
-                throw "argh!";
-                }
-                // Print some infos about user's OpenGL implementation
-                std::cout << "OpenGL renderer " << glGetString(GL_VERSION) << std::endl;
-                std::cout << "OpenGL Version String: " << glGetString (GL_VERSION) << std::endl;
-                std::cout << "GLU Version String: " << gluGetString (GLU_VERSION) << std::endl;
-                std::cout << "GLEW Version String: " << glewGetString (GLEW_VERSION) <<std::endl;
-            }} _2;
+            init_glew();
 
             glInit();
         }
@@ -332,10 +315,7 @@ public:
 
         window( const std::string _title = "moon9::window", float normsize = 0.85f ) : id(0), bIsOpen(true), frames(0), w(640), h(480), fps(0), title( _title ), camera(w,h), is_fullscreen(false) //w(1280), h(720) //w(640), h(480)
         {
-            { static struct once { once() {
-                int argc = 0;
-                glutInit( &argc, 0 );
-            }}_;}
+            init_glut();
 
             int screen_w = glutGet( GLUT_SCREEN_WIDTH );
             int screen_h = glutGet( GLUT_SCREEN_HEIGHT );
@@ -427,21 +407,7 @@ public:
                     std::cout << "- Running shader " << sh.get_name() << std::endl;
             */
 
-            { static struct once { once() {
-                // Initialize GLEW
-                glewExperimental= GL_TRUE;
-                GLenum err = glewInit ();
-                if (GLEW_OK != err)
-                {
-                // Problem: glewInit failed, something is seriously wrong.
-                std::cerr << "Error: " << glewGetErrorString (err) << std::endl;
-                throw "argh!";
-                }
-                // Print some infos about user's OpenGL implementation
-                std::cout << "OpenGL Version String: " << glGetString (GL_VERSION) << std::endl;
-                std::cout << "GLU Version String: " << gluGetString (GLU_VERSION) << std::endl;
-                std::cout << "GLEW Version String: " << glewGetString (GLEW_VERSION) <<std::endl;
-            }} _; }
+            init_glew();
 
             //wglSwapIntervalEXT(1);
 

@@ -52,6 +52,7 @@ namespace moon9
             std::string  get_log() const;
 
             GLint uniform( const std::string &name );
+             void uniform( const std::string &name, float value );
              void uniform( const std::string &name, const glm::vec2 &vec );
              void uniform( const std::string &name, const glm::vec3 &vec );
              void uniform( const std::string &name, const glm::vec4 &vec );
