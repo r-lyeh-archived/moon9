@@ -81,6 +81,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "texture.hpp"
+
 
 
 namespace moon9
@@ -569,13 +571,48 @@ namespace moon9
             explicit
             texture( const std::string &pathFile, const bool high_quality = true ) : id( 0 )
             {
+#if 0
                 id = manager( true, pathFile, high_quality );
 
                 glEnable(GL_TEXTURE_2D);
+#else
+                if( !pathFile.size() )
+                    return;
+
+                static moon9::texturemap map;
+
+                if( map.find( pathFile ) )
+                {
+                    id = map.found().id;
+                }
+                else
+                {
+                    moon9::texture &tx = ( map[ pathFile ] = map[ pathFile ] );
+
+                    tx.load( pathFile ); //, mirror_w, mirror_h );
+                    tx.submit();
+
+                    id = tx.id;
+                }
+
+                glEnable(GL_TEXTURE_2D);
+
+                glBindTexture(GL_TEXTURE_2D, id );
+
+                config_filtering( high_quality );
+#endif
             }
 
             explicit
             texture( size_t texture_id ) : id( texture_id )
+            {
+                glEnable(GL_TEXTURE_2D);
+
+                glBindTexture(GL_TEXTURE_2D, id );
+            }
+
+            explicit
+            texture( const moon9::texture &t ) : id(t.id)
             {
                 glEnable(GL_TEXTURE_2D);
 

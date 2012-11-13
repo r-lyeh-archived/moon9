@@ -44,6 +44,7 @@ namespace moon9
         size_t delegate(); // useful to delegate texture id to another consumer. this avoids texture destruction when ~texture()
 
         inline const size_t size() const { return this->std::vector<pixel>::size(); }
+        bool loaded() const { return this->std::vector<pixel>::size() != 0; }
 
         inline pixel &at( size_t offset ) { return this->std::vector<pixel>::at( offset ); }
         inline pixel &at( size_t x, size_t y ) { return this->std::vector<pixel>::at( x + y * w ); }
@@ -61,5 +62,31 @@ namespace moon9
         void display( const std::string &title = std::string() ) const;
     };
 
-    typedef std::map< std::string, texture > texturemap;
+    class texturemap : public std::map< std::string, texture >
+    {
+        std::map< std::string, texture >::iterator cursor;
+
+        public:
+
+        texturemap()
+        {
+            cursor = this->end();
+        }
+
+        inline bool find( const std::string &pathfile )
+        {
+            cursor = this->std::map< std::string, texture >::find( pathfile );
+            return cursor != this->end();
+        }
+
+        inline const texture &found() const
+        {
+            return cursor->second;
+        }
+
+        inline texture &found()
+        {
+            return cursor->second;
+        }
+    };
 }

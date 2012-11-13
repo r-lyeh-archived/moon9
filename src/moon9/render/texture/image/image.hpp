@@ -57,6 +57,7 @@ namespace moon9
         bool save_as_tga( const std::string &filename ) const;
 
         inline const size_t size() const { return this->std::vector<pixel>::size(); }
+        bool loaded() const { return this->std::vector<pixel>::size() != 0; }
 
         inline pixel &at( size_t offset ) { return this->std::vector<pixel>::at( offset ); }
         inline pixel &at( size_t x, size_t y ) { return this->std::vector<pixel>::at( x + y * w ); }

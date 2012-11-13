@@ -730,7 +730,7 @@ public:
 
     };
 
-    class miniwin2 : public moon9::window
+    class window2 : public moon9::window
     {
         // void close();
 
@@ -739,14 +739,14 @@ public:
 
         bool _open;
 
-        static const miniwin2 *active;
+        static const window2 *active;
 
         public:
 
-        miniwin2() : moon9::window( "moon9", 0.75f ), _open( true )
+        window2() : moon9::window( "moon9", 0.75f ), _open( true )
         {}
 
-        explicit miniwin2( const std::string &title, float relsize = 0.85f ) : moon9::window( title, relsize ), _open( true )
+        explicit window2( const std::string &title, float relsize = 0.85f ) : moon9::window( title, relsize ), _open( true )
         {}
 
         bool is_open()

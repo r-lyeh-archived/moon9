@@ -57,129 +57,129 @@ GLuint g_Indices[24] = {
 
 #define SINGLE(...) do { static struct once { once() { __VA_ARGS__; } } _; } while( 0 )
 
-class cvbo
+namespace moon9
 {
-    GLuint g_uiVerticesVBO;
-    GLuint g_uiIndicesVBO;
-
-    public:
-
-    cvbo() : g_uiVerticesVBO(0), g_uiIndicesVBO(0)
-    {}
-
-    ~cvbo()
+    class vbo2
     {
-        clear();
-    }
+        GLuint g_uiVerticesVBO;
+        GLuint g_uiIndicesVBO;
 
-    void init()
-    {
-        clear();
+        public:
 
-        // Create VBO's
-        glGenBuffersARB( 1, &g_uiVerticesVBO );
-        glGenBuffersARB( 1, &g_uiIndicesVBO );
-    }
+        vbo2() : g_uiVerticesVBO(0), g_uiIndicesVBO(0)
+        {}
 
-    void clear()
-    {
-        if( g_uiIndicesVBO != 0 )
+        ~vbo2()
         {
-            glDeleteBuffersARB( 1, &g_uiIndicesVBO );
-            g_uiIndicesVBO = 0;
+            clear();
         }
-        if( g_uiVerticesVBO != 0 )
+
+        void init()
         {
-            glDeleteBuffersARB( 1, &g_uiVerticesVBO );
-            g_uiVerticesVBO = 0;
+            clear();
+
+            // Create VBO's
+            glGenBuffersARB( 1, &g_uiVerticesVBO );
+            glGenBuffersARB( 1, &g_uiIndicesVBO );
         }
-    }
 
-    void set()
-    {
-        SINGLE(
-            moon9::init_glut();
-            moon9::init_glew();
-        );
+        void clear()
+        {
+            if( g_uiIndicesVBO != 0 )
+            {
+                glDeleteBuffersARB( 1, &g_uiIndicesVBO );
+                g_uiIndicesVBO = 0;
+            }
+            if( g_uiVerticesVBO != 0 )
+            {
+                glDeleteBuffersARB( 1, &g_uiVerticesVBO );
+                g_uiVerticesVBO = 0;
+            }
+        }
 
-        clear();
-        init();
+        void set()
+        {
+            SINGLE(
+                moon9::init_glut();
+                moon9::init_glew();
+            );
 
-        // Copy the vertex data to the VBO
-        glBindBufferARB( GL_ARRAY_BUFFER_ARB, g_uiVerticesVBO );
-        glBufferDataARB( GL_ARRAY_BUFFER_ARB, sizeof(g_Vertices), g_Vertices, GL_STATIC_DRAW_ARB );
-        glBindBufferARB( GL_ARRAY_BUFFER_ARB, 0 );
+            clear();
+            init();
 
-        // Copy the index data to the VBO
-        glBindBufferARB( GL_ELEMENT_ARRAY_BUFFER_ARB, g_uiIndicesVBO );
-        glBufferDataARB( GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(g_Indices), g_Indices, GL_STATIC_DRAW_ARB );
-        glBindBufferARB( GL_ELEMENT_ARRAY_BUFFER_ARB, 0 );
-    }
+            // Copy the vertex data to the VBO
+            glBindBufferARB( GL_ARRAY_BUFFER_ARB, g_uiVerticesVBO );
+            glBufferDataARB( GL_ARRAY_BUFFER_ARB, sizeof(g_Vertices), g_Vertices, GL_STATIC_DRAW_ARB );
+            glBindBufferARB( GL_ARRAY_BUFFER_ARB, 0 );
 
-    void bind()
-    {
-        // We need to enable the client stats for the vertex attributes we want
-        // to render even if we are not using client-side vertex arrays.
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
+            // Copy the index data to the VBO
+            glBindBufferARB( GL_ELEMENT_ARRAY_BUFFER_ARB, g_uiIndicesVBO );
+            glBufferDataARB( GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(g_Indices), g_Indices, GL_STATIC_DRAW_ARB );
+            glBindBufferARB( GL_ELEMENT_ARRAY_BUFFER_ARB, 0 );
+        }
 
-        // Bind the vertices's VBO
-        glBindBufferARB( GL_ARRAY_BUFFER_ARB, g_uiVerticesVBO );
-        glVertexPointer( 3, GL_FLOAT, sizeof(VertexXYZColor), MEMBER_OFFSET(VertexXYZColor,m_Pos) );
-        glColorPointer( 3, GL_FLOAT, sizeof(VertexXYZColor), MEMBER_OFFSET(VertexXYZColor,m_Color) );
+        void bind()
+        {
+            // We need to enable the client stats for the vertex attributes we want
+            // to render even if we are not using client-side vertex arrays.
+            glEnableClientState(GL_VERTEX_ARRAY);
+            glEnableClientState(GL_COLOR_ARRAY);
 
-        // Bind the indices's VBO
-        glBindBufferARB( GL_ELEMENT_ARRAY_BUFFER_ARB, g_uiIndicesVBO );
-    }
+            // Bind the vertices's VBO
+            glBindBufferARB( GL_ARRAY_BUFFER_ARB, g_uiVerticesVBO );
+            glVertexPointer( 3, GL_FLOAT, sizeof(VertexXYZColor), MEMBER_OFFSET(VertexXYZColor,m_Pos) );
+            glColorPointer( 3, GL_FLOAT, sizeof(VertexXYZColor), MEMBER_OFFSET(VertexXYZColor,m_Color) );
 
-    void submit()
-    {
-        glDrawElements( GL_QUADS, 24, GL_UNSIGNED_INT, BUFFER_OFFSET( 0 ) );
-    }
+            // Bind the indices's VBO
+            glBindBufferARB( GL_ELEMENT_ARRAY_BUFFER_ARB, g_uiIndicesVBO );
+        }
 
-    void unbind()
-    {
-        // Unbind buffers so client-side vertex arrays still work.
-        glBindBufferARB( GL_ELEMENT_ARRAY_BUFFER_ARB, 0 );
-        glBindBufferARB( GL_ARRAY_BUFFER_ARB, 0 );
+        void submit()
+        {
+            glDrawElements( GL_QUADS, 24, GL_UNSIGNED_INT, BUFFER_OFFSET( 0 ) );
+        }
 
-        // Disable the client side arrays again.
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_COLOR_ARRAY);
-    }
-};
+        void unbind()
+        {
+            // Unbind buffers so client-side vertex arrays still work.
+            glBindBufferARB( GL_ELEMENT_ARRAY_BUFFER_ARB, 0 );
+            glBindBufferARB( GL_ARRAY_BUFFER_ARB, 0 );
 
-cvbo vbo;
+            // Disable the client side arrays again.
+            glDisableClientState(GL_VERTEX_ARRAY);
+            glDisableClientState(GL_COLOR_ARRAY);
+        }
+    };
 
-// SHADER
+}
 
-moon9::shader shader;
+#include <moon9/render/texture.hpp>
+#include <moon9/render/md2.hpp>
 
-// WINDOW
+#include <moon9/time/fps.hpp>
+#include <moon9/time/tweener.hpp>
 
-class window : public moon9::window
+int main( int argc, char **argv )
 {
-    public:
+    moon9::window2 app;
+    moon9::camera camera;
+    moon9::vbo2 vbo;
+    moon9::shader shader;
+    moon9::tweener tweener;
+    moon9::fps fps;
 
-    window() : moon9::window( "template", 0.5f )
-    {}
+    vbo.set();
 
-    virtual void update( double t, float dt )
+    moon9::md2 md2;
+    md2.load( moon9::file("alita/tris.md2").read() );
+    moon9::texture texture;
+    texture.load( "alita/tris.png" );
+    texture.submit();
+
+    camera.position = moon9::vec3(10,10,10);
+
+    while( app.is_open() )
     {
-        camera.position = moon9::vec3(10,10,10);
-        camera.lookat( moon9::vec3(0,0,0) );
-        camera.update();
-    }
-
-    virtual void render( double t, float dt )
-    {
-        glClearColor( 0.2f, 0.2f, 0.2f, 1.0f );
-        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-        camera.apply();
-
-//        if( MOON9_COMPILE_LIST ) render_random_world( 150, 50 );
-
         if( 0 )
         {
             moon9::file file("template.shader.glsl");
@@ -194,36 +194,28 @@ class window : public moon9::window
             }
         }
 
-        //shader.enable();
-        //shader.uniform( "mvp", camera.mvp );
+        glClearColor( 0.2f, 0.2f, 0.2f, 1.0f );
+        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+        camera.wasdec( 0, 0.2f, 0, 0, 0, 0 );
+        camera.lookat( moon9::vec3(0,0,0) );
+        camera.resize( app.w, app.h );
+        camera.update();
+        camera.apply();
+
+        {
+            moon9::matrix::scale scl(2.f);
+            moon9::geometry::axes axes;
+        }
 
         vbo.bind();
         vbo.submit();
         vbo.unbind();
 
-        //shader.disable();
-    }
-
-    virtual bool is_open()
-    {
-        return moon9::window::is_open();
-    }
-
-    virtual void flush()
-    {
-        return moon9::window::flush();
-    }
-};
-
-int main( int argc, char **argv )
-{
-    window app;
-
-    vbo.set();
-
-    while( app.is_open() )
-    {
         app.flush();
+
+        fps.tick();
+        fps.wait(60.f);
     }
 
     return 0;

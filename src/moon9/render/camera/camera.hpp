@@ -325,7 +325,7 @@ namespace moon9
         }
 
         // typical fps controller
-        void wsadec( int ws, int ad, int ec, int wheel )
+        void wsadec( float ws, float ad, float ec, float wheel = 0 )
         {
             position += forward * ws;
             position += right * ad;
@@ -334,7 +334,12 @@ namespace moon9
             fov += -wheel;
         }
 
-        void wsadec( int w, int s, int a, int d, int e, int c, int wheel )
+        void wsadec( float w, float s, float a, float d, float e, float c, float wheel = 0 )
+        {
+            wsadec( w-s, d-a, e-c, wheel );
+        }
+
+        void wasdec( float w, float a, float s, float d, float e, float c, float wheel = 0 )
         {
             wsadec( w-s, d-a, e-c, wheel );
         }
