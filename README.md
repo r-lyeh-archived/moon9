@@ -108,4 +108,4 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 OTHER DEALINGS IN THE SOFTWARE.
 
 ## Screenshots (may be outdated!)
-- ![image](http://i.imgur.com/PPzich.png)
+- ![image](http://i.imgur.com/PPzic.png)
