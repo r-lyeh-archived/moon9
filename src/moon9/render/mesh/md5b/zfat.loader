@@ -1,0 +1,52 @@
+// default.loader
+
+// Load md5 mesh file
+model "models/zfat/zfat.md5mesh"
+
+// Load textures
+decalMap "fatty" "models/zfat/textures/fatty_d.tga"
+specularMap "fatty" "models/zfat/textures/fatty_s.tga"
+normalMap "fatty" "models/zfat/textures/fatty_local.tga"
+heightMap "fatty" "models/zfat/textures/fatty_h.tga"
+
+decalMap "monkeywrench" "models/zfat/textures/monkeywrench.tga"
+normalMap "monkeywrench" "models/zfat/textures/monkeywrench_local.tga"
+
+decalMap "skeleton01" "models/zfat/textures/skeleton01_d.tga"
+specularMap "skeleton01" "models/zfat/textures/skeleton01_s.tga"
+normalMap "skeleton01" "models/zfat/textures/skeleton01_local.tga"
+heightMap "skeleton01" "models/zfat/textures/skeleton01_h.tga"
+
+// Hide meshes
+//hide "fatty" // !!!
+//hide "monkeywrench" // !!!
+hide "fattydamage"
+//hide "skeleton01"
+
+// Load animations
+anim "models/zfat/idle1.md5anim"
+anim "models/zfat/attack2.md5anim"
+anim "models/zfat/walk1.md5anim"
+anim "models/zfat/walk2.md5anim" 
+anim "models/zfat/walk3.md5anim" 
+anim "models/zfat/walk4.md5anim" 
+anim "models/zfat/attack2.md5anim" 
+anim "models/zfat/attack3.md5anim" 
+anim "models/zfat/attack_leftslap.md5anim" 
+anim "models/zfat/barrel_Idle.md5anim" 
+anim "models/zfat/barrel_Throw.md5anim" 
+anim "models/zfat/bellypain.md5anim" 
+anim "models/zfat/death1_pose.md5anim" 
+anim "models/zfat/facepain.md5anim" 
+anim "models/zfat/idle1.md5anim" 
+anim "models/zfat/initial.md5anim" 
+anim "models/zfat/leftarmpain.md5anim" 
+anim "models/zfat/pipeattack1.md5anim" 
+anim "models/zfat/pipeidle.md5anim" 
+anim "models/zfat/pipesight.md5anim" 
+anim "models/zfat/pipewalk4.md5anim" 
+anim "models/zfat/rightarmpain.md5anim" 
+anim "models/zfat/sight3.md5anim" 
+
+// Set animation to play
+setAnim "idle1"

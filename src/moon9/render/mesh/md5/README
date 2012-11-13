@@ -1,0 +1,162 @@
+	================================
+	    OpenGL MD5 Model viewer
+	================================
+
+ Contact
+----------------------------------------
+author: David HENRY
+mail: tfc_duke@club-internet.fr (french/english)
+web site: http://tfc.duke.free.fr
+last release: 2007-01-28
+
+
+ What is it?
+----------------------------------------
+This program is an OpenGL demo which display an animated
+md5mesh model.  md5mesh is the model format used in Doom3.
+Animations are in separate *.md5anim files.
+
+This demo has nothing to do with the MD5 cryptographic hash
+function!
+
+This demo has been developped under GNU/Linux and the win32
+binary has been built with a cross compiler (MinGW). There
+are 5 render paths:
+  - No bump mapping, through fixed pipeline (if your hardware
+    doesn't support shaders or ARB programs);
+  - Bump mapping with diffuse component only, through ARB
+    vertex and fragment programs;
+  - Bump mapping with diffuse and specular components, through
+    ARB vp & fp;
+  - Bump mapping with diffuse/specular and parallax mapping,
+    through ARB vp & fp;
+  - Bump mapping with diffuse/specular and parallax mapping
+    (optional), through GLSL.
+
+You can use ARB programs if you have the following extensions:
+  - GL_ARB_vertex_program
+  - GL_ARB_fragment_program
+
+You can use GLSL shader if you have the following extensions:
+  - GL_ARB_shader_objects extension
+  - GL_ARB_shading_language_100 extension
+  - GL_ARB_vertex_shader extension
+  - GL_ARB_fragment_shader extension
+
+The bump mapping width diffuse and specular through ARB vp & fp
+should be identical than through GLSL shader. However, the parallax
+mapping gives different results...
+
+Parallax mapping has been implemented for testing, but it doesn't
+give better results here (or I wrongly implemented it). So it's
+disabled by default.
+
+
+ Building the source
+----------------------------------------
+See the INSTALL file.
+
+
+ Running the demo
+----------------------------------------
+Under GNU/Linux, type './OpenGLMD5Loader' in the demo
+directory. Under Windows, run OpenGLMD5Loader.exe.
+
+The demo uses a little script file to know which model
+and animations to load.  These files have the ".loader"
+extension, but this is not an obligation.
+
+The demo read the file passed in argument.  If none is
+passed to the demo, the default.loader file is used.
+
+You can pass a loader script or a .md5mesh file to the
+program. Note: if you pass a .md5mesh file, the model
+will neither be textured nor animated (you will just
+have the meshes contained in the .md5mesh file).
+
+The .loader script syntax is described below in this
+readme file.
+
+
+ Keyboard and mouse input
+----------------------------------------
+Keyboard:
+ * 'F3': render path "fixed pipeline"
+ * 'F4': render path "bump diffuse (ARB vp & fp)"
+ * 'F5': render path "bump diffuse specular (ARB vp & fp)"
+ * 'F6': render path "bump diffuse specular parallax (ARB vp & fp)"
+ * 'F7': render path "bump diffuse specular parallax (GLSL)"
+ * 'H': toggle GLSL shaders
+ * 'P': toggle parallax offset (for GLSL shader only)
+ * 'W': toggle wireframe/filled mode
+ * 'S': toggle smooth/flat shaded mode (in FFP mode)
+ * 'L': toggle light (in FFP mode)
+ * 'N': toggle show normals
+ * 'T': toggle texture 2D (in FFP mode)
+ * 'K': toggle show model's skeleton
+ * 'J': toggle show joint labels (if skeleton is drawn)
+ * 'B': toggle show bounding box
+ * 'C': toggle backface culling
+ * 'SPACE': toggle pause animation
+ * LEFT/RIGHT arrows: play previous/next animation
+ * 'F1': toggle fullscreen/windowed mode (problematic under Windows)
+ * 'ESCAPE': quit
+
+Mouse:
+ * left button: rotation
+ * right button: zoom
+ * button left + shift: translation
+
+
+Known problems
+----------------------------------------
+Under Windows, resizing the window may behave strangely (lost
+off all the textures, which are not reloaded). This is because
+Windows sucks.
+
+Under Windows, drag & dropping a file onto the executable does
+not work (frankly, I don't know why). This is probably because
+SDL sucks.
+
+Under Windows, full screen doesn't work either. This is because
+SDL sucks (sure).
+
+Windows users are condemned to stuck in 640x480, or switch
+to a real operating system :p
+
+
+ loader script files' syntax
+----------------------------------------
+You can pass a file in parameter of the program in order
+to use it instead of default.loader for loading MD5 model
+and its animations.
+
+Here is the syntax:
+ * Loading a model:
+   model "where/is/your/model/yourmodel.md5mesh"
+
+ * Loading a texture:
+   decalMap "name_of_the_mesh" "where/is/your/texture/yourtexture.tga"
+
+   There is also specularMap, normalMap and heightMap commands.
+
+ * Loading an animation:
+   anim "where/is/your/anim/youranim.md5anim"
+
+ * Hiding a mesh from the md5mesh file:
+   hide "name_of_the_mesh"
+
+ * Setting up default animation to play:
+   setAnim "youranim"
+
+You must first load a model.  You can set the animation
+to play after having loaded the animation file, but it
+has no effect if you do before.
+
+The ".loader" extension is not necessary, you can give
+a *.txt or *.foobar file if you want, provided it is a valid
+script loader for the MD5 Viewer.
+
+Mesh names ("name_of_the_mesh") are defined by the "shader"
+variable in the .md5mesh files.  This is the shader string
+without the path, i.e. the portion after the last '/'.

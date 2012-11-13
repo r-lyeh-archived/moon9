@@ -1,0 +1,77 @@
+	================================
+	    OpenGL MD3 Model viewer
+	================================
+
+ Contact
+----------------------------------------
+author: David HENRY
+mail: tfc_duke@club-internet.fr (french/english)
+web site: http://tfc.duke.free.fr
+last release: 13th july 2007
+
+
+ What is it?
+----------------------------------------
+This program is a free model viewer for Quake 3's MD3 file
+format, programmed in C++.
+
+The demo need the path to a directory containing a player
+model (upper.md3, lower.md3, head.md3 and associated textures)
+as first parameter, and the path to a directory containing a
+weapon (optional).
+
+You can also pass a *.md3 file as parameter,
+the program will try to load a player in the directory
+in which it is.
+
+For example, the following command:
+
+   ./OpenGLMD3Loader models/players/harley
+
+will load the player from the models/players/harley directory,
+and the command:
+
+   ./OpenGLMD3Loader models/players/harley models/weapons2/plasma
+
+will load the player and a weapon.
+
+Under Windows, you can drag and drop a directory onto the
+OpenGLMD3Loader.exe, or open a *.md3 file with the
+"open with..." menu.
+
+
+ Notes
+----------------------------------------
+ * this program uses the GLUT library.
+ * uses a texture manager which support TGA and JPEG image formats.
+ * source code has been compiled under GNU/Linux with GCC 4.1.1
+   and under Windows with MinGW 3.4.2.
+ * source code is licenced under the MIT licence.
+ * requires the boost library for compiling the source.
+
+
+ Endianess issues
+----------------------------------------
+This demo only works on little endian architectures, since the
+MD2 format is a binary file format stored in little endian order.
+The program doesn't convert file data in big endian, althrough it
+wouldn't be difficult to implement.
+
+
+ Keyboard and mouse input
+----------------------------------------
+Keyboard:
+ * 'A': toggle animation
+ * 'L': toggle OpenGL Lighting
+ * 'P': toggle weapon (if loaded)
+ * 'S': smooth shaded rendering mode
+ * 'T': toggle texture mapping
+ * 'V': change verbose mode (none, show fps, show all)
+ * 'W': whireframe rendering mode
+ * 'ESC': quit
+
+Mouse:
+ * right button: menu
+ * middle button: zoom
+ * left button: rotation
+ * left button + SHIFT: translation

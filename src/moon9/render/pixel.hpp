@@ -1,1 +1,1 @@
-#include "texture/image/pixel/pixel.hpp"
+#include "atlas/texture/image/pixel/pixel.hpp"

@@ -1,0 +1,27 @@
+// default.loader
+
+// Load md5 mesh file
+model "models/zfat/zfat.md5mesh"
+
+// Load textures
+decalMap "fatty" "models/zfat/textures/fatty_d.tga"
+specularMap "fatty" "models/zfat/textures/fatty_s.tga"
+normalMap "fatty" "models/zfat/textures/fatty_local.tga"
+heightMap "fatty" "models/zfat/textures/fatty_h.tga"
+
+decalMap "monkeywrench" "models/zfat/textures/monkeywrench.tga"
+normalMap "monkeywrench" "models/zfat/textures/monkeywrench_local.tga"
+
+// Hide meshes
+//hide fatty // !!!
+//hide monkeywrench // !!!
+hide "fattydamage"
+hide "skeleton01"
+
+// Load animations
+anim "models/zfat/idle1.md5anim"
+anim "models/zfat/attack2.md5anim"
+anim "models/zfat/walk1.md5anim"
+
+// Set animation to play
+setAnim "idle1"

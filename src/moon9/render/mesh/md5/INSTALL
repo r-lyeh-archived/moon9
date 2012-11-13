@@ -1,0 +1,41 @@
+
+ Compiling under GNU/Linux
+----------------------------------------
+In a shell, go to the demo directory and type:
+  'make'
+or
+  'make -f Makefile.linux'
+
+You'll need to have these libraries with development
+files installed on your system:
+ * OpenGL
+ * GLU
+ * glext.h (the more recent you can)
+ * libGLEW (>= 1.3.3)
+ * libSDL
+ * libSDL_ttf
+ * zlib
+ * libpng
+ * libjpeg
+ * boost
+
+There is a copy of a glext.h file in the include/GL
+directory.  You can copy it in your /usr/include/GL
+directory if yours is older.
+
+You can also build the win32 executable with MinGW
+under GNU/Linux.  The Makefile.linux-mingw does
+it (Debian/Ubuntu).
+
+
+ Compiling under Windows with MinGW
+----------------------------------------
+In a shell, go to the demo directory and type:
+  'make'
+or
+  'make -f Makefile.mingw'
+
+All dependent libraries except boost are included
+in the project, so you don't need to download them.
+
+You can grab the boost library from http://www.boost.org/

@@ -1,0 +1,99 @@
+Built release Jan 28 2007 at 17:54:24
+OpenGL Version String: 2.1.9117
+GLU Version String: 1.2.2.0 Microsoft Corporation
+GLEW Version String: 1.3.3
+* Vertex program "bump.vp" loaded
+* Vertex program "bumpparallax.vp" loaded
+* Fragment program "bumpd.fp" loaded
+* Fragment program "bumpds.fp" loaded
+* Fragment program "bumpdsp.fp" loaded
+Shader "bump.vert" InfoLog (61):
+Vertex shader was successfully compiled to run on hardware.
+
+* Vertex shader "bump.vert" compiled
+Shader "bump.frag" InfoLog (62):
+Fragment shader was successfully compiled to run on hardware.
+* Fragment shader "bump.frag" compiled
+Program "bump mapping" InfoLog (108):
+Validation warning! - Sampler value normalMap has not been set in fragment shader
+ Validation successful. 
+
+* Shader "bump mapping" successfully linked
+
+Avalaible render paths:
+ [F3] - No bump mapping (fixed pipeline)
+ [F4] - Bump mapping, diffuse only (ARB vp & fp)
+ [F5] - Bump mapping, diffuse and specular (ARB vp & fp)
+ [F6] - Bump mapping with parallax (ARB vp & fp)
+ [F7] - Bump mapping with parallax (GLSL)
+
+Render path: bump mapping with parallax (GLSL)
+Render path: no bump mapping (fixed pipeline)
+Render path: no bump mapping (fixed pipeline)
+Render path: no bump mapping (fixed pipeline)
+Render path: no bump mapping (fixed pipeline)
+Render path: no bump mapping (fixed pipeline)
+Render path: no bump mapping (fixed pipeline)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (GLSL)
+Render path: bump mapping with parallax (GLSL)
+Render path: bump mapping with parallax (GLSL)
+Render path: bump mapping with parallax (GLSL)
+Render path: bump mapping with parallax (GLSL)
+Render path: bump mapping with parallax (GLSL)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: no bump mapping (fixed pipeline)
+Render path: no bump mapping (fixed pipeline)
+Render path: no bump mapping (fixed pipeline)
+Render path: no bump mapping (fixed pipeline)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse only (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping, diffuse and specular (ARB vp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (ARB fp & fp)
+Render path: bump mapping with parallax (GLSL)
+Render path: bump mapping with parallax (GLSL)
+Render path: bump mapping with parallax (GLSL)

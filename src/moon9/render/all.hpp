@@ -1,5 +1,6 @@
 #pragma once
 
+#include "atlas.hpp"
 #include "camera.hpp"
 #include "font.hpp"
 #include "float16.hpp"

@@ -1,0 +1,31 @@
+CXX = g++
+CXXFLAGS = -ansi -Wall -O2 -Iinclude
+LD = $(CXX) -s
+LIBS = -lopengl32 -lglu32 -lglew32 -lglut32 -ljpeg
+LDFLAGS = -Llib $(LIBS)
+
+OBJS = Main.o Md3Model.o Md3Player.o Image.o Texture.o
+
+default: OpenGLMD3Loader.exe
+
+#
+# Binaries
+#
+
+OpenGLMD3Loader.exe: $(OBJS)
+	$(LD) $^ $(LDFLAGS) -o $@
+
+clean:
+	rm -f *.o core.* *~
+
+#
+# Dependencies
+#
+
+Main.o: Main.cpp Md3Player.h TextureManager.h DataManager.h DataManager.inl
+Md3Model.o: Md3Model.cpp Md3Model.h Mathlib.h Mathlib.inl TextureManager.h \
+	    DataManager.h DataManager.inl
+Md3Player.o: Md3Player.h Md3Player.cpp Md3Model.h TextureManager.h \
+             DataManager.h DataManager.inl
+Image.o: Image.cpp Image.h
+Texture.o: Texture.cpp Texture.h Image.h

@@ -1,0 +1,37 @@
+CXX = g++
+CSDL = -Iinclude/SDL
+CPNG = 
+CXXFLAGS = -Wall -ansi -O2 -Iinclude $(CSDL) $(CPNG)
+LD = $(CXX) -s
+LIBS = -lmingw32 -lglu32 -lopengl32 -mwindows -Llib -ljpeg -lglew32 -lSDL_ttf
+LSDL = -lSDLmain -lSDL
+LPNG = -lpng -lz
+LDFLAGS = $(LIBS) $(LSDL) $(LPNG)
+
+OBJS = ArbProgram.o Font.o GlErrors.o Image.o Main.o Md5Model.o Shader.o Texture.o
+
+default: OpenGLMD5Loader.exe
+
+#
+# Binaries
+#
+
+OpenGLMD5Loader.exe: $(OBJS)
+	$(LD) $^ $(LDFLAGS) -o $@
+
+clean:
+	rm -f *.o core.* *~
+
+#
+# Dependencies
+#
+
+ArbProgram.o: ArbProgram.cpp ArbProgram.h
+Font.o: Font.cpp Font.h
+GlErrors.o: GlErrors.cpp GlErrors.h
+Image.o: Image.cpp Image.h
+Main.o: ArbProgram.h Font.h Main.h Main.cpp Md5Model.h Mathlib.h Mathlib.inl \
+	Shader.h TextureManager.h Texture.h DataManager.h DataManager.inl
+Md5Model.o: Font.h Main.h Md5Model.cpp Md5Model.h Mathlib.h Mathlib.inl Shader.h Texture.h
+Shader.o: Shader.cpp Shader.h GlErrors.h
+Texture.o: Texture.cpp Texture.h Image.h GlErrors.h

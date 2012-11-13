@@ -51,7 +51,7 @@ add_library(moon9-render-static STATIC ${MOON9_RENDER_SRCS})
 
 ##add_executable(frustum.sample                 camera/frustum/frustum.sample.cpp)
 add_executable(float16.sample                   float16/float16.sample.cpp)
-add_executable(image.sample                     texture/image/image.sample.cpp)
+add_executable(image.sample                     atlas/texture/image/image.sample.cpp)
 add_executable(window.sample                    window.sample.cpp ../time/wink.cpp ../spatial/utils.cpp)
 # add_executable(md5b.sample                      md5b/*.cpp ../time/wink.cpp ../spatial/utils.cpp)
 

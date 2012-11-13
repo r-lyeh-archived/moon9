@@ -1,0 +1,50 @@
+// player.loader
+
+// Load md5 mesh file
+model "models/player/player.md5mesh"
+
+// Load textures
+decalMap "playerhead" "models/player/textures/playerhead.tga"
+specularMap "playerhead" "models/player/textures/playerhead_s.tga"
+normalMap "playerhead" "models/player/textures/playerhead_local.tga"
+heightMap "playerhead" "models/player/textures/playerhead_h.tga"
+
+decalMap "teethplayer" "models/player/textures/teeth.tga"
+specularMap "teethplayer" "models/player/textures/teeth_s.tga"
+normalMap "teethplayer" "models/player/textures/teeth_local.tga"
+
+decalMap "leftbrown" "models/player/textures/brown.tga"
+
+decalMap "rightbrown" "models/player/textures/brown.tga"
+
+decalMap "body" "models/player/textures/body.tga"
+specularMap "body" "models/player/textures/body_s.tga"
+normalMap "body" "models/player/textures/body_local.tga"
+heightMap "body" "models/player/textures/body_h.tga"
+
+decalMap "body2" "models/player/textures/body.tga"
+specularMap "body2" "models/player/textures/body_s.tga"
+normalMap "body2" "models/player/textures/body_local.tga"
+heightMap "body2" "models/player/textures/body_h.tga"
+
+decalMap "arm2" "models/player/textures/arm2.tga"
+specularMap "arm2" "models/player/textures/arm2_s.tga"
+normalMap "arm2" "models/player/textures/arm2_local.tga"
+heightMap "arm2" "models/player/textures/arm2_h.tga"
+
+// Hide meshes
+//hide "playerhead" // !!!
+//hide "teethplayer" // !!!
+//hide "leftbrown" // !!!
+//hide "rightbrown" // !!!
+//hide "body2" // !!!
+//hide "body" // !!!
+//hide "arm2" // !!!
+hide "shadow2"
+hide "shotgun_mflash"
+hide "shotgun_mflash2"
+hide "shotgun_mflashb"
+hide "rocketlauncher_mflashb"
+hide "rocketlauncher_mflash"
+hide "rocketlauncher_fx2"
+hide "rocketlauncher_fx"

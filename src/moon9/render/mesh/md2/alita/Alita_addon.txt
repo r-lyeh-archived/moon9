@@ -1,0 +1,40 @@
+2-26-99
+
+================================================================
+
+Name              : Alita Add-on pack V.90
+
+installation directory  : quake2/baseq2/players/Alita
+
+Author                  : Steve "Kender[GMNC]" Jourgensen
+
+Email Address           : kender@home.com
+
+Website Address         : http://members.tripod.com/TheGMNC
+
+Description       : 
+
+	This is a viewable weapons set for the Alita model by EvilBastard. Still a little glitchy but it's better than nothing. A new skin that I got from someone playing Lithium and sounds are also included. Note: these sounds are just the generic female sounds copied over to the directory but better than her sounding like a guy.
+
+Additional Credits to   : 
+
+	* Brian "EvilBastard" Collins : http://www.deviousassassins.com/EvilBastard/
+        * Stecki : http://deconstruct.terrafusion.com
+
+================================================================
+
+* Play Information *
+
+New Sounds              : Yes
+
+New Skins               : Yes
+
+VWEP Support            : Yes
+
+Known Bugs              : Some of the weapons, most notably the rocket launcher, go through the model at times.
+
+* Copyright / Permissions *
+QUAKE(R) and QUAKE II(R) are registered trademarks of id Software, Inc.
+Feel free to edit my model as you see fit, just be sure to mention me
+in the readme file. This model is not to be distributed as part of any
+commercial product.

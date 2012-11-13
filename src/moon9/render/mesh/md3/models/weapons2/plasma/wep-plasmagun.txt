@@ -1,0 +1,65 @@
+19th June 2000
+
+================================================================
+
+Accessory's Name	: DM-PG-002 (Doom style Plasma Gun for Q3:A)
+
+Installation directory  : quake3/baseq3/
+
+Author                  : James "HarlequiN" Taylor
+
+Email Address           : hqn@thx1138.fsnet.co.uk
+Website              :http://www.taylorbrothers-online.co.uk
+
+
+
+Accessory's description	: This accessory is an almost complete replacement for the default Q3:A Plasma Gun.
+                                                          It is intended to resemble the Plasma Gun from the original Doom games.
+
+                                                          PARTS REPLACED:
+                                                          Plasmagun model
+                                                          Plasmagun "flash" skin
+                                                          Plasmagun projectile skin
+                                                          Plasmagun damage/mark skin
+                                                          PARTS ADDED:
+                                                          New Plasmagun skins 
+                                                          New Plasmagun shaders
+                                                          
+ 
+
+Other info              : My First attempt at anything other than a skin.
+
+Previous work:
+                           PeacH for the Crash model (Skin)
+                           SKIN for the Bitterman model (Skin)
+                           Bloodbath! for the Visor model (Skin)
+                           Aze for the Visor model (Skin)
+                           Duke for the Sarge model (Skin)
+
+
+Additional Credits to   : See Editors Used, The ID team
+
+================================================================
+
+* Construction *
+
+Base                    : Existing Plasma Gun Folders and associated (Model, model skins & shaders 100% new)
+
+Editor used             : Photoshop 5.5,  Milkshape, Q3ASE, Pen & Pencil
+
+Known Bugs              : No known bugs.  If you find any, let me know :?)
+
+Build  time    : About 10 days.
+
+
+* How to use this accessory *
+
+Unpack this zip file to your BaseQ3 directory, when you restart Q3:A the standard PlasmaGun should be replaced by this one.  To return to the original design of gun simply remove the "wep-plasmagun.pk3" file from BaseQ3.
+
+* Copyright / Permissions *
+
+Doom(R), QUAKE(R) and QUAKE III Arena(R) are registered trademarks of id Software, Inc.
+
+Please, if you use this weapon mod for any distributable file (including as a base), let me know and give me credit for the work I've put in.
+
+

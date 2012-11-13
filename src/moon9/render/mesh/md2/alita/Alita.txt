@@ -1,0 +1,62 @@
+10-15-98
+
+================================================================
+
+Model Name              : Alita
+
+installation directory  : quake2/baseq2/players/Alita
+
+Author                  : Brian "EvilBastard" Collins
+
+Email Address           : brian@zono.com
+
+Website Address         : http://www.deviousassassins.com/EvilBastard/
+
+Model description       : 
+
+	Alita is another character from anime, probably my last for a while. I tried and tried to get he animations perfect. This is probably my best so far, but I have still a long way to go and alot to learn.
+
+Additional Credits to   : 
+	* Idsoftware 
+	* NST!!! I shouldn't even try and make a q2 model without it.
+
+Thanks to               :
+
+	Virus[DA]  for the suggestion, and for hosting my website.
+
+================================================================
+
+* Play Information *
+
+New Sounds              : NO
+
+CTF Skins               : YES
+
+VWEP Support            : No
+
+
+* Construction *
+
+Poly Count              : 688 tris.md2 / 38 weapon.md2
+
+Vert Count              : 355 tris.md2 / 56 weapon.md2
+
+Skin Count              : 3 DM, 2 CTF
+
+Base		        : Yohko
+
+Editor used             : 
+		Modeling - lightwave	
+		Animation- lightwave + puppetmaster
+		Skining  - NST (sorry q2modeler)
+		Painting - Photoshop, NST
+		Viewing  - Skin View 
+		
+Known Bugs              : None that i know of.
+
+
+* Copyright / Permissions *
+QUAKE(R) and QUAKE II(R) are registered trademarks of id Software, Inc.
+Feel free to edit my model as you see fit, just be sure to mention me
+in the readme file. This model is not to be distributed as part of any
+commercial product.
