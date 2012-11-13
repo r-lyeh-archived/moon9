@@ -33,6 +33,8 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
+using std::string;
+
 #include "Md3Player.h"
 #include "TextureManager.h"
 

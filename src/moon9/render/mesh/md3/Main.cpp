@@ -29,10 +29,12 @@
 #include "Md3Player.h"
 #include "TextureManager.h"
 
-using std::vector;
 using std::cout;
 using std::cerr;
 using std::endl;
+
+using std::string;
+using std::vector;
 
 // Keyboard
 struct keyboard_input_t
@@ -422,13 +424,16 @@ glPrintf (const char *format, ...)
   std::va_list arg;
   int ret;
 
-#if 0
+#ifdef _MSC_VER
+  // Format the text
+  va_start (arg, format);
+    ret = _vsnprintf (buffer, sizeof (buffer), format, arg);
+  va_end (arg);
+#else
   // Format the text
   va_start (arg, format);
     ret = std::vsnprintf (buffer, sizeof (buffer), format, arg);
   va_end (arg);
-#else
-  strcpy( buffer, format );
 #endif
 
   // Print it
@@ -775,10 +780,16 @@ main (int argc, char *argv[])
   // Initialize GLUT
   glutInit (&argc, argv);
 
+  string player, weapon;
   if (argc < 2)
     {
-      cerr << "usage: " << argv[0] << " <player path> [<weapon path>]" << endl;
-      return -1;
+      player = "models\\players\\harley";
+      weapon = "models\\weapons2\\plasma";
+    }
+    else
+    {
+      player = argv[1];
+      weapon = argv[2];
     }
 
   // create an OpenGL window
@@ -788,7 +799,7 @@ main (int argc, char *argv[])
 
   // Initialize application
   atexit (shutdownApp);
-  init (argv[1], (argc > 2) ? argv[2] : string ());
+  init ( player, weapon );
 
   // Setup glut callback functions
   glutReshapeFunc (reshape);

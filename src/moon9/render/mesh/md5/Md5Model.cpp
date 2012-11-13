@@ -15,11 +15,6 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifdef _WIN32
-#define	WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif // _WIN32
-
 #include <GL/glew.h>
 #include <iostream>
 #include <fstream>
@@ -34,6 +29,12 @@
 using std::cout;
 using std::cerr;
 using std::endl;
+
+using std::string;
+using std::vector;
+using std::map;
+
+using std::shared_ptr;
 
 
 // ----------------------8<--------------------------------------------------

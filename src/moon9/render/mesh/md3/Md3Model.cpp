@@ -21,12 +21,18 @@
 #include <iostream>
 #include <cmath>
 
+#include "Md3Model.h"
+#include "TextureManager.h"
+
 using std::cout;
 using std::cerr;
 using std::endl;
 
-#include "Md3Model.h"
-#include "TextureManager.h"
+using std::string;
+using std::vector;
+using std::map;
+
+using std::shared_ptr;
 
 
 /////////////////////////////////////////////////////////////////////////////

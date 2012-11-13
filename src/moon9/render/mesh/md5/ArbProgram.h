@@ -18,16 +18,9 @@
 #ifndef __ARB_PROGRAM_H__
 #define __ARB_PROGRAM_H__
 
-#ifdef _WIN32
-#define	WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif // _WIN32
-
 #include <GL/glew.h>
 #include <stdexcept>
 #include <string>
-
-using std::string;
 
 /////////////////////////////////////////////////////////////////////////////
 // ARB Program class diagram:
@@ -64,7 +57,7 @@ class ArbProgram
 {
 protected:
   // Constructor
-  ArbProgram (const string &filename);
+  ArbProgram (const std::string &filename);
 
 public:
   // Destructor
@@ -72,8 +65,8 @@ public:
 
 public:
   // Accessors
-  const string &name () const { return _name; }
-  const string &code () const { return _code; }
+  const std::string &name () const { return _name; }
+  const std::string &code () const { return _code; }
   GLuint handle () const { return _handle; }
   bool fail () const { return _fail; }
 
@@ -89,13 +82,13 @@ protected:
   void printProgramString (int errPos);
   void load ()
     throw (std::runtime_error);
-  void loadProgramFile (const string &filename)
+  void loadProgramFile (const std::string &filename)
     throw (std::runtime_error);
 
 protected:
   // Member variables
-  string _name;
-  string _code;
+  std::string _name;
+  std::string _code;
   GLuint _handle;
   GLboolean _fail;
 };
@@ -111,7 +104,7 @@ class ArbVertexProgram : public ArbProgram
 {
 public:
   // Constructor
-  ArbVertexProgram (const string &filename);
+  ArbVertexProgram (const std::string &filename);
 
 public:
   // Return the program enum type
@@ -131,7 +124,7 @@ class ArbFragmentProgram : public ArbProgram
 {
 public:
   // Constructor
-  ArbFragmentProgram (const string &filename);
+  ArbFragmentProgram (const std::string &filename);
 
 public:
   // Return the program enum type

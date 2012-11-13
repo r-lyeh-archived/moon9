@@ -22,9 +22,6 @@
 #include <string>
 #include <map>
 
-using std::string;
-using std::map;
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -38,9 +35,9 @@ class DataManagerException : public std::runtime_error
 {
 public:
   // Constructors
-  DataManagerException (const string &error)
+  DataManagerException (const std::string &error)
     : std::runtime_error (error) { }
-  DataManagerException (const string &error, const string &name)
+  DataManagerException (const std::string &error, const std::string &name)
     : std::runtime_error (error), _which (name) { }
   virtual ~DataManagerException () throw () { }
 
@@ -52,7 +49,7 @@ public:
 
 private:
   // Member variables
-  string _which;
+  std::string _which;
 };
 
 
@@ -75,17 +72,17 @@ protected:
 
 public:
   // Public interface
-  T *request (const string &name);
+  T *request (const std::string &name);
 
-  void registerObject (const string &name, T *object)
+  void registerObject (const std::string &name, T *object)
     throw (DataManagerException);
-  void unregisterObject (const string &name, bool deleteObject = false);
+  void unregisterObject (const std::string &name, bool deleteObject = false);
 
   void purge ();
 
 private:
   // Member variables
-  typedef map<string, T*> DataMap;
+  typedef std::map<std::string, T*> DataMap;
   DataMap _registry;
 
 public:

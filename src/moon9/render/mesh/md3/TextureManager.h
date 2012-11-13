@@ -1,8 +1,8 @@
 /* -*- c++ -*- */
 /////////////////////////////////////////////////////////////////////////////
 //
-// TextureManager.h  -- Copyright (c) 2006 David Henry
-// last modification: feb. 21, 2006
+// TextureManager.h -- Copyright (c) 2006 David Henry
+// last modification: feb. 25, 2006
 //
 // This code is licenced under the MIT license.
 //
@@ -41,7 +41,7 @@ public:
 
   // Load and register a texture.  If the texture has already been
   // loaded previously, return it instead of loading it.
-  Texture2D *load (const string &filename)
+  Texture2D *load (const std::string &filename)
   {
     // Look for the texture in the registry
     Texture2D *tex = request (filename);

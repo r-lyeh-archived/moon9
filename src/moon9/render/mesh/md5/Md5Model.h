@@ -19,11 +19,6 @@
 #ifndef __MD5_H__
 #define __MD5_H__
 
-#ifdef _WIN32
-#define	WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif // _WIN32
-
 #include <string>
 #include <vector>
 #include <map>
@@ -34,12 +29,6 @@
 
 #include "Mathlib.h"
 #include "Texture.h"
-
-using std::string;
-using std::vector;
-using std::map;
-
-using std::shared_ptr;
 
 // Forward declarations
 class Md5Skeleton;
@@ -58,7 +47,7 @@ typedef GLfloat vec4_t[4];
 
 struct Md5Joint_t
 {
-  string name;
+  std::string name;
   int parent;
 
   Vector3f pos;
@@ -120,9 +109,9 @@ class Md5Exception : public std::runtime_error
 {
 public:
   // Constructors
-  Md5Exception (const string &error)
+  Md5Exception (const std::string &error)
     : std::runtime_error (error) { }
-  Md5Exception (const string &error, const string &name)
+  Md5Exception (const std::string &error, const std::string &name)
     : std::runtime_error (error), _which (name) { }
   virtual ~Md5Exception () throw () { }
 
@@ -134,7 +123,7 @@ public:
 
 private:
   // Member variables
-  string _which;
+  std::string _which;
 };
 
 
@@ -155,7 +144,7 @@ public:
 
 private:
   // Internal types
-  typedef shared_ptr<Md5Joint_t> Md5JointPtr;
+  typedef std::shared_ptr<Md5Joint_t> Md5JointPtr;
 
 public:
   // Public interface
@@ -172,7 +161,7 @@ public:
 
 private:
   // Member variables
-  vector<Md5JointPtr> _joints;
+  std::vector<Md5JointPtr> _joints;
 };
 
 
@@ -193,9 +182,9 @@ public:
       kShow,   // Draw mesh
     };
 
-  typedef shared_ptr<Md5Vertex_t> Md5VertexPtr;
-  typedef shared_ptr<Md5Triangle_t> Md5TrianglePtr;
-  typedef shared_ptr<Md5Weight_t> Md5WeightPtr;
+  typedef std::shared_ptr<Md5Vertex_t> Md5VertexPtr;
+  typedef std::shared_ptr<Md5Triangle_t> Md5TrianglePtr;
+  typedef std::shared_ptr<Md5Weight_t> Md5WeightPtr;
 
 public:
   // Constructor/Destructor
@@ -222,7 +211,7 @@ public:
   void setHeightMap (const Texture2D *tex) { _heightMap = tex; }
 
   // Accessors
-  const string &name () const { return _name; }
+  const std::string &name () const { return _name; }
   const BoundingBox_t &boundingBox () const { return _boundingBox; }
 
   // Mesh render state
@@ -240,8 +229,8 @@ private:
 
 private:
   // Member variables
-  string _name;
-  string _shader;
+  std::string _name;
+  std::string _shader;
   int _renderState;
 
   BoundingBox_t _boundingBox;
@@ -251,16 +240,16 @@ private:
   int _numWeights;
 
   // Original mesh data
-  vector<Md5VertexPtr> _verts;
-  vector<Md5TrianglePtr> _tris;
-  vector<Md5WeightPtr> _weights;
+  std::vector<Md5VertexPtr> _verts;
+  std::vector<Md5TrianglePtr> _tris;
+  std::vector<Md5WeightPtr> _weights;
 
   // Final mesh data; vertex arrays for fast rendering
-  vector<GLfloat> _vertexArray;
-  vector<GLfloat> _normalArray;
-  vector<GLfloat> _tangentArray;
-  vector<GLfloat> _texCoordArray;
-  vector<GLuint> _vertIndices;
+  std::vector<GLfloat> _vertexArray;
+  std::vector<GLfloat> _normalArray;
+  std::vector<GLfloat> _tangentArray;
+  std::vector<GLfloat> _texCoordArray;
+  std::vector<GLuint> _vertIndices;
 
   // Textures
   const Texture2D *_decal;
@@ -280,32 +269,32 @@ class Md5Model
 {
 public:
   // Constructor/Destructor
-  Md5Model (const string &filename)
+  Md5Model (const std::string &filename)
     throw (Md5Exception);
   ~Md5Model ();
 
 public:
   // Internal type definitions
-  typedef shared_ptr<Md5Skeleton> Md5SkeletonPtr;
-  typedef shared_ptr<Md5Mesh> Md5MeshPtr;
-  typedef shared_ptr<Md5Animation> Md5AnimationPtr;
-  typedef map<string, Md5AnimationPtr> AnimMap;
+  typedef std::shared_ptr<Md5Skeleton> Md5SkeletonPtr;
+  typedef std::shared_ptr<Md5Mesh> Md5MeshPtr;
+  typedef std::shared_ptr<Md5Animation> Md5AnimationPtr;
+  typedef std::map<std::string, Md5AnimationPtr> AnimMap;
 
 public:
   // Public interface
   void prepare (Md5Skeleton *skel);
   void drawModel () const;
-  bool addAnim (const string &filename);
+  bool addAnim (const std::string &filename);
 
   // Setters
-  void setMeshRenderState (const string &name, int state);
-  void setMeshDecalMap (const string &name, const Texture2D *tex);
-  void setMeshSpecularMap (const string &name, const Texture2D *tex);
-  void setMeshNormalMap (const string &name, const Texture2D *tex);
-  void setMeshHeightMap (const string &name, const Texture2D *tex);
+  void setMeshRenderState (const std::string &name, int state);
+  void setMeshDecalMap (const std::string &name, const Texture2D *tex);
+  void setMeshSpecularMap (const std::string &name, const Texture2D *tex);
+  void setMeshNormalMap (const std::string &name, const Texture2D *tex);
+  void setMeshHeightMap (const std::string &name, const Texture2D *tex);
 
   // Accessors
-  const Md5Animation *anim (const string &name) const;
+  const Md5Animation *anim (const std::string &name) const;
   int numJoints () const { return _numJoints; }
   const Md5Skeleton *baseSkeleton () const { return _baseSkeleton.get (); }
   const AnimMap &anims () const { return _animList; }
@@ -320,7 +309,7 @@ private:
   bool validityCheck (Md5Animation *anim) const;
 
   // Access to a mesh, given its name
-  Md5Mesh *getMeshByName (const string &name) const;
+  Md5Mesh *getMeshByName (const std::string &name) const;
 
 private:
   // Member variables
@@ -329,7 +318,7 @@ private:
 
   Md5SkeletonPtr _baseSkeleton;
 
-  vector<Md5MeshPtr> _meshes;
+  std::vector<Md5MeshPtr> _meshes;
   AnimMap _animList;
 
   BoundingBox_t _bindPoseBox;
@@ -346,7 +335,7 @@ class Md5Animation
 {
 public:
   // Constructor/Destructor
-  Md5Animation (const string &filename)
+  Md5Animation (const std::string &filename)
     throw (Md5Exception);
   ~Md5Animation ();
 
@@ -354,7 +343,7 @@ private:
   // Internal type
   struct JointInfo
   {
-    string name;
+    std::string name;
     int parent;
 
     // NOTE: this structure is stored in
@@ -384,8 +373,8 @@ private:
     Quaternionf orient;
   };
 
-  typedef shared_ptr<Md5Skeleton> Md5SkeletonPtr;
-  typedef shared_ptr<BoundingBox_t> BoundingBoxPtr;
+  typedef std::shared_ptr<Md5Skeleton> Md5SkeletonPtr;
+  typedef std::shared_ptr<BoundingBox_t> BoundingBoxPtr;
 
 public:
   // Public interface
@@ -395,7 +384,7 @@ public:
   // Accessors
   int maxFrame () const { return _numFrames - 1; }
   int frameRate () const { return _frameRate; }
-  const string &name () const { return _name; }
+  const std::string &name () const { return _name; }
 
   Md5Skeleton *frame (int frame) const {
     return _skelframes[frame].get ();
@@ -407,22 +396,22 @@ public:
 
 private:
   // Internal functions
-  void buildFrameSkeleton (vector<JointInfo> &jointInfos,
-			   vector<BaseFrameJoint> &baseFrame,
-			   vector<float> &animFrameData);
+  void buildFrameSkeleton (std::vector<JointInfo> &jointInfos,
+			   std::vector<BaseFrameJoint> &baseFrame,
+			   std::vector<float> &animFrameData);
 
 private:
   // Member variables
   int _numFrames;
   int _frameRate;
 
-  string _name;
+  std::string _name;
 
   // Store each frame as a skeleton
-  vector<Md5SkeletonPtr> _skelframes;
+  std::vector<Md5SkeletonPtr> _skelframes;
 
   // Bounding boxes for each frame
-  vector<BoundingBoxPtr> _bboxes;
+  std::vector<BoundingBoxPtr> _bboxes;
 };
 
 
@@ -457,14 +446,14 @@ public:
 
   // Setters
   void setMd5Model (Md5Model *model);
-  void setAnim (const string &name);
+  void setAnim (const std::string &name);
   void setModelViewMatrix (const Matrix4x4f &mat) { _modelView = mat; }
   void setRenderFlags (int flags) { _renderFlags = flags; }
 
   // Accessors
   int renderFlags () const { return _renderFlags; }
   const Md5Model *getModelPtr () const { return _model; }
-  const string currAnimName () const { return _currAnimName; }
+  const std::string currAnimName () const { return _currAnimName; }
   const OBBox_t &boundingBox () const { return _bbox; }
 
 protected:
@@ -476,7 +465,7 @@ protected:
   bool _softwareTransformation;
 
   const Md5Animation *_currAnim;
-  string _currAnimName;
+  std::string _currAnimName;
   unsigned int _currFrame;
   unsigned int _nextFrame;
 

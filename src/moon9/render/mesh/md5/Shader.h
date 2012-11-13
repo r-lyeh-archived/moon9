@@ -18,16 +18,9 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
-#ifdef _WIN32
-#define	WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif // _WIN32
-
 #include <GL/glew.h>
 #include <stdexcept>
 #include <string>
-
-using std::string;
 
 /////////////////////////////////////////////////////////////////////////////
 // Shader class diagram:
@@ -63,7 +56,7 @@ class Shader
 {
 protected:
   // Constructor
-  Shader (const string &filename);
+  Shader (const std::string &filename);
 
 public:
   // Destructor
@@ -71,8 +64,8 @@ public:
 
 public:
   // Accessors
-  const string &name () const { return _name; }
-  const string &code () const { return _code; }
+  const std::string &name () const { return _name; }
+  const std::string &code () const { return _code; }
   GLuint handle () const { return _handle; }
   bool fail () const { return (_compiled == GL_FALSE); }
 
@@ -86,13 +79,13 @@ protected:
   // Internal functions
   void compile ()
     throw (std::runtime_error);
-  void loadShaderFile (const string &filename)
+  void loadShaderFile (const std::string &filename)
     throw (std::runtime_error);
 
 protected:
   // Member variables
-  string _name;
-  string _code;
+  std::string _name;
+  std::string _code;
   GLuint _handle;
   GLint _compiled;
 };
@@ -108,7 +101,7 @@ class VertexShader : public Shader
 {
 public:
   // Constructor
-  VertexShader (const string &filename);
+  VertexShader (const std::string &filename);
 
 public:
   // Return the shader enum type
@@ -131,7 +124,7 @@ class FragmentShader : public Shader
 {
 public:
   // Constructor
-  FragmentShader (const string &filename);
+  FragmentShader (const std::string &filename);
 
 public:
   // Return the shader enum type
@@ -154,7 +147,7 @@ class ShaderProgram
 {
 public:
   // Constructor/destructor
-  ShaderProgram (const string &name,
+  ShaderProgram (const std::string &name,
 		 const VertexShader &vertexShader,
 		 const FragmentShader &fragmentShader);
   ~ShaderProgram ();
@@ -166,13 +159,13 @@ public:
   void printInfoLog () const;
 
   // Accessors
-  const string &name () const { return _name; }
+  const std::string &name () const { return _name; }
   GLuint handle () const { return _handle; }
   bool fail () const { return (_linked == GL_FALSE); }
 
 private:
   // Member variables
-  string _name;
+  std::string _name;
   GLuint _handle;
   GLint _linked;
 };

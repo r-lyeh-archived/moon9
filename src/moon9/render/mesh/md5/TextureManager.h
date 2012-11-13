@@ -41,7 +41,7 @@ public:
 
   // Load and register a texture.  If the texture has already been
   // loaded previously, return it instead of loading it.
-  Texture2D *load (const string &filename)
+  Texture2D *load (const std::string &filename)
   {
     // Look for the texture in the registry
     Texture2D *tex = request (filename);

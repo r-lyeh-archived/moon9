@@ -15,11 +15,6 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifdef _WIN32
-#define	WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif // _WIN32
-
 #include <GL/glew.h>
 #include <iostream>
 #include <stdexcept>
@@ -32,6 +27,10 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
+using std::string;
+using std::vector;
+using std::map;
+using std::auto_ptr;
 
 #ifdef max
 #undef max

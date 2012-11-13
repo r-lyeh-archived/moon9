@@ -100,7 +100,7 @@ class Md3PlayerSkin
 {
 public:
   // Constructor/destructor
-  Md3PlayerSkin (const string &path, const string &name)
+  Md3PlayerSkin (const std::string &path, const std::string &name)
     throw (Md3Exception);
   ~Md3PlayerSkin ();
 
@@ -119,16 +119,16 @@ public:
   }
 
   // Accessors
-  const string &path () const { return _path; }
-  const string &name () const { return _name; }
+  const std::string &path () const { return _path; }
+  const std::string &name () const { return _name; }
 
 private:
   // Internal types
-  typedef map<string, const Texture2D *> TexMap;
+  typedef std::map<std::string, const Texture2D *> TexMap;
 
 private:
   // Internal functions
-  void loadSkinFile (const string &filename, TexMap &tmap)
+  void loadSkinFile (const std::string &filename, TexMap &tmap)
     throw (Md3Exception);
 
   void setModelTextures (Md3Model *model, const TexMap &tmap) const;
@@ -139,8 +139,8 @@ private:
   TexMap _upperTextures;
   TexMap _headTextures;
 
-  string _path;
-  string _name;
+  std::string _path;
+  std::string _name;
 };
 
 
@@ -159,13 +159,13 @@ class Md3Weapon
 {
 public:
   // Constructor/destructor
-  Md3Weapon (const string &path, Md3PlayerLOD lod = kLodDefault)
+  Md3Weapon (const std::string &path, Md3PlayerLOD lod = kLodDefault)
     throw (Md3Exception);
   ~Md3Weapon ();
 
 private:
   // Internal types
-  typedef shared_ptr<Md3Model> Md3ModelPtr;
+  typedef std::shared_ptr<Md3Model> Md3ModelPtr;
 
 public:
   // Public interface
@@ -177,8 +177,8 @@ public:
 
   // Accessors
   float scale () const { return _scale; }
-  const string &path () const { return _path; }
-  const string &name () const { return _name; }
+  const std::string &path () const { return _path; }
+  const std::string &name () const { return _name; }
   Md3PlayerLOD lod () const { return _lod; }
 
 private:
@@ -186,8 +186,8 @@ private:
   Md3ModelPtr _weapon;
   Md3ModelPtr _barrel;
 
-  string _path;
-  string _name;
+  std::string _path;
+  std::string _name;
   float _scale;
   Md3PlayerLOD _lod;
 };
@@ -207,7 +207,7 @@ class Md3Player
 {
 public:
   // Constructor/destructor
-  Md3Player (const string &path, Md3PlayerLOD lod = kLodDefault)
+  Md3Player (const std::string &path, Md3PlayerLOD lod = kLodDefault)
     throw (Md3Exception);
   ~Md3Player ();
 
@@ -238,11 +238,11 @@ private:
     float interp;
   };
 
-  typedef shared_ptr<Md3Model> Md3ModelPtr;
-  typedef shared_ptr<Md3PlayerSkin> Md3PlayerSkinPtr;
+  typedef std::shared_ptr<Md3Model> Md3ModelPtr;
+  typedef std::shared_ptr<Md3PlayerSkin> Md3PlayerSkinPtr;
 
 public:
-  typedef map<string, Md3PlayerSkinPtr> SkinMap;
+  typedef std::map<std::string, Md3PlayerSkinPtr> SkinMap;
 
 public:
   // Public interface
@@ -252,28 +252,28 @@ public:
 
   void setScale (float scale) { _scale = scale; }
   void setAnimation (Md3PlayerAnimType type);
-  void setSkin (const string &name);
+  void setSkin (const std::string &name);
 
   void linkWeapon (Md3Weapon *weapon);
   void unlinkWeapon ();
 
   // Accessors
   float scale () const { return _scale; }
-  const string &path () const { return _path; }
-  const string &name () const { return _name; }
+  const std::string &path () const { return _path; }
+  const std::string &name () const { return _name; }
   Md3PlayerLOD lod () const { return _lod; }
   const SkinMap &skins () const { return _skins; }
-  const string &skinName () const { return _currentSkinName; }
+  const std::string &skinName () const { return _currentSkinName; }
 
 private:
   // Internal functions
-  void loadModels (const string &path)
+  void loadModels (const std::string &path)
     throw (Md3Exception);
 
-  void loadAnimations (const string &path)
+  void loadAnimations (const std::string &path)
     throw (Md3Exception);
 
-  void loadSkins (const string &path)
+  void loadSkins (const std::string &path)
     throw (Md3Exception);
 
 private:
@@ -291,12 +291,12 @@ private:
   // Skin list
   SkinMap _skins;
   Md3PlayerSkin *_currentSkin;
-  string _currentSkinName;
+  std::string _currentSkinName;
 
   Md3Weapon *_weapon;
 
-  string _path;
-  string _name;
+  std::string _path;
+  std::string _name;
   float _scale;
   Md3PlayerLOD _lod;
 };

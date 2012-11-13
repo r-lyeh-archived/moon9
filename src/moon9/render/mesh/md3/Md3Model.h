@@ -28,11 +28,6 @@
 #include "Mathlib.h"
 #include "Texture.h"
 
-using std::string;
-using std::vector;
-using std::map;
-
-using std::shared_ptr;
 
 
 // Constants definitions
@@ -155,9 +150,9 @@ class Md3Exception : public std::runtime_error
 {
 public:
   // Constructors
-  Md3Exception (const string &error)
+  Md3Exception (const std::string &error)
     : std::runtime_error (error) { }
-  Md3Exception (const string &error, const string &name)
+  Md3Exception (const std::string &error, const std::string &name)
     : std::runtime_error (error), _which (name) { }
   virtual ~Md3Exception () throw () { }
 
@@ -169,7 +164,7 @@ public:
 
 private:
   // Member variables
-  string _which;
+  std::string _which;
 };
 
 
@@ -213,9 +208,9 @@ public:
 
 private:
   // Internal types
-  typedef shared_ptr<Md3Shader_t> Md3ShaderPtr;
-  typedef shared_ptr<Md3Triangle_t> Md3TrianglePtr;
-  typedef shared_ptr<Md3Vertex_t> Md3VertexPtr;
+  typedef std::shared_ptr<Md3Shader_t> Md3ShaderPtr;
+  typedef std::shared_ptr<Md3Triangle_t> Md3TrianglePtr;
+  typedef std::shared_ptr<Md3Vertex_t> Md3VertexPtr;
 
 public:
   // Public interface
@@ -245,13 +240,13 @@ private:
   // Mesh data
   Md3MeshHeader_t _header;
 
-  vector<Md3ShaderPtr> _shaders;
-  vector<Md3TrianglePtr> _triangles;
-  vector<Md3TexCoord_t> _texCoords;
-  vector<Md3VertexPtr> _vertices;
+  std::vector<Md3ShaderPtr> _shaders;
+  std::vector<Md3TrianglePtr> _triangles;
+  std::vector<Md3TexCoord_t> _texCoords;
+  std::vector<Md3VertexPtr> _vertices;
 
   // Indices for vertex arrays
-  vector<GLuint> _indices;
+  std::vector<GLuint> _indices;
 
   // Texture
   const Texture2D *_tex;
@@ -269,7 +264,7 @@ class Md3Model
 {
 public:
   // Constructor/destructor
-  Md3Model (const string &filename)
+  Md3Model (const std::string &filename)
     throw (Md3Exception);
   ~Md3Model ();
 
@@ -283,14 +278,14 @@ private:
     // Constructor
     Md3QuaternionTag (const Md3Tag_t &tag);
 
-    string name;
+    std::string name;
     Vector3f origin;
     Quaternionf orient;
   };
 
-  typedef shared_ptr<Md3Frame_t> Md3FramePtr;
-  typedef shared_ptr<Md3Mesh> Md3MeshPtr;
-  typedef shared_ptr<Md3QuaternionTag> Md3TagPtr;
+  typedef std::shared_ptr<Md3Frame_t> Md3FramePtr;
+  typedef std::shared_ptr<Md3Mesh> Md3MeshPtr;
+  typedef std::shared_ptr<Md3QuaternionTag> Md3TagPtr;
 
 public:
   // Public interface
@@ -300,10 +295,10 @@ public:
   void renderFrameItpWithVertexArrays (int frameA, int frameB,
 				       float interp) const;
 
-  bool link (const string &name, const Md3Model *model);
-  bool unlink (const string &name);
+  bool link (const std::string &name, const Md3Model *model);
+  bool unlink (const std::string &name);
   void setScale (float scale) { _scale = scale; }
-  void setTexture (const string &mesh, const Texture2D *tex);
+  void setTexture (const std::string &mesh, const Texture2D *tex);
   void setupAnimation (int currFrame, int nextFrame, float interp);
 
   // Accessors
@@ -311,7 +306,7 @@ public:
   int numFrames () const { return _header.num_frames; }
   int numTags () const { return _header.num_tags; }
   float scale () const { return _scale; }
-  const string &name () const { return _name; }
+  const std::string &name () const { return _name; }
 
 private:
   // Member variables
@@ -323,10 +318,10 @@ private:
   // Model data
   Md3Header_t _header;
 
-  vector<Md3FramePtr> _frames;
-  vector<Md3MeshPtr> _meshes;
-  vector<Md3TagPtr> _qtags;
-  vector<const Md3Model*> _links;
+  std::vector<Md3FramePtr> _frames;
+  std::vector<Md3MeshPtr> _meshes;
+  std::vector<Md3TagPtr> _qtags;
+  std::vector<const Md3Model*> _links;
 
   // Animation data used for the
   // next rendering
@@ -335,7 +330,7 @@ private:
   float _interp;
 
   GLfloat _scale;
-  string _name;
+  std::string _name;
 };
 
 #endif	// __MD3MODEL_H__

@@ -30,10 +30,7 @@
 
 #include "Image.h"
 
-using std::string;
-using std::vector;
-using std::map;
-using std::auto_ptr;
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Texture class diagram:
@@ -86,7 +83,7 @@ public:
   bool stdCoordSystem () const { return _standardCoordSystem; }
 
   // Accessors
-  const string &name () const { return _name; }
+  const std::string &name () const { return _name; }
   const GLuint handle () const { return _handle; }
 
   virtual GLenum target () const = 0;
@@ -101,13 +98,13 @@ private:
 
 protected:
   // Internal functions
-  GLubyte *loadImageFile (const string &filename);
+  GLubyte *loadImageFile (const std::string &filename);
   GLint getCompressionFormat (GLint internalFormat);
   GLint getInternalFormat (GLint components);
 
 protected:
   // Member variables
-  string _name;
+  std::string _name;
   GLuint _handle;
 
   TextureFlags _flags;
@@ -126,7 +123,7 @@ class Texture2D : public Texture
 {
 public:
   // Constructors
-  Texture2D (const string &filename, TextureFlags flags = kDefault);
+  Texture2D (const std::string &filename, TextureFlags flags = kDefault);
   Texture2D (const Image *img, TextureFlags flags = kDefault);
 
 protected:
@@ -152,7 +149,7 @@ class TextureRectangle : public Texture
 {
 public:
   // Constructors
-  TextureRectangle (const string &filename, TextureFlags flags = kDefault);
+  TextureRectangle (const std::string &filename, TextureFlags flags = kDefault);
   TextureRectangle (const Image *img, TextureFlags flags = kDefault);
 
 protected:
@@ -187,14 +184,14 @@ class TextureCubeMap : public Texture
 {
 public:
   // Constructors
-  TextureCubeMap (const string &basename, const vector<string> &files,
+  TextureCubeMap (const std::string &basename, const std::vector<std::string> &files,
 		  TextureFlags flags = kDefault);
-  TextureCubeMap (const string &basename, const vector<ImagePtr> &faces,
+  TextureCubeMap (const std::string &basename, const std::vector<ImagePtr> &faces,
 		  TextureFlags flags = kDefault);
 
 protected:
   // Internal function
-  virtual void create (const vector<ImagePtr> &faces, TextureFlags flags);
+  virtual void create (const std::vector<ImagePtr> &faces, TextureFlags flags);
 
 public:
   // Accessors

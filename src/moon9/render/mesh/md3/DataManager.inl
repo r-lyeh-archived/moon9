@@ -64,7 +64,7 @@ DataManager<T, C>::~DataManager ()
 
 template <typename T, typename C>
 inline T *
-DataManager<T, C>::request (const string &name)
+DataManager<T, C>::request (const std::string &name)
 {
   typename DataMap::iterator itor;
   itor = _registry.find (name);
@@ -91,7 +91,7 @@ DataManager<T, C>::request (const string &name)
 
 template <typename T, typename C>
 inline void
-DataManager<T, C>::registerObject (const string &name, T *object)
+DataManager<T, C>::registerObject (const std::string &name, T *object)
   throw (DataManagerException)
 {
   std::pair<typename DataMap::iterator, bool> res;
@@ -115,7 +115,7 @@ DataManager<T, C>::registerObject (const string &name, T *object)
 
 template <typename T, typename C>
 inline void
-DataManager<T, C>::unregisterObject (const string &name, bool deleteObject)
+DataManager<T, C>::unregisterObject (const std::string &name, bool deleteObject)
 {
   typename DataMap::iterator itor;
   itor = _registry.find (name);

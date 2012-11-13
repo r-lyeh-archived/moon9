@@ -18,6 +18,11 @@
 
 #include "Image.h"
 
+using std::cout;
+using std::endl;
+using std::string;
+
+using std::shared_ptr;
 
 /////////////////////////////////////////////////////////////////////////////
 //

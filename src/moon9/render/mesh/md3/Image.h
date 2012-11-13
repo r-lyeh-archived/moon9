@@ -27,11 +27,6 @@
 
 #include <moon9/render/image.hpp>
 
-using std::cout;
-using std::endl;
-using std::string;
-
-using std::shared_ptr;
 
 /////////////////////////////////////////////////////////////////////////////
 // Image class diagram:
@@ -75,9 +70,9 @@ class ImageException : public std::runtime_error
 {
 public:
   // Constructors
-  ImageException (const string &error)
+  ImageException (const std::string &error)
     : std::runtime_error (error) { }
-  ImageException (const string &error, const string &filename)
+  ImageException (const std::string &error, const std::string &filename)
     : std::runtime_error (error), _which (filename) { }
   virtual ~ImageException () throw () { }
 
@@ -89,7 +84,7 @@ public:
 
 private:
   // Member variables
-  string _which;
+  std::string _which;
 };
 
 
@@ -104,7 +99,7 @@ class ImageBuffer
 {
 public:
   // Constructors/destructor
-  ImageBuffer (const string &filename);
+  ImageBuffer (const std::string &filename);
 
   ImageBuffer (const ImageBuffer &that)
     : _filename (that._filename), _data (NULL), _length (that._length)
@@ -121,7 +116,7 @@ private:
 
 public:
   // Accessors
-  const string &filename () const { return _filename; }
+  const std::string &filename () const { return _filename; }
   const GLubyte *data () const { return _data; }
   size_t length () const { return _length; }
 
@@ -134,7 +129,7 @@ public:
 
 private:
   // Member variables
-  string _filename;
+  std::string _filename;
 
   GLubyte *_data;
   size_t _length;
@@ -163,7 +158,7 @@ private:
 
 public:
   // Constructors/destructor
-  Image (const string &name, GLsizei w, GLsizei h, GLint numMipMaps,
+  Image (const std::string &name, GLsizei w, GLsizei h, GLint numMipMaps,
 	 GLenum format, GLint components, const GLubyte *pixels,
 	 bool stdCoordSystem);
 
@@ -182,7 +177,7 @@ public:
   GLenum format () const { return _format; }
   GLint components () const { return _components; }
   const GLubyte *pixels () const { return _pixels; }
-  const string &name () const { return _name; }
+  const std::string &name () const { return _name; }
   bool stdCoordSystem () const { return _standardCoordSystem; }
 
 protected:
@@ -199,7 +194,7 @@ protected:
   // Image data
   GLubyte *_pixels;
 
-  string _name;
+  std::string _name;
 
   // Is the picture in standard OpenGL 2D coordinate
   // system? (starts lower-left corner)
@@ -208,7 +203,7 @@ protected:
 
 
 // Definition of type aliases
-typedef shared_ptr<Image> ImagePtr;
+typedef std::shared_ptr<Image> ImagePtr;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -425,12 +420,12 @@ public:
   // Public interface
   static Image *createImage (const ImageBuffer &ibuff)
   {
-    string ext;
+    std::string ext;
     Image *result;
 
     // Extract file extension
-    const string &filename = ibuff.filename ();
-    ext.assign (filename, filename.find_last_of ('.') + 1, string::npos);
+    const std::string &filename = ibuff.filename ();
+    ext.assign (filename, filename.find_last_of ('.') + 1, std::string::npos);
 
     if (ext.compare ("dds") == 0)
       {
