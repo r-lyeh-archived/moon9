@@ -1,6 +1,6 @@
 #include "window.hpp"
 
-const moon9::miniwin2 *moon9::miniwin2::active = 0;
+const moon9::window2 *moon9::window2::active = 0;
 
 namespace moon9
 {
