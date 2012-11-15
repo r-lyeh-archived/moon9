@@ -1,2 +1,0 @@
-echo makedbg %%* > make.bat
-cl /I. /MDd /Zi /Oy- *.cpp -I\prj\moon9\src -I\prj\moon9\deps\hid\manymouse -I\prj\moon9\deps\render\stb -I\prj\moon9\deps\render -I\prj\moon9\deps\spatial\glm -I\prj\moon9\deps\render\glew\include -I\prj\moon9\deps\render\freeglut\include -I\prj\moon9\deps\render\glfw\include -I\prj\moon9\deps\render\stb -I\prj\moon9\deps\render\gwen\gwen\include \prj\moon9-build\debug-lib\*.lib opengl32.lib user32.lib gdi32.lib comdlg32.lib ole32.lib %*

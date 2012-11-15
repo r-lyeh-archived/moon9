@@ -22,7 +22,6 @@
 #include <algorithm>
 
 #include "Texture.h"
-#include "ArbProgram.h"
 #include "Shader.h"
 #include "Md5Model.h"
 
@@ -769,21 +768,8 @@ Md5Mesh::preRenderVertexArrays () const
 {
   switch (renderPath)
     {
-    case R_normal:
+    case R_fixed:
       break;
-
-    case R_ARBfp_diffuse:
-    case R_ARBfp_diffuse_specular:
-    case R_ARBfp_ds_parallax:
-      {
-	vp->use ();
-	fp->use ();
-
-	glEnableVertexAttribArrayARB (TANGENT_LOC);
-	glVertexAttribPointerARB (TANGENT_LOC, 3, GL_FLOAT, GL_FALSE,
-				  0, &_tangentArray.front ());
-	break;
-      }
 
     case R_shader:
       {
@@ -823,19 +809,8 @@ Md5Mesh::postRenderVertexArrays () const
 {
   switch (renderPath)
     {
-    case R_normal:
+    case R_fixed:
       break;
-
-    case R_ARBfp_diffuse:
-    case R_ARBfp_diffuse_specular:
-    case R_ARBfp_ds_parallax:
-      {
-	vp->unuse ();
-	fp->unuse ();
-
-	glDisableVertexAttribArrayARB (TANGENT_LOC);
-	break;
-      }
 
     case R_shader:
       {

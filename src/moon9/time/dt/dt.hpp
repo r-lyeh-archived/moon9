@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0 // this C++11 solution not working anymore! Visual Studio 2012 issue? It used to work.. sigh :(
+
 #include <chrono>
 
 namespace moon9
@@ -42,6 +44,51 @@ namespace moon9
 		}
 	};
 }
+
+#else
+
+#include "now/now.hpp"
+
+namespace moon9
+{
+	class dt
+	{
+		double start;
+
+		public:
+
+		dt() : start( moon9::now() )
+		{}
+
+		void reset()
+		{
+			start = moon9::now(); //*this = dt();
+		}
+
+		double s()
+		{
+			return ( moon9::now() - start ) * 1.0;
+		}
+
+		double ms()
+		{
+			return ( moon9::now() - start ) * 1000.0;
+		}
+
+		double us()
+		{
+			return ( moon9::now() - start ) * 1000000.0;
+		}
+
+		double ns()
+		{
+			return ( moon9::now() - start ) * 1000000000.0;
+		}
+	};
+}
+
+#endif
+
 
 namespace legacy
 {

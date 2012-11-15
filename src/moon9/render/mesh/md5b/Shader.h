@@ -18,7 +18,7 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
-#include "../render.hpp"
+#include "../../render.hpp"
 
 #include <stdexcept>
 #include <string>

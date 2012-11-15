@@ -53,7 +53,5 @@ namespace moon9
 
         std::string str() const;
         void str( const std::string& import );
-
-        void sleep( double seconds );
     };
 }

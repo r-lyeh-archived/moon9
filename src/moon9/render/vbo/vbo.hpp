@@ -15,6 +15,7 @@ namespace moon9
 		vbo() : id(0), size(0)
 		{}
 
+		explicit
 		vbo( size_t _size_in_bytes ) : id(0), size(0)
 		{
 			bool ok = resize( _size_in_bytes );

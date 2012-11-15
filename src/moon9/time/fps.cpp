@@ -58,7 +58,7 @@ namespace moon9
         {
             double seconds = 1.0/frames_per_second;
             if( seconds > 1 ) seconds = 1;
-            do moon9::wink(); while( frame_limiter.s() < seconds );
+            do moon9::wink(); while( frame_limiter.s() < seconds ); //yield()?
             frame_limiter.reset();
         }
     }

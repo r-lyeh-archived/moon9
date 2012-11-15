@@ -53,7 +53,6 @@
 //#include <moon9/string/string.hpp>
 
 #include "dt.hpp"
-#include "sleep.hpp"
 
 namespace moon9
 {
@@ -75,8 +74,6 @@ namespace moon9
 
             std::string str() const;
             void str( const std::string& import );
-
-            void sleep( double seconds );
 
         protected:
 

@@ -28,7 +28,6 @@
 #include "Font.h"
 #include "Md5Model.h"
 #include "TextureManager.h"
-#include "ArbProgram.h"
 #include "Shader.h"
 #include "Main.h"
 
@@ -45,16 +44,6 @@ TTFont *font = NULL;
 
 // Current shader and vertex/fragment programs
 ShaderProgram *shader = NULL;
-ArbVertexProgram *vp = NULL;
-ArbFragmentProgram *fp = NULL;
-
-// All vertex and fragment programs
-ArbVertexProgram *vp_bump = NULL;
-ArbVertexProgram *vp_bump_parallax = NULL;
-
-ArbFragmentProgram *fp_diffuse = NULL;
-ArbFragmentProgram *fp_diffuse_specular = NULL;
-ArbFragmentProgram *fp_ds_parallax = NULL;
 
 // We can use a specific render path, depending on
 // which shader/program we want to use...
@@ -131,11 +120,6 @@ shutdownApp (int returnCode)
   if( object ) delete object, object = 0;
   if( font ) delete font, font = 0;
   if( shader ) delete shader, shader = 0;
-  if( vp_bump ) delete vp_bump, vp_bump = 0;
-  if( vp_bump_parallax ) delete vp_bump_parallax, vp_bump_parallax = 0;
-  if( fp_diffuse ) delete fp_diffuse, fp_diffuse = 0;
-  if( fp_diffuse_specular ) delete fp_diffuse_specular, fp_diffuse_specular = 0;
-  if( fp_ds_parallax ) delete fp_ds_parallax, fp_ds_parallax = 0;
 
   Texture2DManager::kill ();
 
@@ -329,23 +313,8 @@ announceRenderPath (render_path_e path)
   cout << "Render path: ";
   switch (path)
     {
-    case R_normal:
+    case R_fixed:
       cout << "no bump mapping (fixed pipeline)" << endl;
-      break;
-
-    case R_ARBfp_diffuse:
-      cout << "bump mapping, diffuse only "
-	   << "(ARB vp & fp)" << endl;
-      break;
-
-    case R_ARBfp_diffuse_specular:
-      cout << "bump mapping, diffuse and specular "
-	   << "(ARB vp & fp)" << endl;
-      break;
-
-    case R_ARBfp_ds_parallax:
-      cout << "bump mapping with parallax "
-	   << "(ARB fp & fp)" << endl;
       break;
 
     case R_shader:
@@ -436,28 +405,8 @@ initOpenGL ()
   cout << "GLU Version String: " << gluGetString (GLU_VERSION) << endl;
   cout << "GLEW Version String: " << glewGetString (GLEW_VERSION) << endl;
 
-  // Initialize ARB vertex/fragment program support
-  initArbProgramHandling ();
-
   // Initialize GLSL shader support
   initShaderHandling ();
-
-  if (hasArbVertexProgramSupport () &&
-      hasArbFragmentProgramSupport ())
-    {
-      // Load ARB programs
-      vp_bump = new ArbVertexProgram ("bump.vp");
-      vp_bump_parallax = new ArbVertexProgram ("bumpparallax.vp");
-
-      fp_diffuse = new ArbFragmentProgram ("bumpd.fp");
-      fp_diffuse_specular = new ArbFragmentProgram ("bumpds.fp");
-      fp_ds_parallax = new ArbFragmentProgram ("bumpdsp.fp");
-
-      // Current ARB programs will be bump mapping with diffuse
-      // and specular components
-      vp = vp_bump;
-      fp = fp_diffuse_specular;
-    }
 
   if (hasShaderSupport ())
     {
@@ -474,27 +423,7 @@ initOpenGL ()
   cout << endl << "Avalaible render paths:" << endl;
 
   cout << " [F3] - No bump mapping (fixed pipeline)" << endl;
-  renderPath = R_normal;
-
-  if (vp_bump && fp_diffuse)
-    {
-      cout << " [F4] - Bump mapping, diffuse only "
-	   << "(ARB vp & fp)" << endl;
-      renderPath = R_ARBfp_diffuse;
-    }
-
-  if (vp_bump && fp_diffuse_specular)
-    {
-      cout << " [F5] - Bump mapping, diffuse and specular "
-	   << "(ARB vp & fp)" << endl;
-      renderPath = R_ARBfp_diffuse_specular;
-    }
-
-  if (vp_bump_parallax && fp_ds_parallax)
-    {
-      cout << " [F6] - Bump mapping with parallax "
-	   << "(ARB vp & fp)" << endl;
-    }
+  renderPath = R_fixed;
 
   if (shader)
     {
@@ -963,40 +892,7 @@ handleKeyPress ()
 
     if( keyboard.f3.trigger() )
     {
-      renderPath = R_normal;
-      announceRenderPath (renderPath);
-    }
-
-    if( keyboard.f4.trigger() )
-    {
-      if (vp_bump && fp_diffuse)
-    	{
-    	  renderPath = R_ARBfp_diffuse;
-    	  vp = vp_bump;
-    	  fp = fp_diffuse;
-    	}
-      announceRenderPath (renderPath);
-    }
-
-    if( keyboard.f5.trigger() )
-    {
-      if (vp_bump && fp_diffuse_specular)
-	{
-	  renderPath = R_ARBfp_diffuse_specular;
-	  vp = vp_bump;
-	  fp = fp_diffuse_specular;
-	}
-      announceRenderPath (renderPath);
-}
-
-    if( keyboard.f6.trigger() )
-    {
-      if (vp_bump_parallax && fp_ds_parallax)
-  {
-    renderPath = R_ARBfp_ds_parallax;
-    vp = vp_bump_parallax;
-    fp = fp_ds_parallax;
-  }
+      renderPath = R_fixed;
       announceRenderPath (renderPath);
     }
 

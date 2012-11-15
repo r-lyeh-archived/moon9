@@ -32,8 +32,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-/* Vectors */
 typedef float vec3_t[3];
 typedef float vec4_t[4];
 
@@ -543,96 +541,4 @@ RenderOBJModel (struct obj_model_t *mdl)
 	  }
 	glEnd();
     }
-}
-
-void
-init (const char *filename)
-{
-  GLfloat lightpos[] = { 5.0f, 10.0f, 0.0f, 1.0f };
-
-  /* Initialize OpenGL context */
-  glClearColor (0.5f, 0.5f, 0.5f, 1.0f);
-  glShadeModel (GL_SMOOTH);
-
-  glEnable (GL_DEPTH_TEST);
-  glEnable (GL_LIGHTING);
-  glEnable (GL_LIGHT0);
-
-  glLightfv (GL_LIGHT0, GL_POSITION, lightpos);
-
-  /* Load OBJ model file */
-  if (!ReadOBJModel (filename, &objfile))
-    exit (EXIT_FAILURE);
-}
-
-void
-cleanup ()
-{
-  FreeModel (&objfile);
-}
-
-void
-reshape (int w, int h)
-{
-  if (h == 0)
-    h = 1;
-
-  glViewport (0, 0, (GLsizei)w, (GLsizei)h);
-
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity ();
-  gluPerspective (45.0, w/(GLdouble)h, 0.1, 1000.0);
-
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity ();
-
-  glutPostRedisplay ();
-}
-
-void
-display ()
-{
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity ();
-
-  glTranslatef (0.0f, 0.0f, -15.0f);
-
-  /* Draw the model */
-  RenderOBJModel (&objfile);
-
-  glutSwapBuffers ();
-}
-
-void
-keyboard (unsigned char key, int x, int y)
-{
-  /* Escape */
-  if (key == 27)
-    exit (0);
-}
-
-int
-main (int argc, char *argv[])
-{
-  if (argc < 2)
-    {
-      fprintf (stderr, "usage: %s <filename.obj>\n", argv[0]);
-      return -1;
-    }
-
-  glutInit (&argc, argv);
-  glutInitDisplayMode (GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize (640, 480);
-  glutCreateWindow ("OBJ Model");
-
-  atexit (cleanup);
-  init (argv[1]);
-
-  glutReshapeFunc (reshape);
-  glutDisplayFunc (display);
-  glutKeyboardFunc (keyboard);
-
-  glutMainLoop ();
-
-  return 0;
 }

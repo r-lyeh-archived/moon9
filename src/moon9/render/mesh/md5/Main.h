@@ -20,10 +20,7 @@
 // which shader/program we want to use...
 enum render_path_e
   {
-    R_normal,
-    R_ARBfp_diffuse,
-    R_ARBfp_diffuse_specular,
-    R_ARBfp_ds_parallax,
+    R_fixed,
     R_shader
   };
 
@@ -31,8 +28,6 @@ extern render_path_e renderPath;
 
 // Current shader and vertex/fragment programs
 extern ShaderProgram *shader;
-extern ArbVertexProgram *vp;
-extern ArbFragmentProgram *fp;
 
 // OpenGL Font
 extern TTFont *font;

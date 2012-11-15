@@ -26,19 +26,16 @@
 #include "Mathlib.h"
 #include "Md5Model.h"
 #include "TextureManager.h"
-#include "ArbProgram.h"
 #include "Shader.h"
 #include "Main.h"
 
 
 // Current shader and vertex/fragment programs
 ShaderProgram *shader = NULL;
-ArbVertexProgram *vp = NULL;
-ArbFragmentProgram *fp = NULL;
 
 // We can use a specific render path, depending on
 // which shader/program we want to use...
-render_path_e renderPath;
+render_path_e renderPath = R_shader;
 
 // Tangent uniform's location
 GLint tangentLoc = -1;
@@ -51,14 +48,6 @@ namespace md5demo
     Md5Model *model = NULL;
     Md5Object *object1 = NULL;
     Md5Object *object2 = NULL;
-
-    // All vertex and fragment programs
-    ArbVertexProgram *vp_bump = NULL;
-    ArbVertexProgram *vp_bump_parallax = NULL;
-
-    ArbFragmentProgram *fp_diffuse = NULL;
-    ArbFragmentProgram *fp_diffuse_specular = NULL;
-    ArbFragmentProgram *fp_ds_parallax = NULL;
 
     int renderFlags = Md5Object::kDrawModel;
 
@@ -135,11 +124,6 @@ class windemo : public moon9::window
         delete object1;
         delete object2;
         delete shader;
-        delete vp_bump;
-        delete vp_bump_parallax;
-        delete fp_diffuse;
-        delete fp_diffuse_specular;
-        delete fp_ds_parallax;
 
         Texture2DManager::kill();
     }
@@ -388,27 +372,8 @@ class windemo : public moon9::window
         glEnable(GL_DEPTH_TEST);
 
 
-        // Initialize ARB vertex/fragment program support
-        initArbProgramHandling();
-
         // Initialize GLSL shader support
         initShaderHandling();
-
-        if( hasArbVertexProgramSupport() && hasArbFragmentProgramSupport() )
-        {
-            // Load ARB programs
-            vp_bump = new ArbVertexProgram("bump.vp");
-            vp_bump_parallax = new ArbVertexProgram("bumpparallax.vp");
-
-            fp_diffuse = new ArbFragmentProgram("bumpd.fp");
-            fp_diffuse_specular = new ArbFragmentProgram("bumpds.fp");
-            fp_ds_parallax = new ArbFragmentProgram("bumpdsp.fp");
-
-            // Current ARB programs will be bump mapping with diffuse
-            // and specular components
-            vp = vp_bump;
-            fp = fp_diffuse_specular;
-        }
 
         if( hasShaderSupport())
         {
@@ -425,24 +390,7 @@ class windemo : public moon9::window
         std::cout << std::endl << "Avalaible render paths:" << std::endl;
 
         std::cout << " [3] - No bump mapping (fixed pipeline)" << std::endl;
-        renderPath = R_normal;
-
-        if( vp_bump && fp_diffuse )
-        {
-            std::cout << " [4] - Bump mapping, diffuse only " << "(ARB vp & fp)" << std::endl;
-            renderPath = R_ARBfp_diffuse;
-        }
-
-        if( vp_bump && fp_diffuse_specular )
-        {
-            std::cout << " [5] - Bump mapping, diffuse and specular " << "(ARB vp & fp)" << std::endl;
-            renderPath = R_ARBfp_diffuse_specular;
-        }
-
-        if( vp_bump_parallax && fp_ds_parallax )
-        {
-            std::cout << " [6] - Bump mapping with parallax " << "(ARB vp & fp)" << std::endl;
-        }
+        renderPath = R_fixed;
 
         if( shader )
         {
@@ -984,49 +932,19 @@ class windemo : public moon9::window
 
             static int shader_model =(int)renderPath;
 
-            const char *myradio[] = { "no bump mapping(fixed pipeline) / R_normal", "bump mapping, diffuse only / R_ARBfp_diffuse", "bump mapping, diffuse and specular / R_ARBfp_diffuse_specular", "bump mapping with parallax(ARB fp & fp) / R_ARBfp_ds_parallax", "bump mapping with parallax(GLSL) / R_shader" };
+            const char *myradio[] = { "no bump mapping(fixed pipeline) / R_fixed", "bump mapping with parallax(GLSL) / R_shader" };
 
-            if( moon9::radio l = moon9::radio( "Shader model", 5, myradio ) )
+            if( moon9::radio l = moon9::radio( "Shader model", 2, myradio ) )
             {
                 shader_model = l.result();
                 std::cout << l.result() << std::endl;
 
                 if( shader_model == 0 )
                 {
-                  renderPath = R_normal;
+                  renderPath = R_fixed;
                 }
 
                 if( shader_model == 1 )
-                {
-                    if(vp_bump && fp_diffuse)
-                    {
-                        renderPath = R_ARBfp_diffuse;
-                        vp = vp_bump;
-                        fp = fp_diffuse;
-                    }
-                }
-
-                if( shader_model == 2 )
-                {
-                    if(vp_bump && fp_diffuse_specular)
-                    {
-                        renderPath = R_ARBfp_diffuse_specular;
-                        vp = vp_bump;
-                        fp = fp_diffuse_specular;
-                    }
-                }
-
-                if( shader_model == 3 )
-                {
-                    if(vp_bump_parallax && fp_ds_parallax)
-                    {
-                        renderPath = R_ARBfp_ds_parallax;
-                        vp = vp_bump_parallax;
-                        fp = fp_ds_parallax;
-                    }
-                }
-
-                if( shader_model == 4 )
                 {
                     if(shader)
                         renderPath = R_shader;

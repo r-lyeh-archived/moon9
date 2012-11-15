@@ -6,10 +6,6 @@
 
 int main()
 {
-
-    // WHYYYYYYYYYYYY? ARGH
-    std::cout << moon9::dt().ns() << "  WHYYYYYYYYYYYY? ARGH " << std::endl;
-
 	{
 		moon9::dt dt;
 

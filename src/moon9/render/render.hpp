@@ -1,4 +1,4 @@
-// Simple RAII render, wip
+// (Not so) simple RAII render, wip
 // -rlyeh
 
 // prio #1
@@ -904,12 +904,14 @@ namespace moon9
         {
             wireframe()
             {
+                glGetIntegerv(GL_POLYGON_MODE, &polygonMode);
                 glPolygonMode(GL_FRONT, GL_LINE);
             }
             ~wireframe()
             {
-                glPolygonMode(GL_FRONT, GL_FILL);
+                glPolygonMode(GL_FRONT, polygonMode);
             }
+            GLint polygonMode;
         };
         //}
 
@@ -2582,3 +2584,5 @@ void render( const moon9::camera &cam, const float &projection = 0.f ); // [0 = 
 
 #include "frustum.hpp"
 void render( const moon9::frustum &fr, float _farPlane = 0.f );
+
+#include "render-vertex-array.inl"

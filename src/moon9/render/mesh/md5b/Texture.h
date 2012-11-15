@@ -18,7 +18,7 @@
 #ifndef __TEXTURE_H__
 #define __TEXTURE_H__
 
-#include "../render.hpp"
+#include "../../render.hpp"
 
 #include <memory>
 #include <stdexcept>

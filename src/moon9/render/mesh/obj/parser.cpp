@@ -1,168 +1,184 @@
+#include <cassert>
 #include <iostream>
 #include <vector>
 
 #include <moon9/debug/assert.hpp>
 #include <moon9/io/file.hpp>
 #include <moon9/render/render.hpp>
+#include <moon9/render/mesh.hpp>
 #include <moon9/spatial/vec.hpp>
 #include <moon9/string/string.hpp>
 
+#include "obj.h"
+
 namespace moon9
 {
-    struct triangle_strip
+    // @todo: layers: http://www.clockworkcoders.com/oglsl/tutorial8.htm
+    // @todo: lights: http://www.clockworkcoders.com/oglsl/tutorial5.htm
+
+    namespace lightwave
     {
-        std::vector< float > vertices;
-    };
-
-    struct mesh
-    {
-        std::vector< float > vertices;
-        std::vector< unsigned int > indices;
-    };
-
-    bool load_wavefront( const std::string &binary, moon9::mesh &mesh )
-    {
-        mesh = moon9::mesh();
-
-        moon9::strings lines = moon9::string( binary ).tokenize("\r\n");
-
-        std::cout << '.';
-
-        char ch;
-        float x,y,z;
-
-        for( auto &it : lines )
+        bool import( mesh &self, const std::string &pathfile )
         {
-            std::stringstream ss;
+            self = mesh();
 
-            if( ss << it )
-            if( ss >> ch >> x >> y >> z )
+            auto &texcoords = self.texcoords;
+            auto &vertices = self.vertices;
+            auto &normals = self.normals;
+
+            auto &triangles = self.triangles;
+            auto &points = self.points;
+            auto &lines = self.lines;
+
+            obj_model_t mesh;
+            obj_model_t *mdl = &mesh;
+
+            if( !ReadOBJModel( pathfile.c_str(), &mesh) )
+                return false;
+
+            if( mdl->num_texCoords > 0 )
             {
-                if( ch == 'v' )
+                texcoords.resize( mdl->num_texCoords );
+                for( int i = 0; i < mdl->num_texCoords; ++i )
                 {
-                    mesh.vertices.push_back( x );
-                    mesh.vertices.push_back( y );
-                    mesh.vertices.push_back( z );
-                }
-                else
-                if( ch == 'f' )
-                {
-                    int a = int(x) - 1;
-                    int b = int(y) - 1;
-                    int c = int(z) - 1;
-/*
-                    size_t vs = mesh.vertices.size();
-
-                    assert3( a, <, vs );
-                    assert3( b, <, vs );
-                    assert3( c, <, vs );
-*/
-                    mesh.indices.push_back( a );
-                    mesh.indices.push_back( b );
-                    mesh.indices.push_back( c );
+                    texcoords[i][0] = mdl->texCoords[i].uvw[0];
+                    texcoords[i][1] = mdl->texCoords[i].uvw[1];
+                    texcoords[i][2] = mdl->texCoords[i].uvw[2];
                 }
             }
+
+            if( 0 )
+            if( mdl->num_normals > 0 )
+            {
+                normals.resize( mdl->num_normals );
+                for( int i = 0; i < mdl->num_normals; ++i )
+                {
+                    normals[i][0] = mdl->normals[i].ijk[0];
+                    normals[i][1] = mdl->normals[i].ijk[1];
+                    normals[i][2] = mdl->normals[i].ijk[2];
+                }
+            }
+
+            if( mdl->num_verts > 0 )
+            {
+                vertices.resize( mdl->num_verts );
+                for( int i = 0; i < mdl->num_verts; ++i )
+                {
+                    vertices[i][0] = mdl->vertices[i].xyzw[0];
+                    vertices[i][1] = mdl->vertices[i].xyzw[1];
+                    vertices[i][2] = mdl->vertices[i].xyzw[2];
+                    vertices[i][3] = mdl->vertices[i].xyzw[3];
+                }
+            }
+
+            bool has_uv = mdl->has_texCoords;
+            bool has_normals = mdl->has_normals;
+
+            float3 normzero = { 0,0,0 };
+            normals.resize( mdl->num_faces, normzero );
+
+            for( int i = 0; i < mdl->num_faces; ++i )
+            {
+                size_t elements = mdl->faces[i].num_elems;
+
+                std::vector<unsigned int> *indices = 0;
+
+                if( elements == 0 )
+                {
+                    // huh?
+                    continue;
+                }
+                else
+                if( elements == 1 )
+                {
+                    indices = &points;
+                }
+                else
+                if( elements == 2 )
+                {
+                    indices = &lines;
+                }
+                else
+                if( elements == 3 )
+                {
+                    indices = &triangles;
+                }
+                else
+                if( elements == 4 )
+                {
+                    // quad... unsupported type (deprecated)
+                    continue;
+                }
+                else
+                {
+                    // polygon... unsupported type (deprecated)
+                    continue;
+                }
+
+                if( 0 ) // this seems to be working :)
+                for( int j = 0; j < elements; ++j )
+                {
+                    indices->push_back( mdl->faces[i].vert_indices[j] );
+/*
+                    if( has_normals )
+                    indices.push_back( mdl->faces[i].norm_indices[j] );
+
+                    if( has_uv )
+                    indices.push_back( mdl->faces[i].uvw_indices[j] );
+*/
+                }
+
+                if( elements == 3 )
+                {
+                    // from http://www.iquilezles.org/www/articles/normals/normals.htm
+
+                    const int ia = mdl->faces[i].vert_indices[0];
+                    const int ib = mdl->faces[i].vert_indices[1];
+                    const int ic = mdl->faces[i].vert_indices[2];
+
+                    const moon9::vec3 e1 = moon9::vec3( vertices[ia] ) - vertices[ib];
+                    const moon9::vec3 e2 = moon9::vec3( vertices[ic] ) - vertices[ib];
+                    const moon9::vec3 no = -cross( e1, e2 );
+
+                    normals[ia].x += no.x;
+                    normals[ia].y += no.y;
+                    normals[ia].z += no.z;
+
+                    normals[ib].x += no.x;
+                    normals[ib].y += no.y;
+                    normals[ib].z += no.z;
+
+                    normals[ic].x += no.x;
+                    normals[ic].y += no.y;
+                    normals[ic].z += no.z;
+
+                    // verts
+                    indices->push_back( ia );
+                    indices->push_back( ib );
+                    indices->push_back( ic );
+
+                    // norms
+                    indices->push_back( ia );
+                    indices->push_back( ib );
+                    indices->push_back( ic );
+                }
+            }
+
+            FreeModel(&mesh);
+
+//            normals.clear(); // disable normals by clearing them :D
+
+            return true;
         }
 
-        return true;
+        void render( const moon9::mesh &mesh )
+        {
+            // activate and specify pointers to vertex and normal arrays. order is important
+            array::vertex4f v4f( mesh.vertices.data() );
+            array::normal3f n3f( mesh.normals.size() ? mesh.normals.data() : 0 );
+
+            // submit triangles
+            array::submit::triangles( mesh.triangles );
+        }
     }
-
-    bool load_wavefront( const std::string &binary, moon9::triangle_strip &strip )
-    {
-        strip = moon9::triangle_strip();
-
-        moon9::mesh mesh;
-        if( !load_wavefront( binary, mesh ) )
-            return false;
-
-        for( size_t i = 0; i < mesh.indices.size(); ++i )
-            strip.vertices.push_back( mesh.vertices[ mesh.indices[i] ] );
-
-        return true;
-    }
-
-
-    void render( const std::vector< float > &vertices_fff ) // t1{v.a,v.b,v.c}, t2{v.a,v.b,v.c}, ...
-    {
-#if 0
-        const size_t N = vertices_fff.size();
-
-        if( N < 3 )
-            return;
-
-        const float *data = vertices_fff.data();
-
-        glBegin(GL_TRIANGLES);  // draw a cube with 12 triangles
-
-        for( size_t i = 0, end = N / 3; i < end; ++i )
-            glVertex3fv( &data[i*3] );
-
-        glEnd();
-#else
-        // activate and specify pointer to vertex array
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 0, vertices_fff.data() );
-
-        // draw a mesh
-        glDrawArrays(
-            GL_LINE_STRIP, //GL_TRIANGLES,
-            0, vertices_fff.size() / 3 );
-
-        // deactivate vertex arrays after drawing
-        glDisableClientState(GL_VERTEX_ARRAY);
-#endif
-    }
-
-    void render( const std::vector< float > &vertices, const std::vector< unsigned int > &indices )
-    {
-        // activate and specify pointer to vertex array
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 0, vertices.data() );
-
-        // draw a mesh
-        glDrawElements(
-            GL_LINE_STRIP, //GL_TRIANGLES,
-            indices.size(), GL_UNSIGNED_INT, indices.data() );
-
-        // deactivate vertex arrays after drawing
-        glDisableClientState(GL_VERTEX_ARRAY);
-    }
-
-}
-
-#include <iostream>
-
-#include <moon9/render/window.hpp>
-
-int main( int argc, char **argv )
-{
-    moon9::window2 app;
-    moon9::camera camera;
-
-    moon9::mesh mesh;
-
-    std::cout << "loading...";
-    moon9::load_wavefront( moon9::file("dungeon.obj").read(), mesh );
-    std::cout << " done." << std::endl;
-
-    while( app.is_open() )
-    {
-        camera.position = moon9::vec3( 50, 50, 50 );
-        camera.lookat( moon9::vec3(0,0,0) );
-        camera.resize( app.w, app.h );
-        camera.update();
-        camera.apply();
-
-        glClearColor( 0.2f, 0.2f, 0.2f, 1.f);
-        glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
-        glDisable(GL_BLEND);
-
-        moon9::style::red color;
-        moon9::sphere sph;
-        moon9::render( mesh.vertices, mesh.indices );
-
-        app.flush();
-    }
-
-    return 0;
 }

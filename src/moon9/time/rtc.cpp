@@ -9,7 +9,6 @@
 //#include <moon9/core/string.hpp>
 
 #include "dt.hpp"
-#include "sleep.hpp"
 
 #include "rtc.hpp"
 #include "rtc.inl"
@@ -159,10 +158,5 @@ namespace moon9
 
         factor = 1.0; //ahem
         set( double( mktime( &timeinfo ) ) );
-    }
-
-    void rtc::sleep( double seconds )
-    {
-        moon9::sleep( seconds );
     }
 }

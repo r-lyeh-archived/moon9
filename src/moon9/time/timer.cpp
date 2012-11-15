@@ -51,7 +51,6 @@
 //#include <moon9/string/string.hpp>
 
 #include "dt.hpp"
-#include "sleep.hpp"
 
 #include "timer.hpp"
 #include "timer.inl"
@@ -62,11 +61,6 @@ namespace moon9
     double timer::time_obj()
     {
         return creation + factor * dt.s();
-    }
-
-    void timer::sleep( double seconds )
-    {
-        moon9::sleep( factor * seconds );
     }
 
     timer::timer() : factor( 1.0 )
