@@ -7,9 +7,15 @@ project(ROOT C CXX)
 # set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 # include(cotire)
 
-option(BUILD_FRAMEWORKS "Enable this to build *all* frameworks" ON)
-option(BUILD_DEMOS      "Enable this to build *all* demos"      ON)
-option(BUILD_TESTS      "Enable this to build *all* tests"      ON)
+UNSET(BUILD_FRAMEWORKS CACHE)
+UNSET(BUILD_DEMOS CACHE)
+UNSET(BUILD_TESTS CACHE)
+
+OPTION(BUILD_FRAMEWORKS "Enable this to build *all* frameworks" ON)
+OPTION(BUILD_DEMOS      "Enable this to build *all* demos"      ON)
+OPTION(BUILD_TESTS      "Enable this to build *all* tests"      OFF)
+
+
 
 if(MSVC)
     add_definitions(/EHsc)
@@ -66,7 +72,7 @@ else()
     endif()
 endif()
 
-if(OFF) ##BUILD_TESTS)
+if(BUILD_TESTS)
     include_directories("deps/play/msgpack/src")
     file(GLOB msgpack-static "deps/play/msgpack/src/*.cpp")
     file(GLOB_RECURSE ALL_TESTS "src/moon9/*.test.cpp")
