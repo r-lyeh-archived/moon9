@@ -44,6 +44,7 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 - [moon9::browse](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/browse), an URL browser
 - [moon9::callback](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/callback), a callback library
 - [moon9::callstack](https://github.com/r-lyeh/moon9/tree/master/src/moon9/debug/callstack), shows/retrieves a (saved) call stack
+- [moon9::chdir](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/chdir), safe directory changer
 - [moon9::clipboard](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/levels/clipboard), a clipboard getter/setter
 - [moon9::component](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/component), a simple component library for modern game object composition pattern
 - [moon9::compress](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/compress), compress memory blocks quickly. LZ4 library required.
@@ -76,6 +77,7 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 - [moon9::netstring](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/netstring), a netstring serializer.
 - [moon9::obj](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/obj), an dynamic/agnostic/serializable object class for POD data
 - [moon9::pak](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/pak), a package archiver. Miniz library required.
+- [moon9::pod](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/pod), a few safe zero-init pod types
 - [moon9::prompt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/prompt), a string prompt dialog
 - [moon9::roman](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/roman), integer to roman library
 - [moon9::sleep](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/sleep), sleep a thread for given seconds

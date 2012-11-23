@@ -1,4 +1,4 @@
-// Safe init pod types. MIT licensed
+// A few safe zero-init pod types. MIT licensed
 // - rlyeh
 
 #pragma once

@@ -1,4 +1,4 @@
 ## moon9::pod library
-- Safe init pod types.
+- A few safe zero-init pod types.
 - No dependencies.
 - MIT licensed.

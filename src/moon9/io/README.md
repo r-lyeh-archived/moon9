@@ -5,6 +5,7 @@
 ## Features
 - [moon9::binary](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/binary), a data/size pair.
 - [moon9::bistring](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/bistring), a key/value pair.
+- [moon9::chdir](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/chdir), safe directory changer
 - [moon9::compress](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/compress), compress memory blocks quickly. LZ4 library required.
 - moon9::constants,
 - [moon9::file](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/file), handy file class(es).
