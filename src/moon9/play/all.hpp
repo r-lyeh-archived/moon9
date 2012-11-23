@@ -9,4 +9,5 @@
 #include "message.hpp"
 #include "module.hpp"
 #include "obj.hpp"
+#include "pod.hpp"
 #include "tree.hpp"

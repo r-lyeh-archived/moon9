@@ -2,6 +2,7 @@
 
 #include "binary.hpp"
 #include "bistring.hpp"
+#include "chdir.hpp"
 #include "compress.hpp"
 #include "constants.hpp"
 #include "file.hpp"

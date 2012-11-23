@@ -324,24 +324,35 @@ namespace moon9
             return moon9::vec3( ret.x, ret.y, -ret.z );
         }
 
-        // typical fps controller
-        void wsadec( float ws, float ad, float ec, float wheel = 0 )
-        {
-            position += forward * ws;
-            position += right * ad;
-            position += up * ec;
+        // typical fps controllers
 
-            fov += -wheel;
+        void wheel( float inc )
+        {
+            fov += -inc;
         }
 
-        void wsadec( float w, float s, float a, float d, float e, float c, float wheel = 0 )
+        void rfu( float inc_right, float inc_fwd, float inc_up )
         {
-            wsadec( w-s, d-a, e-c, wheel );
+            position += right * inc_right;
+            position += forward * inc_fwd;
+            position += up * inc_up;
         }
 
-        void wasdec( float w, float a, float s, float d, float e, float c, float wheel = 0 )
+        void ruf( float inc_right, float inc_up, float inc_fwd )
         {
-            wsadec( w-s, d-a, e-c, wheel );
+            position += right * inc_right;
+            position += forward * inc_fwd;
+            position += up * inc_up;
+        }
+
+        void wsadec( float w, float s, float a, float d, float e, float c )
+        {
+            rfu( d-a, w-s, e-c );
+        }
+
+        void wasdec( float w, float a, float s, float d, float e, float c )
+        {
+            rfu( d-a, w-s, e-c );
         }
     };
 

@@ -395,6 +395,12 @@ namespace moon9
               ~lighting() {  glEnable( GL_LIGHTING ); }
         };
 
+        struct culling : render_detail::nocopy
+        {
+               culling() { glDisable( GL_CULL_FACE ); }
+              ~culling() {  glEnable( GL_CULL_FACE ); }
+        };
+
         struct texturing : render_detail::nocopy
         {
                texturing() { glDisable( GL_TEXTURE_2D ); }
@@ -579,7 +585,7 @@ namespace moon9
                 if( !pathFile.size() )
                     return;
 
-                static moon9::texturemap map;
+                static moon9::texturemap<std::string> map;
 
                 if( map.find( pathFile ) )
                 {

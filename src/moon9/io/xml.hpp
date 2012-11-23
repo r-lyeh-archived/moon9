@@ -83,21 +83,63 @@ namespace moon9
             }
             catch (const pugi::xpath_exception& e)
             {
-                std::cout << "Select failed: " << e.what() << std::endl;
+                std::cerr << "Select failed: " << e.what() << std::endl;
             }
             catch( ... )
             {
-                std::cout << "Exception raised!" << std::endl;
+                std::cerr << "Exception raised!" << std::endl;
             }
 
             return T();
         }
 
         template <typename T>
-        void query( T &t, const std::string &XPath ) const
+        bool query( T &t, const std::string &XPath ) const
         {
-            t = query<T>( XPath.c_str() );
+            try
+            {
+                std::string result = pugi::xpath_query( XPath.c_str() ).evaluate_string( doc );
+
+                t = moon9::iostring( result ).as<T>();
+                return true;
+            }
+            catch (const pugi::xpath_exception& e)
+            {
+                std::cerr << "Select failed: " << e.what() << std::endl;
+            }
+            catch( ... )
+            {
+                std::cerr << "Exception raised!" << std::endl;
+            }
+
+            t = T();
+            return false;
         }
+
+        template <typename T, typename T1>
+        bool query( T &t, const std::string &XPath, const T1 &t1 ) const
+        {
+            return query( t, moon9::iostring( XPath, t1 ) );
+        }
+
+        template <typename T, typename T1, typename T2>
+        bool query( T &t, const std::string &XPath, const T1 &t1, const T2 &t2 ) const
+        {
+            return query( t, moon9::iostring( XPath, t1, t2 ) );
+        }
+
+        template <typename T, typename T1, typename T2, typename T3>
+        bool query( T &t, const std::string &XPath, const T1 &t1, const T2 &t2, const T3 &t3 ) const
+        {
+            return query( t, moon9::iostring( XPath, t1, t2, t3 ) );
+        }
+
+        template <typename T, typename T1, typename T2, typename T3, typename T4>
+        bool query( T &t, const std::string &XPath, const T1 &t1, const T2 &t2, const T3 &t3, const T4 &t4 ) const
+        {
+            return query( t, moon9::iostring( XPath, t1, t2, t3, t4 ) );
+        }
+
 #endif
         // to unify, replace & deprecate. allow xml arithmetic
 

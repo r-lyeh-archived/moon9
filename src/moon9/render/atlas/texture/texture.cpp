@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 //#pragma comment( lib, "user32.lib" )
 //#pragma comment( lib, "gdi32.lib" )
@@ -26,7 +27,7 @@
 
 namespace
 {
-    std::string image_load( const std::string &pathFile, bool mirror_w, bool mirror_h, bool as_hsla, bool make_squared, size_t &w, size_t &h, float &delay, std::vector<pixel> &image )
+    std::string image_load_TO_DEPRECATE( const std::string &pathFile, bool mirror_w, bool mirror_h, bool as_hsla, bool make_squared, size_t &w, size_t &h, float &delay, std::vector<pixel> &image )
     {
         if( !pathFile.size() )
             return "Error: given filename is empty";
@@ -221,23 +222,26 @@ namespace
 namespace moon9
 {
 
-texture::texture() : std::vector<pixel>(), w(0), h(0), delay(0.f), id(0)
+texture::texture() : std::vector<pixel>(), w(0), h(0), iw(0), ih(0), u0(0), v0(0), u1(1), v1(1), delay(0.f), id(0), delegated(false)
 {
     create();
 }
 
-texture::texture( size_t _w, size_t _h, const pixel &filler ) : std::vector<pixel>(_w*_h,filler), w(_w), h(_h), delay(0.f), id(0)
+texture::texture( size_t _w, size_t _h, const pixel &filler ) : std::vector<pixel>(_w*_h,filler),  w(_w), h(_h), iw(_w), ih(_h), u0(0), v0(0), u1(1), v1(1), delay(0.f), id(0), delegated(false)
 {
     create();
 }
 
-texture::texture( const image &i, bool mirror_w, bool mirror_h ) : std::vector<pixel>(), w(0), h(0), delay(0.f), id(0)
+texture::texture( const image &i, bool mirror_w, bool mirror_h ) : std::vector<pixel>(), w(0), h(0), iw(0), ih(0), u0(0), v0(0), u1(1), v1(1), delay(0.f), id(0), delegated(false)
 {
     //create();
 
     if( load( i, mirror_w, mirror_h ) )
         submit();
 }
+
+texture::texture( size_t _id ) : std::vector<pixel>(), w(0), h(0), iw(0), ih(0), u0(0), v0(0), u1(1), v1(1), delay(0.f), id(_id), delegated(true)
+{}
 
 texture::~texture()
 {
@@ -256,10 +260,13 @@ void texture::create()
 
 void texture::destroy()
 {
+    // if texture is valid, try to delete it
     if( id )
     {
         GLuint uid = id;
-        glDeleteTextures( 1, &uid );
+        // if we own texture, delete it
+        if( !delegated )
+            glDeleteTextures( 1, &uid );
         id = 0;
     }
 }
@@ -280,9 +287,9 @@ void texture::unbind() const
     glDisable( GL_TEXTURE_2D );
 }
 
-
 bool texture::load( const std::string &pathFile, bool mirror_w, bool mirror_h )
 {
+#if 0
     destroy();
     create();
 
@@ -295,6 +302,49 @@ bool texture::load( const std::string &pathFile, bool mirror_w, bool mirror_h )
     }
 
     return true;
+#else
+    return load( moon9::image( pathFile ), mirror_w, mirror_h );
+#endif
+}
+
+void texture::clone( const moon9::texture &that )
+{
+    destroy();
+#if 0
+    *this = that;
+#else
+    this->resize( that.size() );
+    std::copy( that.begin(), that.end(), this->begin() );
+    this->w = that.w;
+    this->h = that.h;
+    this->iw = that.iw;
+    this->ih = that.ih;
+    this->id = that.id;
+    this->delay = that.delay;
+    this->u0 = that.u0;
+    this->v0 = that.v0;
+    this->u1 = that.u1;
+    this->v1 = that.v1;
+#endif
+    this->delegated = true;
+}
+
+void texture::copy( const moon9::texture &that )
+{
+#if 0
+    *this = that;
+    this->delay = that.delay;
+    this->u0 = that.u0;
+    this->v0 = that.v0;
+    this->u1 = that.u1;
+    this->v1 = that.v1;
+    this->delegated = true;
+#else
+    clone( that );
+
+    this->delegated = false;
+    create();
+#endif
 }
 
 bool texture::load( const image &_pic, bool mirror_w, bool mirror_h )
@@ -305,8 +355,12 @@ bool texture::load( const image &_pic, bool mirror_w, bool mirror_h )
     if( mirror_h ) pic = pic.flip_h();
 
     // reset
-    *this = texture( pic.w, pic.h );
-    delay = pic.delay;
+#if 1
+	*this = texture( pic.w, pic.h );
+    this->delay = pic.delay;
+#else
+    copy( texture( pic.w, pic.h ) );
+#endif
 
     if( !this->size() )
         return true;
@@ -335,8 +389,18 @@ bool texture::load( const image &_pic, bool mirror_w, bool mirror_h )
 
         size_t pw = w, ph = h;
 
+#if 1
         *this = texture( nw, nh, pixel::rgba() );
-        delay = pic.delay;
+        this->delay = pic.delay;
+#else
+        copy( texture( nw, nh, pixel::rgba() ) );
+#endif
+        this->u0 = float(atx) / nw;
+        this->v0 = float(aty) / nh;
+        this->u1 = float(atx+pw) / nw;
+        this->v1 = float(aty+ph) / nh;
+        this->iw = pw;
+        this->ih = ph;
 
         for( size_t y = 0; y < ph; ++y )
             for( size_t x = 0; x < pw; ++x )
@@ -438,12 +502,10 @@ void texture::submit() //const
 
 size_t texture::delegate()
 {
-    size_t _id = id;
-
     // ensure we wont destroy this texture on destructor
-    id = 0;
+    delegated = true;
 
-    return _id;
+    return id;
 }
 
 std::vector<unsigned char> texture::rgba_data() const

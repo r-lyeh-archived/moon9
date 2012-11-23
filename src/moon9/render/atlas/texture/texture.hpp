@@ -8,30 +8,41 @@
 #include <vector>
 
 #include "image/pixel/pixel.hpp"
+#include "image/image.hpp"
 
 // image = array of pixels[] in RGBA or HSLA format
 // texture = strict subset of an image { squared, rgba only }
 // so, image > texture
 
+// style: blurry,blocky
+// Min is the filtering to use when the texture is smaller than its size on screen
+// Mag is the filter to use when it’s larger (magnified)
+
+// check: texture.h (rectangle, cube) from md3/md5/md5b
+
 namespace moon9
 {
-    class image;
-
     class texture : public std::vector<pixel>
     {
+        bool delegated;
+
         void create();
         void destroy();
 
         public:
 
-        size_t w, h;
-        float delay; // frame delay, when loading an animation
+        size_t w, h;   // width, height
+        size_t iw, ih; // image width, height
+        float u0, v0, u1, v1;
+
+        float delay;   // frame delay, when loading an animation
 
         size_t id; // GL
 
         texture();
         texture( size_t _w, size_t _h, const pixel &filler = pixel::rgba() );
         explicit texture( const image &pic, bool mirror_w = false, bool mirror_h = false );
+        explicit texture( size_t id ); // import id from another texture handler
         ~texture();
 
         bool load( const image &pic, bool mirror_w = false, bool mirror_h = false );
@@ -40,8 +51,12 @@ namespace moon9
         void capture( int left, int bottom );
         //void capture( float scale, size_t layer_mask );
         //void capture( float scale, size_t layer_mask, size_t x, size_t y, size_t w, size_t h );
+
+        void clone( const moon9::texture &that );
+        void copy( const moon9::texture &that );
+        size_t delegate(); // useful to delegate texture id to another consumer. this avoids texture destruction when ~texture() is called
+
         void submit(); // const;
-        size_t delegate(); // useful to delegate texture id to another consumer. this avoids texture destruction when ~texture()
 
         inline const size_t size() const { return this->std::vector<pixel>::size(); }
         bool loaded() const { return this->std::vector<pixel>::size() != 0; }
@@ -62,9 +77,10 @@ namespace moon9
         void display( const std::string &title = std::string() ) const;
     };
 
-    class texturemap : public std::map< std::string, texture >
+    template< typename TYPE >
+    class texturemap : public std::map< TYPE, texture >
     {
-        std::map< std::string, texture >::iterator cursor;
+        typename std::map< TYPE, texture >::iterator cursor;
 
         public:
 
@@ -73,9 +89,9 @@ namespace moon9
             cursor = this->end();
         }
 
-        inline bool find( const std::string &pathfile )
+        inline bool find( const TYPE &refkey )
         {
-            cursor = this->std::map< std::string, texture >::find( pathfile );
+            cursor = this->std::map< TYPE, texture >::find( refkey );
             return cursor != this->end();
         }
 
@@ -87,6 +103,22 @@ namespace moon9
         inline texture &found()
         {
             return cursor->second;
+        }
+
+        inline texture &insert( const TYPE &refkey )
+        {
+            return ( this->operator[]( refkey ) = this->operator[]( refkey ) );
+        }
+
+        inline texture &insert( const TYPE &refkey, const texture &t )
+        {
+            return ( ( this->operator[]( refkey ) = this->operator[]( refkey ) ) = t );
+        }
+
+        void delegate()
+        {
+            for( auto &it : *this )
+                it.delegate();
         }
     };
 }
