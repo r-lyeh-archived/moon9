@@ -3,6 +3,7 @@
 namespace moon9
 {
     double now();
+    double epoch();
 
     // for QA and testing purposes; ie, advance a whole year in runtime and check all now() calls are still working
     void lapse( double t );

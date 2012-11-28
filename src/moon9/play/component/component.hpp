@@ -43,6 +43,17 @@
  *                          V         V        V       V       V       V
  *
 
+ * you can iterate like:
+ *
+ * for( auto &it : moon9::all<class>() )
+ *      it->method();
+ *
+ * for( auto &it = moon9::begin<class>(), end = moon9::end<class>(); it != end; ++it )
+ *      it->method();
+ *
+ * for( auto &it = moon9::component<class>::iterators::begin(), end = moon9::component<class>::iterators::end(); it != end; ++it )
+ *      it->method();
+
  * Note: always derive from moon9::component<T> first.
  * ie,
  * OK:    class class_a : moon9::component<class_a>, public class_b, private class_c {};
@@ -149,31 +160,94 @@ namespace moon9
 			operation( DEL, this );
 		}
 
-		static typename container_t::iterator begin()
+		struct iterators
 		{
-			return operation( NOP )->begin();
-		}
-		static typename container_t::iterator end()
-		{
-			return operation( NOP )->end();
-		}
-        static typename container_t::reverse_iterator rbegin()
-        {
-            return operation( NOP )->rbegin();
-        }
-        static typename container_t::reverse_iterator rend()
-        {
-            return operation( NOP )->rend();
-        }
-		static size_t size()
-		{
-			return operation( NOP )->size();
-		}
+			static typename container_t::iterator begin()
+			{
+				return operation( NOP )->begin();
+			}
+			static typename container_t::iterator end()
+			{
+				return operation( NOP )->end();
+			}
+	        static typename container_t::reverse_iterator rbegin()
+	        {
+	            return operation( NOP )->rbegin();
+	        }
+	        static typename container_t::reverse_iterator rend()
+	        {
+	            return operation( NOP )->rend();
+	        }
+			static size_t size()
+			{
+				return operation( NOP )->size();
+			}
 
-		typedef typename container_t::iterator iterator;
-		typedef typename container_t::const_iterator const_iterator;
-		typedef typename container_t::reverse_iterator reverse_iterator;
-		typedef typename container_t::const_reverse_iterator const_reverse_iterator;
+			typedef typename container_t::iterator iterator;
+			typedef typename container_t::const_iterator const_iterator;
+			typedef typename container_t::reverse_iterator reverse_iterator;
+			typedef typename container_t::const_reverse_iterator const_reverse_iterator;
+		};
 	};
+
+	template<typename T>
+	typename moon9::component<T>::iterators all()
+	{
+		return moon9::component<T>::iterators();
+	}
+
+	template<typename T>
+	typename moon9::component<T>::iterators::iterator begin()
+	{
+		return moon9::component<T>::iterators::begin();
+	}
+
+	template<typename T>
+	typename moon9::component<T>::iterators::iterator end()
+	{
+		return moon9::component<T>::iterators::end();
+	}
+
+	template<typename T>
+	typename moon9::component<T>::iterators::reverse_iterator rbegin()
+	{
+		return moon9::component<T>::iterators::rbegin();
+	}
+
+	template<typename T>
+	typename moon9::component<T>::iterators::reverse_iterator rend()
+	{
+		return moon9::component<T>::iterators::rend();
+	}
+
+    template<class T, typename container_t>
+    typename moon9::component<T, container_t>::iterators all()
+    {
+        return moon9::component<T, container_t>::iterators();
+    }
+
+    template<class T, typename container_t>
+    typename moon9::component<T, container_t>::iterators::iterator begin()
+    {
+        return moon9::component<T, container_t>::iterators::begin();
+    }
+
+    template<class T, typename container_t>
+    typename moon9::component<T, container_t>::iterators::iterator end()
+    {
+        return moon9::component<T, container_t>::iterators::end();
+    }
+
+    template<class T, typename container_t>
+    typename moon9::component<T, container_t>::iterators::reverse_iterator rbegin()
+    {
+        return moon9::component<T, container_t>::iterators::rbegin();
+    }
+
+    template<class T, typename container_t>
+    typename moon9::component<T, container_t>::iterators::reverse_iterator rend()
+    {
+        return moon9::component<T, container_t>::iterators::rend();
+    }
 }
 

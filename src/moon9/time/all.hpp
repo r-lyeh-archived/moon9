@@ -3,6 +3,7 @@
 #include "chrono.hpp"
 #include "dt.hpp"
 #include "fps.hpp"
+#include "looper.hpp"
 #include "now.hpp"
 #include "rtc.hpp"
 #include "sleep.hpp"

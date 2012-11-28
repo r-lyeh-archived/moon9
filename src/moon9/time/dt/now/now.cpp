@@ -51,20 +51,15 @@ namespace moon9
 
             double s() //const
             {
-                return operator double() / 1000000.0;
+                return us() / 1000000.0;
             }
 
             double ms() //const
             {
-                return operator double() / 1000.0;
+                return us() / 1000.0;
             }
 
             double us() //const
-            {
-                return operator double();
-            }
-
-            operator double() //const
             {
                 kBooTimerUpdate( endCount );
 
@@ -73,7 +68,7 @@ namespace moon9
 
             double ns() //const
             {
-                return operator double() * 1000.0;
+                return us() * 1000.0;
             }
 
             void reset()
@@ -108,13 +103,17 @@ namespace moon9
     namespace
     {
         moon9::legacy::dt dt;
-        double epoch = std::time(NULL);
         double offset = 0;
+    }
+
+    double epoch()
+    {
+        return double( std::time(NULL) );
     }
 
     double now()
     {
-        return epoch + offset + dt.s();
+        return offset + dt.s();
     }
 
     // for testing and QA purposes, ie, advance a whole year in runtime and check all now() calls are still working

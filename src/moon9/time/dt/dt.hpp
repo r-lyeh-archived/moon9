@@ -62,7 +62,7 @@ namespace moon9
 
 		void reset()
 		{
-			start = moon9::now(); //*this = dt();
+			start = moon9::now();
 		}
 
 		double s()

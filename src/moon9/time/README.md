@@ -7,6 +7,7 @@
 - moon9::clock
 - [moon9::dt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/dt), measure time diff in seconds
 - moon9::fps
+- moon9::looper
 - moon9::now
 - moon9::rtc
 - [moon9::sleep](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/sleep), sleep a thread for given seconds

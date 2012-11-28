@@ -340,9 +340,37 @@ namespace moon9
 
         void ruf( float inc_right, float inc_up, float inc_fwd )
         {
-            position += right * inc_right;
-            position += forward * inc_fwd;
-            position += up * inc_up;
+            rfu( inc_right, inc_fwd, inc_up );
+        }
+
+        void fru( float inc_fwd, float inc_right, float inc_up )
+        {
+            rfu( inc_right, inc_fwd, inc_up );
+        }
+
+        void fur( float inc_fwd, float inc_up, float inc_right )
+        {
+            rfu( inc_right, inc_fwd, inc_up );
+        }
+
+        void urf( float inc_up, float inc_right, float inc_fwd )
+        {
+            rfu( inc_right, inc_fwd, inc_up );
+        }
+
+        void ufr( float inc_up, float inc_fwd, float inc_right )
+        {
+            rfu( inc_right, inc_fwd, inc_up );
+        }
+
+        void wsad( float w, float s, float a, float d )
+        {
+            rfu( d-a, w-s, 0.f );
+        }
+
+        void wasd( float w, float a, float s, float d )
+        {
+            rfu( d-a, w-s, 0.f );
         }
 
         void wsadec( float w, float s, float a, float d, float e, float c )

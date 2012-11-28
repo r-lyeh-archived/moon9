@@ -1037,11 +1037,23 @@ namespace moon9
 
         struct line : moon9::render_detail::nocopy
         {
-            explicit line( const moon9::vec3 &v = moon9::vec3(1,1,0) )
+            explicit
+            line( const moon9::vec3 &v = moon9::vec3t<1,1,0>() )
             {
                 glBegin(GL_LINES);
                     glVertex3f(0,0,0);
-                    glVertex3f(v.x,v.y,v.z);
+                    glVertex3f(v[0],v[1],v[2]);
+                glEnd();
+            }
+        };
+
+        struct normal : moon9::render_detail::nocopy
+        {
+            normal()
+            {
+                glBegin(GL_LINES);
+                    glVertex3f(0,0,0);
+                    glVertex3f(0,0,1);
                 glEnd();
             }
         };
