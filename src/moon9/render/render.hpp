@@ -1038,7 +1038,7 @@ namespace moon9
         struct line : moon9::render_detail::nocopy
         {
             explicit
-            line( const moon9::vec3 &v = moon9::vec3t<1,1,0>() )
+            line( const moon9::vec3 &v = moon9::float110() )
             {
                 glBegin(GL_LINES);
                     glVertex3f(0,0,0);

@@ -25,6 +25,7 @@ list(REMOVE_ITEM MOON9_PLAY_SRCS "" ${MOON9_PLAY_SAMPLES} ${MOON9_PLAY_TESTS})
 add_library(moon9-play-static STATIC ${MOON9_PLAY_SRCS})
 
 add_executable(callback.sample              callback/callback.sample.cpp)
+add_executable(component.sample             component/component.sample.cpp)
 add_executable(event.sample                 event/event.sample.cpp)
 add_executable(factory.sample               factory/factory.sample.cpp)
 add_executable(fsm.sample                   fsm/fsm.sample.cpp)
@@ -35,6 +36,7 @@ add_executable(obj.fourth.sample            obj/obj.fourth.sample.cpp ../io/nets
 add_executable(tree.sample                  tree/tree.sample.cpp)
 
 target_link_libraries(callback.sample       moon9-play-static)
+target_link_libraries(component.sample      moon9-play-static)
 target_link_libraries(event.sample          moon9-play-static)
 target_link_libraries(factory.sample        moon9-play-static)
 target_link_libraries(fsm.sample            moon9-play-static)

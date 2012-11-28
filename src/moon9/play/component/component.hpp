@@ -3,7 +3,7 @@
  * This manager holds a record of all live instances of any trackable class,
  * thru moon9::component<class>::begin()/end() iterators.
 
- * Copyright (c) 2011 Mario 'rlyeh' Rodriguez
+ * Copyright (c) 2011-2012 Mario 'rlyeh' Rodriguez
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -99,7 +99,7 @@ namespace moon9
 
 		static container_t *operation( mode_t mode, void *self = 0 )
 		{
-#if 0
+#if 1
 			static container_t container;
 #else
             static container_t *container_p = new container_t();
@@ -220,6 +220,12 @@ namespace moon9
 		return moon9::component<T>::iterators::rend();
 	}
 
+    template<class T>
+    typename size_t size()
+    {
+        return moon9::component<T>::iterators::size();
+    }
+
     template<class T, typename container_t>
     typename moon9::component<T, container_t>::iterators all()
     {
@@ -248,6 +254,12 @@ namespace moon9
     typename moon9::component<T, container_t>::iterators::reverse_iterator rend()
     {
         return moon9::component<T, container_t>::iterators::rend();
+    }
+
+    template<class T, typename container_t>
+    typename size_t size()
+    {
+        return moon9::component<T, container_t>::iterators::size();
     }
 }
 

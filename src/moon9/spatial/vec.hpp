@@ -20,9 +20,13 @@ namespace moon9
         {}
 
         explicit
-        vec2t( float x, float y = Y ) : glm::vec2( x, y )
+        vec2t( float v ) : glm::vec2( v * X, v * Y )
         {}
 
+        vec2t( float x, float y ) : glm::vec2( x, y )
+        {}
+
+        //explicit
         vec2t( const float *ptr ) : glm::vec2( ( assert(ptr), ptr[0] ), ptr[1] )
         {}
 
@@ -95,9 +99,13 @@ namespace moon9
         {}
 
         explicit
-        vec3t( float x, float y = Y, float z = Z ) : glm::vec3( x, y, z )
+        vec3t( float v ) : glm::vec3( v * X, v * Y, v * Z )
         {}
 
+        vec3t( float x, float y, float z ) : glm::vec3( x, y, z )
+        {}
+
+        //explicit
         vec3t( const float *ptr ) : glm::vec3( ( assert(ptr), ptr[0] ), ptr[1], ptr[2] )
         {}
 
@@ -273,6 +281,19 @@ namespace moon9
 
     typedef moon9::vec2t<0,0>   vec2;
     typedef moon9::vec3t<0,0,0> vec3;
+
+    typedef moon9::vec2t<0,0>   float00;
+    typedef moon9::vec2t<0,1>   float01;
+    typedef moon9::vec2t<1,0>   float10;
+    typedef moon9::vec2t<1,1>   float11;
+    typedef moon9::vec3t<0,0,0> float000;
+    typedef moon9::vec3t<0,0,1> float001;
+    typedef moon9::vec3t<0,1,0> float010;
+    typedef moon9::vec3t<0,1,1> float011;
+    typedef moon9::vec3t<1,0,0> float100;
+    typedef moon9::vec3t<1,0,1> float101;
+    typedef moon9::vec3t<1,1,0> float110;
+    typedef moon9::vec3t<1,1,1> float111;
 
     // used for code clarifications, ie, move_to( point& ), push_from( point &pos, vector &dir ), etc...
 

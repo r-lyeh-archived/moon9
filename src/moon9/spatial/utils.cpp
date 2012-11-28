@@ -21,17 +21,17 @@ namespace math2d
     }
     moon9::vec3 perp90( const moon9::vec3 &v )
     {
-        return moon9::vec3( -v.y, v.x );
+        return moon9::vec3( -v.y, v.x, 0 );
     }
     moon9::vec3 perp45( const moon9::vec3 &v )
     {
         const double invroot2 = 0.70710678118654752440084436210485;
         moon9::vec3 vv = perp90( v );
-        return moon9::vec3( (v.x+vv.x)*invroot2, (v.y+vv.y)*invroot2 );
+        return moon9::vec3( (v.x+vv.x)*invroot2, (v.y+vv.y)*invroot2, 0 );
     }
     moon9::vec3 inv( const moon9::vec3 &v )
     {
-        return moon9::vec3( -v.x, -v.y );
+        return moon9::vec3( -v.x, -v.y, 0 );
     }
     float dot( const moon9::vec3 &v, const moon9::vec3 &w )
     {
