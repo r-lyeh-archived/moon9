@@ -383,6 +383,12 @@ namespace moon9
             ~scissor() {  glEnable( GL_SCISSOR_TEST ); }
         };
 
+        struct blending : render_detail::nocopy
+        {
+            blending() { glDisable(GL_BLEND); }
+           ~blending() { glEnable(GL_BLEND); }
+        };
+
         struct depth : render_detail::nocopy
         { //bool on; GLboolean glIsEnabled( GLenum      cap);
                depth() { glDisable( GL_DEPTH_TEST ); }

@@ -25,6 +25,11 @@ pixel pixel::operator +( const pixel &other ) const
     return pixel( h + other.h, s + other.s, l + other.l, a + other.a );
 }
 
+pixel pixel::operator -( const pixel &other ) const
+{
+    return pixel( h - other.h, s - other.s, l - other.l, a - other.a );
+}
+
 pixel &pixel::operator *=( const pixel &other )
 {
     *this = operator*( other );
@@ -34,6 +39,12 @@ pixel &pixel::operator *=( const pixel &other )
 pixel &pixel::operator +=( const pixel &other )
 {
     *this = operator+( other );
+    return *this;
+}
+
+pixel &pixel::operator -=( const pixel &other )
+{
+    *this = operator-( other );
     return *this;
 }
 

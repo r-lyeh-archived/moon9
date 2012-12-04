@@ -61,9 +61,11 @@ namespace moon9
 
         inline pixel &at( size_t offset ) { return this->std::vector<pixel>::at( offset ); }
         inline pixel &at( size_t x, size_t y ) { return this->std::vector<pixel>::at( x + y * w ); }
+        inline pixel &atf( float x01, float y01 ) { return this->at( x01 * (w-1), y01 * (h-1) ); }
 
         inline const pixel &at( size_t offset ) const { return this->std::vector<pixel>::at( offset ); }
         inline const pixel &at( size_t x, size_t y ) const { return this->std::vector<pixel>::at( x + y * w ); }
+        inline const pixel &atf( float x01, float y01 ) const { return this->at( x01 * (w-1), y01 * (h-1) ); }
 
         image flip_w() const;
         image flip_h() const;

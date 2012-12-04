@@ -3,7 +3,7 @@
  */
 
 /* @todo {
-    
+
     to_rg() // computer vision: r = r/r+g+b, g = g/r+g+b
     munsell 5 hues: red, yellow, green, blue, purple
     hsl 6 hues: red, yellow, green, cyan, blue, purple
@@ -42,7 +42,7 @@
     }
 */
 
-// valid color components in range [0..1] 
+// valid color components in range [0..1]
 // components can handle higher values (useful for color algebra), but their values will be clamped when displayed
 
 namespace moon9
@@ -57,7 +57,7 @@ namespace moon9
         typedef float component;
 
         enum
-        { 
+        {
             is_ffff = true,   // float32 type?
             is_hhhh = false,  // half-float16 type?
             is_mmmm = false,  // microfloat8 type?
@@ -72,9 +72,11 @@ namespace moon9
 
         pixel operator *( const pixel &other ) const;
         pixel operator +( const pixel &other ) const;
+        pixel operator -( const pixel &other ) const;
 
         pixel &operator *=( const pixel &other );
         pixel &operator +=( const pixel &other );
+        pixel &operator -=( const pixel &other );
 
         pixel clamp() const;
         pixel to_rgba() const;
