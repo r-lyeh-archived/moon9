@@ -24,10 +24,26 @@ namespace moon9
 	double rand01();
 	//[-1,1]
 	double rand11();
+#if 0
 	// [0,N]
 	int rand( int N );
 	// [N,M]
 	int rand( int N, int M );
+#else
+	// [N,M]
+	template<typename T>
+	T rand( T N, T M )
+	{
+		double ret = N + moon9::rand01() * ( M + 1 - N );
+		return T( ret > M ? M : ret );
+	}
+	// [0,N]
+	template<typename T>
+	T rand( T N )
+	{
+		return rand<T>( 0, N );
+	}
+#endif
     // {+1,-1}
     int randsgn();
 }

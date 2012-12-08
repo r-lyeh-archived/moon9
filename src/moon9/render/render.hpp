@@ -156,6 +156,23 @@ namespace moon9
             protected: float angle;
         };
 
+        struct rotate : render_detail::nocopy
+        {
+            explicit rotate( const float &x360, const float &y360, const float &z360 ) : x(x360), y(y360), z(z360)
+            {
+                glRotatef( x, 1.f, 0.f, 0.f );
+                glRotatef( y, 0.f, 1.f, 0.f );
+                glRotatef( z, 0.f, 0.f, 1.f );
+            }
+            ~rotate()
+            {
+                glRotatef( -z, 0.f, 0.f, 1.f );
+                glRotatef( -y, 0.f, 1.f, 0.f );
+                glRotatef( -x, 1.f, 0.f, 0.f );
+            }
+            protected: float x,y,z;
+        };
+
         struct scale : render_detail::nocopy
         {
             explicit scale( const float &_factor ) : v( _factor, _factor, _factor ), is_valid( v.x != 0.f && v.y != 0.f && v.z != 0.f )
@@ -1027,9 +1044,9 @@ namespace moon9
 
         struct point : moon9::render_detail::nocopy
         {
-            point()
+            point( const int size = 16 )
             {
-                glPointSize( 16 );
+                glPointSize( size );
                 glEnable(GL_POINT_SMOOTH);
 
                 glBegin( GL_POINTS );
@@ -1064,7 +1081,59 @@ namespace moon9
             }
         };
 
-        //line?
+        struct points : moon9::render_detail::nocopy
+        {
+            template< typename T, const size_t N >
+            explicit points( const T (&pointList)[ N ], int size = 16 )
+            {
+                if( N < 1 ) return;
+
+                glPointSize( size );
+                glEnable(GL_POINT_SMOOTH);
+
+                glBegin( GL_POINTS );
+                    for( size_t i = 0, end = N/3; i < end; ++i )
+                        glVertex3fv( &pointList[i] );
+                glEnd();
+
+                glDisable(GL_POINT_SMOOTH);
+                glPointSize( 1 );
+            }
+
+            explicit points( const float *pointList, size_t N, int size = 16 )
+            {
+                assert( pointList != 0 );
+                assert( N > 0 );
+
+                glPointSize( size );
+                glEnable(GL_POINT_SMOOTH);
+
+                glBegin( GL_POINTS );
+                    for( size_t i = 0, end = N/3; i < end; ++i )
+                        glVertex3fv( &pointList[i*3] );
+                glEnd();
+
+                glDisable(GL_POINT_SMOOTH);
+                glPointSize( 1 );
+            }
+
+            explicit points( const std::vector< moon9::vec3 > &pointList, int size = 16 )
+            {
+                size_t N = pointList.size();
+                if( !N ) return;
+
+                glPointSize( size );
+                glEnable(GL_POINT_SMOOTH);
+
+                glBegin( GL_POINTS );
+                    for( size_t i = 0; i < N; ++i )
+                        glVertex3fv( pointList[i].data() );
+                glEnd();
+
+                glDisable(GL_POINT_SMOOTH);
+                glPointSize( 1 );
+            }
+        };
 
         struct lines : moon9::render_detail::nocopy
         {
@@ -1077,8 +1146,8 @@ namespace moon9
 
                 glBegin( GL_LINE_STRIP );
 
-                    for( size_t i = 0; i < N; ++i )
-                        glVertex3fv( pointList[i].data() );
+                    for( size_t i = 0, end = N/3; i < end; ++i )
+                        glVertex3fv( &pointList[i] );
 
                 glEnd();
             }
@@ -1384,7 +1453,7 @@ namespace moon9
 
                     if( draw_negative_axes )
                     {
-                        style::dashed d;
+                        style::dotted d;
                         glBegin (GL_LINES);
                             style::red   r; glVertex3fv( zero ); glVertex3fv( nonex );
                             style::green g; glVertex3fv( zero ); glVertex3fv( noney );
