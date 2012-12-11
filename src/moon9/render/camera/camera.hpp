@@ -324,6 +324,27 @@ namespace moon9
             return moon9::vec3( ret.x, ret.y, -ret.z );
         }
 
+        // typical orbital controllers
+
+        void orbit( float incx, float incy )
+        {
+            float distance = len( position );
+            moon9::vec3 at = moon9::vec3( position ) + direction * (distance * 0.5f);
+            fru( 0, -incx * distance, -incy * distance );
+            lookat( at );
+            update();
+            moon9::vec3 dir = norm( position - at );
+            position = dir * distance;
+            update();
+        }
+
+        void radius( float incr )
+        {
+            float distance = len( position );
+            position += direction * ( incr * distance );
+            update();
+        }
+
         // typical fps controllers
 
         void wheel( float inc )

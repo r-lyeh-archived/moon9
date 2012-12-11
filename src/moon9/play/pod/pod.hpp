@@ -67,4 +67,9 @@ namespace moon9
     typedef moon9::pod< unsigned int,   2 > uint2;
     typedef moon9::pod< unsigned int,   3 > uint3;
     typedef moon9::pod< unsigned int,  ~0 > uintN;
+
+    typedef moon9::pod<       size_t,   0 > sizet0;
+    typedef moon9::pod<       size_t,   1 > sizet1;
+    typedef moon9::pod<       size_t,   2 > sizet2;
+    typedef moon9::pod<       size_t,  ~0 > sizetN;
 }

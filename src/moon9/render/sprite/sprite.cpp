@@ -1,3 +1,4 @@
+// @todo: triparticle, biparticle, particle
 // - rlyeh ~~ listening to Toundra - Requiem
 
 //#include <moon9/moon9.hpp>
@@ -223,44 +224,5 @@ namespace moon9
     }
 
 #endif
-
-    // @todo: triparticle, biparticle, particle
-
-#if 0
-    // proposal
-    sprite( pos, texture_scaling, texture_tiling )
-    spritesheet().
-        play_forward/backward/pingpong( "anim.gif", 100%, times = 0,1,2,3... );
-        play( x0 )
-
-    sprite().
-        position( pos ).
-        scaling( 1.f ).
-        tiling( 1.f ).
-        speed( 1.0 ).
-        forward( 3 ).
-        show( true ).
-        play( "anim.gif" ); // stop()
-#endif
-
-    std::deque< moon9::texture * > import_gif( const std::string &filename, size_t frame_start, size_t frame_end )
-    {
-        std::deque< moon9::texture * > textures;
-
-        for( size_t frame = frame_start; frame < frame_end; ++frame )
-        {
-            moon9::string filename_and_frame( "\1|\2", filename, frame );
-
-            textures.push_back( &get_texture(filename_and_frame) );
-
-            if( is_error_texture( textures.back() ) )
-            {
-                textures.pop_back();
-                return textures;
-            }
-        }
-
-        return textures;
-    }
 }
 

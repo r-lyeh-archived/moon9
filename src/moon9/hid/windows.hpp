@@ -1144,28 +1144,20 @@ namespace moon9
                 } lib;
 
                     ManyMouseEvent event;
+                    static float dx = 0, dy = 0;
 
-                    wheel.set( 0, 0 );
-
-                    if( ManyMouse_PollEvent(&event) )
+                    if( ManyMouse_PollEvent(&event) && event.device == 0 )
                     {
-                        if( event.device != 0 )
-                            return;
-
                         if (event.type == MANYMOUSE_EVENT_SCROLL )
                         {
-                            float dx = 0, dy = 0;
-
                             if( event.item == 0 )
                             {
-                                dy = event.value;
+                                dy += ( event.value > 0 ? 1 : -1 ) * 0.100f;
                             }
                             else
                             {
-                                dx = event.value;
+                                dx += ( event.value > 0 ? 1 : -1 ) * 0.100f;
                             }
-
-                            wheel.set( dx, dy );
                         }
 
 #if 0
@@ -1202,6 +1194,8 @@ namespace moon9
 #endif
 
                     }
+
+                    wheel.set( dx, dy );
             }
         };
     }

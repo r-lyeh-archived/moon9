@@ -12,11 +12,12 @@ namespace moon9
 
     void texturedquad( bool mirror_w, bool mirror_h, float scale_w = 1.f, float scale_h = 1.f, float texture_tiling = 1.f );
 
-    void sprite( const moon9::texture &texture, bool mirror_w, bool mirror_h, float texture_scale_w = 1.f, float texture_scale_h = 1.f, float texture_tiling = 1.f );
-    void spritebox( const moon9::texture &texture, bool mirror_w, bool mirror_h, float texture_scale_w = 1.f, float texture_scale_h = 1.f, float texture_tiling = 1.f );
-
+    void sprite( const moon9::texture &texture, bool mirror_w = false, bool mirror_h = false, float texture_scale_w = 1.f, float texture_scale_h = 1.f, float texture_tiling = 1.f );
+    void spritebox( const moon9::texture &texture, bool mirror_w = false, bool mirror_h = false, float texture_scale_w = 1.f, float texture_scale_h = 1.f, float texture_tiling = 1.f );
+/*
     void sprite( const std::string &texture_name, bool mirror_w = false, bool mirror_h = false, float texture_scale_w = 1.f, float texture_scale_h = 1.f, float texture_tiling = 1.f );
     void spritebox( const std::string &texture_name, bool mirror_w = false, bool mirror_h = false, float texture_scale_w = 1.f, float texture_scale_h = 1.f, float texture_tiling = 1.f );
+    */
 }
 
 //#include <moon9/play/scene.hpp>

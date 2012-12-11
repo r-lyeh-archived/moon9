@@ -67,6 +67,25 @@ namespace moon9
         inline const pixel &at( size_t x, size_t y ) const { return this->std::vector<pixel>::at( x + y * w ); }
         inline const pixel &atf( float x01, float y01 ) const { return this->at( x01 * (w-1), y01 * (h-1) ); }
 
+        image rect( size_t ox, size_t oy, size_t w = ~0, size_t h = ~0 ) const
+        {
+            if( w == ~0 ) w = this->w - ox;
+            if( h == ~0 ) h = this->h - oy;
+
+            image sub( w, h );
+
+            for( size_t i = 0, y = 0 ; y < h; ++y )
+                for( size_t x = 0; x < w; ++x, ++i )
+                    sub.at( i ) = this->at( ox + x, oy + y );
+
+            return sub;
+        }
+
+        image crop( size_t left, size_t right, size_t top, size_t bottom ) const // each param is number of row/cols to crop
+        {
+            return rect( left, top, this->w - (left + right), this->h - (top + bottom) );
+        }
+
         image flip_w() const;
         image flip_h() const;
         image rotate_left() const;

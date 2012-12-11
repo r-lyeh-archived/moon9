@@ -24,7 +24,7 @@ namespace moon9
 {
     class texture : public std::vector<pixel>
     {
-        bool delegated;
+        mutable bool delegated;
 
         void create();
         void destroy();
@@ -45,6 +45,16 @@ namespace moon9
         explicit texture( size_t id ); // import id from another texture handler
         ~texture();
 
+        texture( const moon9::texture &other ) : id(0)
+        {
+            operator=( other );
+        }
+        texture &operator=( const moon9::texture &other )
+        {
+            move( other );
+            return *this;
+        }
+
         bool load( const image &pic, bool mirror_w = false, bool mirror_h = false );
         bool load( const std::string &filename, bool mirror_w = false, bool mirror_h = false );
         void capture();
@@ -52,9 +62,10 @@ namespace moon9
         //void capture( float scale, size_t layer_mask );
         //void capture( float scale, size_t layer_mask, size_t x, size_t y, size_t w, size_t h );
 
-        void clone( const moon9::texture &that );
-        void copy( const moon9::texture &that );
-        size_t delegate(); // useful to delegate texture id to another consumer. this avoids texture destruction when ~texture() is called
+        void clone( const moon9::texture &other );
+        void move( const moon9::texture &other );
+        void copy( const moon9::texture &other );
+        size_t delegate() const; // useful to delegate texture id to another consumer. this avoids texture destruction when ~texture() is called
 
         void submit(); // const;
 

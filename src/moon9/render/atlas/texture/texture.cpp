@@ -27,133 +27,6 @@
 
 namespace
 {
-    std::string image_load_TO_DEPRECATE( const std::string &pathFile, bool mirror_w, bool mirror_h, bool as_hsla, bool make_squared, size_t &w, size_t &h, float &delay, std::vector<pixel> &image )
-    {
-        if( !pathFile.size() )
-            return "Error: given filename is empty";
-
-        //std::cout << "Loading texture: " << pathFile << std::endl;
-
-        // decode
-        int imageWidth = 0, imageHeight = 0, imageBpp;
-        std::vector<stbi_uc> temp;
-
-        {
-            std::vector<std::string> pathFileExt = moon9::tokenize( pathFile, "|" );
-            int subframe = ( pathFileExt.size() > 1 ? moon9::as<int>(pathFileExt[1]) : 0 );
-
-            stbi_gif_subframe_delay = 0.f;
-            stbi_gif_subframe_selector = subframe;
-            stbi_uc *imageuc = stbi_load( pathFileExt[0].c_str(), &imageWidth, &imageHeight, &imageBpp, 4 );
-
-            if( !imageuc )
-            {
-                // assert( false );
-                // yellow/black texture instead?
-                return moon9::custom( "Error: cant find/decode texture '\1'\n", pathFile );
-            }
-
-            if( make_squared )
-            {
-                bool is_power_of_two_w = imageWidth && !(imageWidth & (imageWidth - 1));
-                bool is_power_of_two_h = imageHeight && !(imageHeight & (imageHeight - 1));
-
-                if( is_power_of_two_w && is_power_of_two_h )
-                {
-                    temp.resize( imageWidth * imageHeight * 4 );
-                    memcpy( &temp[0], imageuc, imageWidth * imageHeight * 4 );
-                }
-                else
-                {
-                    int nw = 1, nh = 1, atx, aty;
-                    while( nw < imageWidth ) nw <<= 1;
-                    while( nh < imageHeight ) nh <<= 1;
-
-                    // squared as well, cos we want them pixel perfect
-                    if( nh > nw ) nw = nh; else nh = nw;
-
-                    temp.resize( nw * nh * 4, 0 );
-                    atx = (nw - imageWidth) / 2;
-                    aty = (nh - imageHeight) / 2;
-
-                    //std::cout << custom( "\1x\2 -> \3x\4 @(\5,\6)\n", imageWidth, imageHeight, nw, nh, atx, aty);
-
-                    for( int y = 0; y < imageHeight; ++y )
-                        memcpy( &((stbi_uc*)&temp[0])[ ((atx)+(aty+y)*nw)*4 ], &imageuc[ (y*imageWidth) * 4 ], imageWidth * 4 );
-
-                    imageWidth = nw;
-                    imageHeight = nh;
-                }
-            }
-            else
-            {
-                    temp.resize( imageWidth * imageHeight * 4 );
-                    memcpy( &temp[0], imageuc, imageWidth * imageHeight * 4 );
-            }
-
-            stbi_image_free( imageuc );
-        }
-
-        if( mirror_w && !mirror_h )
-        {
-            std::vector<stbi_uc> mirrored( temp.size() );
-
-            for( int c = 0, y = 0; y < imageHeight; ++y )
-            for( int x = imageWidth - 1; x >= 0; --x )
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 0 ],
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 1 ],
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 2 ],
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 3 ];
-
-            temp = mirrored;
-        }
-        else
-        if( mirror_h && !mirror_w )
-        {
-            std::vector<stbi_uc> mirrored( temp.size() );
-
-            for( int c = 0, y = imageHeight - 1; y >= 0; --y )
-            for( int x = 0; x < imageWidth; ++x )
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 0 ],
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 1 ],
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 2 ],
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 3 ];
-
-            temp = mirrored;
-        }
-        else
-        if( mirror_w && mirror_h )
-        {
-            std::vector<stbi_uc> mirrored( temp.size() );
-
-            for( int c = 0, y = imageHeight - 1; y >= 0; --y )
-            for( int x = imageWidth - 1; x >= 0; --x )
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 0 ],
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 1 ],
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 2 ],
-                mirrored[ c++ ] = temp[ ( x + y * imageWidth ) * 4 + 3 ];
-
-            temp = mirrored;
-
-            std::swap( imageWidth, imageHeight );
-        }
-
-        image.resize( imageWidth * imageHeight );
-
-        if( as_hsla )
-            for( size_t i = 0, e = image.size(); i < e; ++i )
-                image.at(i) = pixel::rgba( temp[ i * 4 + 0 ] / 255.f, temp[ i * 4 + 1 ] / 255.f, temp[ i * 4 + 2 ] / 255.f, temp[ i * 4 + 3 ] / 255.f ).to_hsla();
-        else
-            for( size_t i = 0, e = image.size(); i < e; ++i )
-                image.at(i) = pixel::rgba( temp[ i * 4 + 0 ] / 255.f, temp[ i * 4 + 1 ] / 255.f, temp[ i * 4 + 2 ] / 255.f, temp[ i * 4 + 3 ] / 255.f );
-
-        w = imageWidth;
-        h = imageHeight;
-        delay = stbi_gif_subframe_delay;
-
-        return std::string();
-    }
-
     void setup_filtering( bool high_quality )
     {
     #if 0
@@ -329,6 +202,14 @@ void texture::clone( const moon9::texture &that )
     this->delegated = true;
 }
 
+void texture::move( const moon9::texture &that )
+{
+    clone( that );
+
+    this->delegated = false;
+    that. delegated = true;
+}
+
 void texture::copy( const moon9::texture &that )
 {
 #if 0
@@ -500,7 +381,7 @@ void texture::submit() //const
     glPixelStorei( GL_UNPACK_ALIGNMENT, UnpackAlignment );
 }
 
-size_t texture::delegate()
+size_t texture::delegate() const
 {
     // ensure we wont destroy this texture on destructor
     delegated = true;
