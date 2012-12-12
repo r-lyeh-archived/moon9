@@ -182,7 +182,11 @@ bool texture::load( const std::string &pathFile, bool mirror_w, bool mirror_h )
 
 void texture::clone( const moon9::texture &that )
 {
+    if( &that == this )
+        return;
+
     destroy();
+
 #if 0
     *this = that;
 #else
@@ -204,6 +208,9 @@ void texture::clone( const moon9::texture &that )
 
 void texture::move( const moon9::texture &that )
 {
+    if( &that == this )
+        return;
+
     clone( that );
 
     this->delegated = false;
@@ -212,6 +219,9 @@ void texture::move( const moon9::texture &that )
 
 void texture::copy( const moon9::texture &that )
 {
+    if( &that == this )
+        return;
+
 #if 0
     *this = that;
     this->delay = that.delay;
@@ -223,8 +233,13 @@ void texture::copy( const moon9::texture &that )
 #else
     clone( that );
 
+    this->id = 0;
     this->delegated = false;
-    create();
+    if( that.id > 0 )
+    {
+        create();
+        submit();
+    }
 #endif
 }
 

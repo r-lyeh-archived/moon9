@@ -51,7 +51,8 @@ namespace moon9
         }
         texture &operator=( const moon9::texture &other )
         {
-            move( other );
+            //destroy();
+            copy( other );
             return *this;
         }
 
