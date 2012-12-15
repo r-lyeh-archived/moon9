@@ -1,0 +1,3 @@
+[submodule "src/moon9/play/signal"]
+	path = src/moon9/play/signal
+	url = https://github.com/r-lyeh/moon9-signals.git
