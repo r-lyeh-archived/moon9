@@ -11,6 +11,7 @@ A gameplay framework with no big dependencies. MIT licensed.
 - [moon9::module](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/module), a lightweight game module state manager
 - [moon9::obj](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/obj), an dynamic/agnostic/serializable object class for POD data
 - [moon9::pod](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/pod), a few safe zero-init pod types
+- [moon9::signal](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/signal), signal/wait coroutines made easy
 - [moon9::tree](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/tree),
 
 ## To do:

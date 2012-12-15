@@ -10,4 +10,5 @@
 #include "module.hpp"
 #include "obj.hpp"
 #include "pod.hpp"
+#include "signal.hpp"
 #include "tree.hpp"
