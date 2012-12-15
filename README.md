@@ -80,6 +80,7 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 - [moon9::pod](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/pod), a few safe zero-init pod types
 - [moon9::prompt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/prompt), a string prompt dialog
 - [moon9::roman](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/roman), integer to roman library
+- [moon9::signal](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/signal), signal/wait coroutines made easy
 - [moon9::sleep](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/sleep), sleep a thread for given seconds
 - [moon9::stream](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/stream), attach/detach loggers to ostreams. Also create ostreams.
 - [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/string), extended C++ standard string
