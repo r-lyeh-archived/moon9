@@ -53,6 +53,7 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 - [moon9::dialog](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/dialog), a file pickup dialog
 - [moon9::directives](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/endian/directives), compiler/os directives header
 - [moon9::dll](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/dll), a dynamic library loader/caller
+- [moon9::dollar](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/dollar), simple string interpolation and string casting macros
 - [moon9::dt](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/dt), measure time diff in seconds
 - [moon9::endian](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/endian), a few handy functions to handle endianness
 - [moon9::environment](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/levels/environment), an environment getter/setter
@@ -83,7 +84,7 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 - [moon9::signal](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/signal), signal/wait coroutines made easy
 - [moon9::sleep](https://github.com/r-lyeh/moon9/tree/master/src/moon9/time/sleep), sleep a thread for given seconds
 - [moon9::stream](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/stream), attach/detach loggers to ostreams. Also create ostreams.
-- [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/string), extended C++ standard string
+- [moon9::string](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/dollar/string), extended C++ standard string
 - [moon9::tcp](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/tcp), TCP based client/server.
 - [moon9::tree](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/tree),
 - [moon9::trie](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/trie), string autocompletion

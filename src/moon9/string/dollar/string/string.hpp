@@ -272,19 +272,19 @@ namespace moon9
         template<>
         char as() const
         {
-            return (char)(as<int>());
+            return this->size() == 1 ? (char)(this->at(0)) : (char)(as<int>());
         }
 
         template<>
         signed char as() const
         {
-            return (signed char)(as<int>());
+            return this->size() == 1 ? (signed char)(this->at(0)) : (signed char)(as<int>());
         }
 
         template<>
         unsigned char as() const
         {
-            return (unsigned char)(as<int>());
+            return this->size() == 1 ? (unsigned char)(this->at(0)) : (unsigned char)(as<int>());
         }
 
         template<>
@@ -337,7 +337,7 @@ namespace moon9
         string &operator=( const T &t )
         {
             std::stringstream ss;
-            ss.precision(20);
+            ss.precision(20); // std::numeric_limits< T >::digits10 + 1
             if( ss << /* std::boolalpha << */ t )
                 this->assign( ss.str() );
             return *this;
@@ -354,7 +354,7 @@ namespace moon9
         string &operator=( const long double &t )
         {
             std::stringstream ss;
-            ss.precision(90);
+            ss.precision(90); // std::numeric_limits< T >::digits10 + 1
             if( ss << /* std::boolalpha << */ t )
                 this->assign( ss.str() );
             return *this;
@@ -371,6 +371,21 @@ namespace moon9
         operator const bool() const
         {
             return as<bool>();
+        }
+
+        template<typename T>
+        bool operator ==( const T &t ) const
+        {
+            return t == (*this).as<T>();
+        }
+        template<>
+        bool operator ==( const moon9::string &t ) const
+        {
+            return this->compare( t ) == 0;
+        }
+        bool operator ==( const char *t ) const
+        {
+            return this->compare( t ) == 0;
         }
 
         // extra methods

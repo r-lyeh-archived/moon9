@@ -20,7 +20,7 @@ namespace
         int width_padding = maxwidth - ( width_offset_block + width_chars_block + width_hex_block );
         int blocks = width_padding / ( width_chars_block + width_hex_block ) ;
 
-        size_t dumpsize = ( num_bytes < width * 16 ? num_bytes : width * 16 ); //16 lines max
+        size_t dumpsize = ( num_bytes < width * 16 ? num_bytes : size_t( width * 16 ) ); //16 lines max
 
         std::string result;
 

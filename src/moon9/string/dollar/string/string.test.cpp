@@ -108,6 +108,32 @@ int main( int argc, char **argv )
 
     assert( str_assignop  == "hello world" );
 
+    assert( moon9::string( 'a' ) == 'a' );
+    assert( moon9::string( "hi" ) == "hi" );
+    assert( moon9::string( true ) == true );
+    assert( moon9::string( 16384 ) == 16384 );
+    assert( moon9::string( 3.14159 ) == 3.14159 );
+    assert( moon9::string( 3.14159f ) == 3.14159f );
+
+    assert( moon9::string() == 0 );
+    assert( moon9::string() == 0.f );
+    assert( moon9::string() == 0.0 );
+    assert( moon9::string() == '\0' );
+    assert( moon9::string() == "" );
+    assert( moon9::string() == false );
+
+    assert( moon9::string( 'a' ) == 'a' );
+    assert( moon9::string( 'a' ) == "a" );
+//    assert( moon9::string( 'a' ) == 97 );
+    assert( moon9::string( "a" ) == 'a' );
+    assert( moon9::string( "a" ) == "a" );
+//    assert( moon9::string( "a" ) == 97 );
+//    assert( moon9::string(  97 ) == 'a' );
+//    assert( moon9::string(  97 ) == "a" );
+    assert( moon9::string(  97 ) == 97 );
+    assert( moon9::string(  97 ).as<int>() == 97 );
+    assert( moon9::string(  97 ).as<char>() == 'a' );
+
     assert( moon9::string(         ).as<bool>() == false );
     assert( moon9::string(       0 ).as<bool>() == false );
     assert( moon9::string(       1 ).as<bool>() ==  true );
@@ -120,12 +146,13 @@ int main( int argc, char **argv )
     assert( moon9::string( "false" ).as<bool>() == false );
     assert( moon9::string(  "true" ).as<bool>() ==  true );
 
+    assert( moon9::string(   'a' ).as<char>() ==    'a' );
     assert( moon9::string(       ).as<char>() ==   '\0' );
+    assert( moon9::string(     0 ).as<char>() ==    '0' );
+    assert( moon9::string(     1 ).as<char>() ==    '1' );
+    assert( moon9::string(    33 ).as<char>() ==    '!' );
     assert( moon9::string( false ).as<char>() ==   '\0' );
     assert( moon9::string(  true ).as<char>() == '\x01' );
-    assert( moon9::string(     0 ).as<char>() ==   '\0' );
-    assert( moon9::string(     1 ).as<char>() == '\x01' );
-    assert( moon9::string(    33 ).as<char>() ==    '!' );
 
     //short
     //long

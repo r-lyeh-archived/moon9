@@ -2,7 +2,7 @@
 
 #include "arc4.hpp"
 #include "base91.hpp"
-#include "dictionary.hpp"
+#include "dollar.hpp"
 #include "format.hpp"
 #include "hash.hpp"
 #include "hexdump.hpp"
