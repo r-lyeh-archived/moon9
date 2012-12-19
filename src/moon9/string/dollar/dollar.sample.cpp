@@ -25,7 +25,7 @@ int main( int argc, const char **argv )
     // 3) However, loopback lookups are quoted for security reasons.
 
     $(LOOPBACK) = "$LOOPBACK is quoted.";
-    std::cout << $$("Loopback lookups are just quoted: $LOOPBACK") << std::endl;
+    std::cout << $$("Loopback lookups are quoted: $LOOPBACK") << std::endl;
 
     // 4) Symbol hot-swapping is supported.
 
@@ -43,21 +43,20 @@ int main( int argc, const char **argv )
 
     std::cout << $$("Symbols can hold different types: $flag, $letter, $items, $price, $pi, $name") << std::endl;
 
-    // 6) These symbols work internally as strings. You can cast them by using these additional macros.
+    // 6) All these symbols work internally as strings. You can cast them by using these additional macros.
 
     assert( $bool(flag) ^ true == false );
-    assert( $string(letter) == 'a' );
+    assert( $char(letter) == 'a' );
     assert( $int(items) * 2 == 200 );
+    assert( $string(name) + $string(name) == "John DoeJohn Doe" );
     assert( abs( $float(price) - 99.95f ) < 1 );
     assert( abs( $double(pi) - 3.141592 ) < 1 );
-    assert( $string(name) + $string(name) == "John DoeJohn Doe" );
 
-    // 7) Custom casts are supported as well, by using $cast(symbol,type)
+    // 7) Casts to custom types are supported as well, by using $cast(symbol,type)
 
-    typedef int my_custom_currency;
-    my_custom_currency currency = 100;
-    $(price) = currency;
-    assert( $cast(price,my_custom_currency) == currency );
+    typedef int my_custom_type;
+    my_custom_type currency = $cast(price,my_custom_type);
+    assert( currency == 99 );
 
     std::cout << "All ok." << std::endl;
 
