@@ -60,7 +60,7 @@ namespace moon9
     extern moon9::hid::dt global_timer;
 
     template< typename SAMPLE_TYPE, const int N = 120 >
-    class history
+    class history : public SAMPLE_TYPE
     {
         // N samples = fixed deque of N samples
         //
@@ -107,23 +107,23 @@ namespace moon9
             assert( container.size() );
             return container.begin();
         }
-
+/* TO_DEPRECATE
         typename std::deque< SAMPLE_TYPE >::const_iterator oldest_it() const
         {
             assert( container.size() );
             return container.end() - 1;
         }
-
+*/
         const SAMPLE_TYPE &newest() const
         {
             return *newest_it();
         }
-
+/* TO_DEPRECATE
         const SAMPLE_TYPE &oldest() const
         {
             return *oldest_it();
         }
-
+*/
         const double duration() const
         {
             return container.at(1).t - container.back().t;
@@ -247,6 +247,8 @@ namespace moon9
                 if( container.size() > N )
                     container.pop_back();
             }
+
+            import( newest() );
         }
 
         public:
@@ -396,6 +398,8 @@ namespace moon9
                 vec1 &operator =( const vec1 &v ) { if( this != &v ) t = v.t, treshold = v.treshold, x = v.x, xdt = v.xdt; return *this; }
                 void set( const vec1 &v ) { xdt = v.x - x; x = v.x; }
                 const bool operator ==( const vec1 &v ) const { return std::abs( x - v.x ) < treshold; }
+                void import( const vec1 &v )
+                    { operator=( v ); };
             };
 
             template <typename T>
@@ -410,6 +414,8 @@ namespace moon9
                 vec2 &operator =( const vec2 &v ) { if( this != &v ) t = v.t, treshold = v.treshold, x = v.x, y = v.y, xdt = v.xdt, ydt = v.ydt; return *this; }
                 void set( const vec2 &v ) { xdt = v.x - x, ydt = v.y - y; x = v.x, y = v.y; }
                 const bool operator ==( const vec2 &v ) const { return std::abs( x - v.x ) < treshold && std::abs( y - v.y ) < treshold; }
+                void import( const vec2 &v )
+                    { operator=( v ); };
             };
 
             template <typename T>
@@ -424,6 +430,8 @@ namespace moon9
                 vec3 &operator =( const vec3 &v ) { if( this != &v ) t = v.t, treshold = v.treshold, x = v.x, y = v.y, z = v.z, xdt = v.xdt, ydt = v.ydt, zdt = v.zdt; return *this; }
                 void set( const vec3 &v ) { xdt = v.x - x, ydt = v.y - y, zdt = v.z - z; x = v.x, y = v.y, z = v.z; }
                 const bool operator ==( const vec3 &v ) const { return std::abs( x - v.x ) < treshold && std::abs( y - v.y ) < treshold && std::abs( z - v.z ) < treshold; }
+                void import( const vec3 &v )
+                    { operator=( v ); };
             };
         }
 
@@ -477,6 +485,8 @@ namespace moon9
 
                 void operator=( const vec1 &v )
                     { elem[0] = v.elem[0]; }
+                void import( const vec1 &v )
+                    { operator=( v ); };
             };
 
             struct vec2 : public vec<2,float>
@@ -494,6 +504,8 @@ namespace moon9
 
                 void operator=( const vec2 &v )
                     { elem[0] = v.elem[0], elem[1] = v.elem[1]; }
+                void import( const vec2 &v )
+                    { operator=( v ); };
             };
 
             struct vec3 : public vec<3,float>
@@ -513,6 +525,8 @@ namespace moon9
 
                 void operator=( const vec3 &v )
                     { elem[0] = v.elem[0], elem[1] = v.elem[1], elem[2] = v.elem[2]; }
+                void import( const vec3 &v )
+                    { operator=( v ); };
 
                 // conversions
                 const vec2 &xy() const
@@ -541,6 +555,8 @@ namespace moon9
 
                 void operator=( const vec4 &v )
                     { elem[0] = v.elem[0], elem[1] = v.elem[1], elem[2] = v.elem[2], elem[3] = v.elem[3]; }
+                void import( const vec4 &v )
+                    { operator=( v ); };
 
                 // conversions
                 const vec2 &xy() const

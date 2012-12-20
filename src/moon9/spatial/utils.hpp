@@ -7,6 +7,8 @@ namespace math2d
 {
     float len( const moon9::vec3 &v );
     float len2( const moon9::vec3 &v );
+    float len( const moon9::vec3 &a, const moon9::vec3 &b );
+    float len2( const moon9::vec3 &a, const moon9::vec3 &b );
     moon9::vec3 norm( const moon9::vec3 &v );
     moon9::vec3 perp90( const moon9::vec3 &v );
     moon9::vec3 perp45( const moon9::vec3 &v );
@@ -18,6 +20,8 @@ namespace math3d
 {
     float len( const moon9::vec3 &v );
     float len2( const moon9::vec3 &v );
+    float len( const moon9::vec3 &a, const moon9::vec3 &b );
+    float len2( const moon9::vec3 &a, const moon9::vec3 &b );
     moon9::vec3 norm( const moon9::vec3 &v );
     moon9::vec3 inv( const moon9::vec3 &v );
     float dot( const moon9::vec3 &v, const moon9::vec3 &w );

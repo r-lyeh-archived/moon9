@@ -19,15 +19,6 @@
 //         |
 //         |       1,1
 
-// texture: -> moon9::manager<texture>
-// ctor() -> count ref cache, si existe un id anterior, reusarlo, ref++
-// dtor() -> --ref, if(!ref) del
-// usage:
-// texture a("a.jpg"); //loaded
-// texture b("a.jpg"); //cached
-// del a; // still cached
-// del b; // finally destroyed
-
 //www.eng.cam.ac.uk/help/tpl/languages/C++/namespaces.html
 //http://winterdom.com/dev/cpp/nspaces
 //shivavg (opengl), maestrovg(sw)
@@ -954,6 +945,9 @@ namespace moon9
 
         struct color : render_detail::nocopy
         {
+             //explicit color( const moon9::vec4 &c ) { glColor4f( c.x, c.y, c.z, c.a ); }
+             explicit color( const moon9::vec3 &c, float a ) { glColor4f( c.x, c.y, c.z, a ); }
+             explicit color( const moon9::vec3 &c ) { glColor4f( c.x, c.y, c.z, 1.f ); }
              color( float r, float g, float b, float a = 1.f ) { glColor4f( r, g, b, a ); }
              color( unsigned long rgb, float a ) { glColor4f( ((rgb >> 16) & 0xff ) / 255.f, ((rgb >>  8) & 0xff ) / 255.f, ((rgb >> 0) & 0xff ) / 255.f, a ); }
              explicit color( unsigned long rgba ) { glColor4f( ((rgba >> 24) & 0xff ) / 255.f, ((rgba >> 16) & 0xff ) / 255.f, ((rgba >> 8) & 0xff ) / 255.f, (rgba & 0xff) / 255.f ); }
@@ -1479,6 +1473,32 @@ namespace moon9
                     glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18, 'x' );
 
                 glPopMatrix();
+            }
+        };
+
+        struct coord3
+        {
+            coord3( const vec3 &pt )
+            {
+                style::dotted line;
+                disable::blending noshading;
+
+                std::vector<vec3> v( 2, pt );
+
+                style::green color1;
+                v[0] = pt * float110();
+                v[1] = v[0] * float100();
+                geometry::lines axis1( v );
+
+                style::red color2;
+                v[0] = pt * float110();
+                v[1] = v[0] * float010();
+                geometry::lines axis2( v );
+
+                style::cyan color3;
+                v[0] = pt;
+                v[1] = v[0] * float110();
+                geometry::lines axis3( v );
             }
         };
 
@@ -2468,62 +2488,63 @@ namespace moon9
         {
             public:
 
-            textured_cube( const char *textures[6], float texture_scale = 1.0f )
+            template<typename T>
+            textured_cube( const T textures[6], float texture_scale = 1.0f, float halfcube = 0.5f )
             {
                 // Render the quads in order: front, left, back, right, top and bottom
 
                 {
                     moon9::style::texture tx( textures[0] );
                     glBegin(GL_QUADS);
-                        glTexCoord2f(           0.f,           0.f ); glVertex3f( +0.5f, -0.5f, +0.5f );
-                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( -0.5f, -0.5f, +0.5f );
-                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( -0.5f, -0.5f, -0.5f );
-                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( +0.5f, -0.5f, -0.5f );
+                        glTexCoord2f(           0.f,           0.f ); glVertex3f( +halfcube, -halfcube, +halfcube );
+                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( -halfcube, -halfcube, +halfcube );
+                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( -halfcube, -halfcube, -halfcube );
+                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( +halfcube, -halfcube, -halfcube );
                     glEnd();
                 }
                 {
                     moon9::style::texture tx( textures[1] );
                     glBegin(GL_QUADS);
-                        glTexCoord2f(           0.f,           0.f ); glVertex3f( +0.5f, +0.5f, +0.5f );
-                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( +0.5f, -0.5f, +0.5f );
-                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( +0.5f, -0.5f, -0.5f );
-                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( +0.5f, +0.5f, -0.5f );
+                        glTexCoord2f(           0.f,           0.f ); glVertex3f( +halfcube, +halfcube, +halfcube );
+                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( +halfcube, -halfcube, +halfcube );
+                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( +halfcube, -halfcube, -halfcube );
+                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( +halfcube, +halfcube, -halfcube );
                     glEnd();
                 }
                 {
                     moon9::style::texture tx( textures[2] );
                     glBegin(GL_QUADS);
-                        glTexCoord2f(           0.f,           0.f ); glVertex3f( -0.5f, +0.5f, +0.5f );
-                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( +0.5f, +0.5f, +0.5f );
-                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( +0.5f, +0.5f, -0.5f );
-                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( -0.5f, +0.5f, -0.5f );
+                        glTexCoord2f(           0.f,           0.f ); glVertex3f( -halfcube, +halfcube, +halfcube );
+                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( +halfcube, +halfcube, +halfcube );
+                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( +halfcube, +halfcube, -halfcube );
+                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( -halfcube, +halfcube, -halfcube );
                     glEnd();
                 }
                 {
                     moon9::style::texture tx( textures[3] );
                     glBegin(GL_QUADS);
-                        glTexCoord2f(           0.f,           0.f ); glVertex3f( -0.5f, -0.5f, +0.5f );
-                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( -0.5f, +0.5f, +0.5f );
-                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( -0.5f, +0.5f, -0.5f );
-                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( -0.5f, -0.5f, -0.5f );
+                        glTexCoord2f(           0.f,           0.f ); glVertex3f( -halfcube, -halfcube, +halfcube );
+                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( -halfcube, +halfcube, +halfcube );
+                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( -halfcube, +halfcube, -halfcube );
+                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( -halfcube, -halfcube, -halfcube );
                     glEnd();
                 }
                 {
                     moon9::style::texture tx( textures[4] );
                     glBegin(GL_QUADS);
-                        glTexCoord2f(           0.f,           0.f ); glVertex3f( -0.5f, -0.5f, +0.5f );
-                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( +0.5f, -0.5f, +0.5f );
-                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( +0.5f, +0.5f, +0.5f );
-                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( -0.5f, +0.5f, +0.5f );
+                        glTexCoord2f(           0.f,           0.f ); glVertex3f( -halfcube, -halfcube, +halfcube );
+                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( +halfcube, -halfcube, +halfcube );
+                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( +halfcube, +halfcube, +halfcube );
+                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( -halfcube, +halfcube, +halfcube );
                     glEnd();
                 }
                 {
                     moon9::style::texture tx( textures[5] );
                     glBegin(GL_QUADS);
-                        glTexCoord2f(           0.f,           0.f ); glVertex3f( -0.5f, -0.5f, -0.5f );
-                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( -0.5f, +0.5f, -0.5f );
-                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( +0.5f, +0.5f, -0.5f );
-                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( +0.5f, -0.5f, -0.5f );
+                        glTexCoord2f(           0.f,           0.f ); glVertex3f( -halfcube, -halfcube, -halfcube );
+                        glTexCoord2f( texture_scale,           0.f ); glVertex3f( -halfcube, +halfcube, -halfcube );
+                        glTexCoord2f( texture_scale, texture_scale ); glVertex3f( +halfcube, +halfcube, -halfcube );
+                        glTexCoord2f(           0.f, texture_scale ); glVertex3f( +halfcube, -halfcube, -halfcube );
                     glEnd();
                 }
             }

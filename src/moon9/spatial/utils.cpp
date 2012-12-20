@@ -14,6 +14,14 @@ namespace math2d
     {
         return v.x*v.x + v.y*v.y;
     }
+    float len( const moon9::vec3 &a, const moon9::vec3 &b )
+    {
+        return len( b - a );
+    }
+    float len2( const moon9::vec3 &a, const moon9::vec3 &b )
+    {
+        return len2( b - a );
+    }
     moon9::vec3 norm( const moon9::vec3 &v )
     {
         float length = len(v);
@@ -51,6 +59,14 @@ namespace math3d
     float len2( const moon9::vec3 &v )
     {
         return v.x*v.x + v.y*v.y + v.z*v.z;
+    }
+    float len( const moon9::vec3 &a, const moon9::vec3 &b )
+    {
+        return len( b - a );
+    }
+    float len2( const moon9::vec3 &a, const moon9::vec3 &b )
+    {
+        return len2( b - a );
     }
     moon9::vec3 norm( const moon9::vec3 &v )
     {

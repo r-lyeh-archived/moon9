@@ -30,6 +30,27 @@ namespace moon9
             return t;
         }
 
+        T &operator ++()
+        {
+            ++t;
+            return t;
+        }
+        T &operator ++( int )
+        {
+            t++;
+            return t;
+        }
+        T &operator --()
+        {
+            --t;
+            return t;
+        }
+        T &operator --( int )
+        {
+            t--;
+            return t;
+        }
+
         protected: T t;
     };
 
@@ -72,4 +93,7 @@ namespace moon9
     typedef moon9::pod<       size_t,   1 > sizet1;
     typedef moon9::pod<       size_t,   2 > sizet2;
     typedef moon9::pod<       size_t,  ~0 > sizetN;
+
+    typedef moon9::pod<        float, (unsigned)(~0) > floatN;
+    typedef moon9::pod<       double, (unsigned)(~0) > doubleN;
 }

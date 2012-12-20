@@ -69,6 +69,10 @@ protected:
             }
 
             //wglSwapIntervalEXT(1);
+            glfwOpenWindowHint( GLFW_ACCUM_RED_BITS, 16 );
+            glfwOpenWindowHint( GLFW_ACCUM_GREEN_BITS, 16 );
+            glfwOpenWindowHint( GLFW_ACCUM_BLUE_BITS, 16 );
+            glfwOpenWindowHint( GLFW_ACCUM_ALPHA_BITS, 16 );
             if( glfwOpenWindow( w, h, 0,0,0,0,0,0, fullscreen ? GLFW_FULLSCREEN : GLFW_WINDOW ) != GL_TRUE )
             {
                 std::cerr << "<moon9/render/window.hpp> says: Cant create " << w << 'x' << h << " window!" << std::endl;
@@ -224,8 +228,8 @@ public:
             return blur;
         }
 
-        virtual void update( double t, float dt ) = 0;
-        virtual void render( double t, float dt ) /*const*/ = 0;
+        virtual void update( double t, float dt ) {}
+        virtual void render( double t, float dt ) /*const*/ {}
 
         virtual void update_idle( double t, float dt )       { update(t,dt); }
         virtual void render_idle( double t, float dt ) /*const*/ { render(t,dt); }
@@ -562,7 +566,9 @@ public:
         }
 
         void flush()
-        {}
+        {
+            glutSwapBuffers();
+        }
 
         static void destroy_cb()
         {
@@ -683,7 +689,6 @@ public:
 
             glutPostRedisplay();
             win->frames++;
-            glutSwapBuffers();
 
             if( win->dt.s() > 1.0 )
             {
@@ -766,6 +771,7 @@ public:
 
         void flush()
         {
+            moon9::window::flush();
             _open = moon9::window::is_open();
         }
 

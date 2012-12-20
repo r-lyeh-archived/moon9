@@ -319,9 +319,57 @@ namespace moon9
             glReadPixels( screen_x, viewport.w - screen_y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth );
 
             moon9::vec3 wincoord = moon9::vec3( screen_x, screen_y, depth );
-            //moon9::vec3 wincoord = moon9::vec3( screen_x, screen_y, depth );
             moon9::vec3 ret = glm::unProject( wincoord, view, projection, viewport );
+
+            if( depth == 1.f )
+                std::cout << "depth: far" << std::endl;
+            else
+            if( depth > 0 )
+                std::cout << "depth: " << depth << std::endl;
+            else
+                std::cout << "depth: near" << std::endl;
+
             return moon9::vec3( ret.x, ret.y, -ret.z );
+        }
+
+        moon9::vec3 unproject2( float screen_x, float screen_y ) const //at_screen()
+        {
+            // [ref] http://en.wikibooks.org/wiki/OpenGL_Programming/Object_selection
+
+            float x = screen_x;
+            float y = screen_y;
+            float window_width = glutGet(GLUT_WINDOW_WIDTH);
+            float window_height = glutGet(GLUT_WINDOW_HEIGHT);
+
+//            GLbyte color[4];
+            GLfloat depth;
+//            GLuint index;
+
+            //  glReadPixels(x, window_height - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+            glReadPixels(x, window_height - y - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+            //  glReadPixels(x, window_height - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+
+            glm::vec4 viewport = glm::vec4(0, 0, window_width, window_height);
+            glm::vec3 wincoord = glm::vec3(x, window_height - y - 1, depth);
+            glm::vec3 objcoord = glm::unProject(wincoord, view, projection, viewport);
+
+            return vec3( objcoord );
+
+#if 0
+            window_width = glutGet(GLUT_WINDOW_WIDTH);
+            window_height = glutGet(GLUT_WINDOW_HEIGHT);
+
+            GLbyte color[4];
+            GLfloat depth;
+            GLuint index;
+
+            glReadPixels(x, window_height - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+            glReadPixels(x, window_height - y - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+            glReadPixels(x, window_height - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+
+            printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth %f, stencil index %u\n",
+                x, y, color[0], color[1], color[2], color[3], depth, index);
+#endif
         }
 
         // typical orbital controllers
