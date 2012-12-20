@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "string/string.hpp"
 
 namespace moon9
@@ -29,6 +32,7 @@ namespace moon9
 
     // private details
 
-    moon9::string translate( const moon9::string &text, const moon9::string &recursive_parent = std::string() );
+    std::vector< std::string > extract( const moon9::string &dollartext, char sep0 = '$', char sep1 = '\0' );
+    moon9::string translate( const moon9::string &dollartext, const moon9::string &recursive_parent = std::string() );
     moon9::string &locate( const moon9::string &text );
 }

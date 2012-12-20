@@ -14,12 +14,6 @@ namespace moon9
         pod( const T &_t ) : t(_t)
         {}
 
-        T &operator =( const T &_t )
-        {
-            t = _t;
-            return *this;
-        }
-
         operator const T &() const
         {
             return t;
@@ -30,25 +24,41 @@ namespace moon9
             return t;
         }
 
-        T &operator ++()
-        {
-            ++t;
-            return t;
+#       define $pod(OP) \
+        template<typename F> \
+        pod &operator OP( const F &_t ) \
+        { \
+            t OP _t; \
+            return *this; \
         }
-        T &operator ++( int )
+        $pod( =)
+        $pod(|=)
+        $pod(&=)
+        $pod(^=)
+        $pod(+=)
+        $pod(-=)
+        $pod(*=)
+        $pod(/=)
+        $pod(%=)
+#       undef $pod
+
+        pod &operator ++()
         {
-            t++;
-            return t;
+            return ++t, *this;
         }
-        T &operator --()
+        pod operator ++( int )
         {
-            --t;
-            return t;
+            pod other = *this;
+            return t++, other;
         }
-        T &operator --( int )
+        pod &operator --()
         {
-            t--;
-            return t;
+            return --t, *this;
+        }
+        pod operator --( int )
+        {
+            pod other = *this;
+            return t--, other;
         }
 
         protected: T t;
