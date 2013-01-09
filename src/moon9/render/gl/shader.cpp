@@ -1,4 +1,4 @@
-#include "../os.hpp"
+#include "ext.hpp"
 
 #include <string>
 #include <sstream>
@@ -61,7 +61,7 @@ namespace moon9
         setup( sources );
     }
 
-    shader::shader( const std::string &vss, const std::string &fss, const std::string &gss = std::string() )
+    shader::shader( const std::string &vss, const std::string &fss, const std::string &gss )
     {
         setup( vss, fss, gss );
     }

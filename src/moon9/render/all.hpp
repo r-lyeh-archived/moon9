@@ -2,8 +2,11 @@
 
 #include "atlas.hpp"
 #include "camera.hpp"
+#include "context.hpp"
+#include "ext.hpp"
 #include "font.hpp"
 #include "float16.hpp"
+#include "fbo.hpp"
 #include "frustum.hpp"
 #include "gif.hpp"
 #include "image.hpp"

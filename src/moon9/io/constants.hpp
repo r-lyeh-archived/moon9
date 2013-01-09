@@ -60,7 +60,7 @@ namespace moon9
 
 			moon9::iostrings lines = moon9::iostring( moon9::file( filename ).read() ).tokenize("\r\n");
 
-			map = map_t();
+			// map = map_t();
 
 			// parse lines
 
@@ -100,7 +100,7 @@ namespace moon9
 
 			if( !map[ key ].size() )
 				if( !used[ key ].size() )
-					std::cout << "<moon9/play/constants.hpp> says: error, constant '" << key << "' not found!" << std::endl;
+					std::cout << "<moon9/io/constants.hpp> says: warning, constant '" << key << "' not found!" << std::endl;
 
 			used[ key ] = true;
 #endif
@@ -111,6 +111,17 @@ namespace moon9
 		moon9::iostring operator[]( const moon9::iostring &key ) //const
 		{
 			return get( key );
+		}
+
+		void set( const moon9::iostring &key, const moon9::iostring &val ) //const
+		{
+			update();
+
+			( map[ key ] = map[ key ] ) = val;
+
+#ifndef NDEBUG
+			( used[ key ] = used[ key ] ) = true;
+#endif
 		}
 
 		std::string debug( const moon9::iostring &head = moon9::iostring(), const moon9::iostring &format12 = "\t\1=\2\n", const moon9::iostring &footer = moon9::iostring() ) //const

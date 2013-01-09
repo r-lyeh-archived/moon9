@@ -10,6 +10,7 @@
 - moon9::constants,
 - [moon9::file](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/file), handy file class(es).
 - moon9::format,
+- moon9::get,
 - [moon9::http](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/http), HTTP interface.
 - [moon9::netstring](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/netstring), a netstring serializer.
 - moon9::pack,

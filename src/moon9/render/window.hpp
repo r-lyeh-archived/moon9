@@ -17,6 +17,7 @@
 #include "camera.hpp"
 #include "ubuntu-b.hpp"
 
+#include <GL/freeglut.h>
 #include <GL/glfw.h>
 
 #include <moon9/time/wink.hpp>
@@ -375,6 +376,8 @@ public:
             try {
             // does this have currently any other implication but sharing textures?
             glutSetOption( GLUT_RENDERING_CONTEXT, GLUT_USE_CURRENT_CONTEXT );
+            //glutSetOption( GLUT_RENDERING_CONTEXT, GLUT_CREATE_NEW_CONTEXT );
+            //glutSetOption( GLUT_RENDERING_CONTEXT, GLUT_USE_SHARED_LISTS );
             }
             catch( ... )
             {

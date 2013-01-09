@@ -4,35 +4,75 @@
 
 #include "component.hpp"
 
-class label : moon9::component<label> // make this class trackable
+// define components
+
+struct scale : moon9::component<scale>
 {
-    public:
+    float size;
 
-    size_t id;
-
-    label()
-    {
-        static size_t sid = 0;
-        id = sid++;
-    }
+    scale() : size(0)
+    {}
 };
+
+struct position : moon9::component<position>
+{
+    float px,py,pz;
+
+    position() : px(0), py(0), pz(0)
+    {}
+};
+
+struct velocity : moon9::component<velocity>
+{
+    float vx,vy,vz;
+
+    velocity() : vx(0), vy(0), vz(0)
+    {}
+};
+
+struct renderable : moon9::component<renderable>
+{};
+
+// compose components
+
+struct character : scale, position, velocity, renderable
+{};
+
+//
 
 int main( int argc, char **argv )
 {
-    label a,b,c,d,e,f;                               // stack test
-    label *g = new label;                            // heap test
-    std::vector< label > h; h.push_back( label() );  // in-place test
+    character player1, player2;
 
-    std::cout << "addr: " << &a << std::endl;
-    std::cout << "addr: " <<  g << std::endl;
-    std::cout << "addr: " << &h[0] << std::endl;
+    assert( moon9::size<position>() == 2 ); // number of entities with 'position' component
+    assert( moon9::size<scale>()    == 2 ); // number of entities with 'scale' component
 
-    // this should display addresses for 8 pointers
+    player1.size = 1.f;
 
-    for( auto &it : moon9::all<label>() )
-        std::cout << "label .id=" << it->id << " .addr=" << (&*it) << std::endl;
+    player2.vx = 100.f;
+    player2.vy = 100.f;
+    player2.size = 2.f;
 
-    assert( moon9::size<label>() == 8 );
+    // process properties grouped by components
+
+    for( auto &it : moon9::all<position>() )
+    {
+        std::cout << (it) << std::endl;
+        std::cout << &(*it) << std::endl;
+        std::cout << "position { " << it->px << ',' << it->py << ',' << it->pz << " }" << std::endl;
+    }
+
+    for( auto &it : moon9::all<velocity>() )
+    {
+        std::cout << (it) << std::endl;
+        std::cout << &(*it) << std::endl;
+        std::cout << "velocity { " << it->vx << ',' << it->vy << ',' << it->vz << " }" << std::endl;
+    }
+
+    for( auto &it : moon9::all<scale>() )
+    {
+        std::cout << "size { " << it->size << " }" << std::endl;
+    }
 
     std::cout << "All ok." << std::endl;
 

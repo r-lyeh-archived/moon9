@@ -15,6 +15,7 @@ include_directories("../../../deps/render/freeglut/include")
 include_directories("../../../deps/render/spark/include")
 include_directories("../../../deps/render/gwen/gwen/include")
 include_directories("../../../deps/render/stb")
+include_directories("../../../deps/render/jojpeg")
 include_directories("../../../deps/render/")
 
 include_directories("../../../deps/spatial/glm")
@@ -41,6 +42,9 @@ add_library(spark-static STATIC ${SPARK_SRCS})
 
 file(GLOB GWEN_SRCS "../../../deps/render/gwen/gwen/src/*.cpp" "../../../deps/render/gwen/gwen/src/Platforms/*.cpp" "../../../deps/render/gwen/gwen/src/Controls/*.cpp" "../../../deps/render/gwen/gwen/src/Controls/Dialog/*.cpp" "../../../deps/render/gwen/gwen/src/Platforms/W*.cpp" "../../../deps/render/gwen/gwen/UnitTest/*.cpp" "../../../deps/render/gwen/gwen/Renderers/Moon9/*.cpp*")
 add_library(gwen-static STATIC ${GWEN_SRCS})
+
+file(GLOB JOJPEG_SRCS "../../../deps/render/jojpeg/*.cpp")
+add_library(jojpeg-static STATIC ${JOJPEG_SRCS})
 
 file(GLOB MOON9_RENDER_SRCS *.cpp *.hpp *.inl)
 file(GLOB MOON9_RENDER_SAMPLES *.sample.cpp)

@@ -49,6 +49,7 @@
 #pragma once
 
 #include "os.hpp"
+#include <GL/freeglut.h>
 
 #include <vector>
 #include <deque>

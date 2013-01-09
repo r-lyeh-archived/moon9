@@ -1,1 +1,1 @@
-#include "vbo/vbo.hpp"
+#include "gl/vbo.hpp"

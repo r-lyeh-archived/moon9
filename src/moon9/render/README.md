@@ -5,7 +5,10 @@
 ## Features
 - [moon9::atlas](https://github.com/r-lyeh/moon9/tree/master/src/moon9/atlas),
 - [moon9::camera](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/camera),
+- moon9::context,
+- moon9::ext,
 - [moon9::float16](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/float16),
+- moon9::fbo,
 - [moon9::font](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/font), render truetype fonts
 - moon9::frustum,
 - [moon9::image](https://github.com/r-lyeh/moon9/tree/master/src/moon9/atlas/render/texture/image),
@@ -14,11 +17,11 @@
 - [moon9::os](https://github.com/r-lyeh/moon9/tree/master/src/moon9/atlas/render/texture/image/os),
 - [moon9::pixel](https://github.com/r-lyeh/moon9/tree/master/src/moon9/atlas/render/texture/image/pixel),
 - moon9::render,
-- [moon9::shader](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/shader),
+- moon9::shader,
 - [moon9::stash](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/stash),
 - [moon9::texture](https://github.com/r-lyeh/moon9/tree/master/src/moon9/atlas/render/texture),
 - [moon9::ubuntu-b](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/imgui/font),
-- [moon9::vbo](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/vbo),
+- moon9::vbo,
 - [moon9::viewport](https://github.com/r-lyeh/moon9/tree/master/src/moon9/render/viewport),
 - moon9::window,
 

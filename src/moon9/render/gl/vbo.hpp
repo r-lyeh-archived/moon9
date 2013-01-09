@@ -1,10 +1,42 @@
 #pragma once
 
-#include <moon9/render/os.hpp>
+#include "ext.hpp"
+
 #include <cassert>
 
 namespace moon9
 {
+	class vbo2
+	{
+	    GLuint buffer;
+
+	public:
+
+	    vbo2(GLenum target, GLenum usage, GLsizei size)
+	    {
+	        glGenBuffers(1, &buffer);
+
+	        glBindBuffer(target, buffer);
+	        glBufferData(target, size, NULL, usage);
+
+	        glBindBuffer(target, 0);
+
+	        GL_CHECK();
+	    }
+
+	    ~vbo2()
+	    {
+	        glDeleteBuffers(1, &buffer);
+	        GL_CHECK();
+	    }
+
+	    void bind(GLenum target)
+	    {
+	        glBindBuffer(target, buffer);
+	        GL_CHECK();
+	    }
+	};
+
 	class vbo // mesh
 	{
 		public:
@@ -102,4 +134,5 @@ namespace moon9
 			unbind();
 		}
 	};
+
 }

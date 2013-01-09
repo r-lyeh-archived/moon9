@@ -20,42 +20,21 @@ namespace get
     std::map<std::string,moon9::iostring>::const_iterator begin() { return map().begin(); }
     std::map<std::string,moon9::iostring>::const_iterator end()   { return map().end();   }
 
-    std::string s( const std::string &var ) { return map()[var]; }
-         size_t z( const std::string &var ) { return map()[var].as<size_t>(); }
-         double d( const std::string &var ) { return map()[var].as<double>(); }
-          float f( const std::string &var ) { return map()[var].as<float>(); }
-           bool b( const std::string &var ) { return map()[var].as<bool>(); }
-            int i( const std::string &var ) { return map()[var].as<int>(); }
-
-    std::string translated( const std::string &text )
-    {
-        std::vector<std::string> delimiters(2);
-        delimiters[0] = "$(";
-        delimiters[1] = ")";
-        moon9::iostrings parsed = moon9::iostring( text ).parse( delimiters );
-
-        std::string out;
-
-        for( size_t i = 0; i < parsed.size(); ++i )
-        {
-            if( parsed[i] == delimiters[0] )
-            {
-                std::string token = parsed[++i];
-                ++i;
-                /*
-                if( vars[token].size() )
-                    out += vars[token];
-                else */
-                if( get::s(token).size() )
-                    out += get::s(token);
-                else
-                    out += delimiters[0] + token + delimiters[1];
-            }
-            else
-            if( parsed[i] != delimiters[1] )
-                out += parsed[i];
-        }
-
-        return out;
-    }
+    std::string s( const std::string &var ) { return map().get( var ); }
+         size_t z( const std::string &var ) { return map().get( var ).as<size_t>(); }
+         double d( const std::string &var ) { return map().get( var ).as<double>(); }
+          float f( const std::string &var ) { return map().get( var ).as< float>(); }
+           bool b( const std::string &var ) { return map().get( var ).as<  bool>(); }
+            int i( const std::string &var ) { return map().get( var ).as<   int>(); }
 }
+
+namespace set
+{
+    void s( const std::string &var, const std::string &val ) { get::map().set( var, val ); }
+    void z( const std::string &var,             size_t val ) { get::map().set( var, val ); }
+    void d( const std::string &var,             double val ) { get::map().set( var, val ); }
+    void f( const std::string &var,              float val ) { get::map().set( var, val ); }
+    void b( const std::string &var,               bool val ) { get::map().set( var, val ); }
+    void i( const std::string &var,                int val ) { get::map().set( var, val ); }
+}
+

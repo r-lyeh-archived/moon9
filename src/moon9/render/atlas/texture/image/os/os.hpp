@@ -4,7 +4,7 @@
 #include <GL/wglew.h>
 //#include <GL/glxew.h>
 
-#include <GL/freeglut.h>
+//#include <GL/freeglut.h>
 
 #ifdef _WIN32
 #   include <winsock2.h>
