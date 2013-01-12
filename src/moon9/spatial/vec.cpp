@@ -2,13 +2,27 @@
 
 #include "vec.hpp"
 
-std::ostream &operator<<( std::ostream &os, const moon9::vec2 &v )
+std::ostream &operator <<( std::ostream &os, const moon9::vec2 &v )
 {
-    os << '{' << v.x << ',' << v.y << '}';
+    os << "{x:" << v.x;
+    os << ",y:" << v.y;
+    os << "}";
     return os;
 }
-std::ostream &operator<<( std::ostream &os, const moon9::vec3 &v )
+std::ostream &operator <<( std::ostream &os, const moon9::vec3 &v )
 {
-    os << '{' << v.x << ',' << v.y << ',' << v.z << '}';
+    os << "{x:" << v.x;
+    os << ",y:" << v.y;
+    os << ",z:" << v.z;
+    os << "}";
+    return os;
+}
+std::ostream &operator <<( std::ostream &os, const moon9::vec4 &v )
+{
+    os << "{x:" << v.x;
+    os << ",y:" << v.y;
+    os << ",z:" << v.z;
+    os << ",w:" << v.w;
+    os << "}";
     return os;
 }

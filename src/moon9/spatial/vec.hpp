@@ -198,6 +198,18 @@ namespace moon9
            return as<T>();
         }
 
+        // basis conversion
+        // right,forward,up to right,up,forward
+        // right,up,forward to right,forward,up
+        vec3t swap0() const
+        {
+            return vec3t( x, -z, y );
+        }
+        vec3t swap1() const
+        {
+            return vec3t( x, z, -y );
+        }
+
         // swizzles, generated code for base-5 { o, l, x, y, z }
 
         vec3t  oo() const { return vec3t( 0, 0, 0 ); }
@@ -374,8 +386,157 @@ namespace moon9
         }
     };
 
-    typedef moon9::vec2t<0,0>   vec2;
-    typedef moon9::vec3t<0,0,0> vec3;
+
+    template< int X = 0, int Y = 0, int Z = 0, int W = 0 >
+    struct vec4t : public glm::vec4
+    {
+#ifdef MSGPACK_DEFINE
+        MSGPACK_DEFINE( x, y, z, w );
+#endif
+
+        vec4t() : glm::vec4( X, Y, Z, W )
+        {}
+
+        explicit
+        vec4t( float v ) : glm::vec4( v * X, v * Y, v * Z, v * W )
+        {}
+
+        vec4t( float x, float y, float z ) : glm::vec4( x, y, z, w )
+        {}
+
+        //explicit
+        vec4t( const float *ptr ) : glm::vec4( ( assert(ptr), ptr[0] ), ptr[1], ptr[2], ptr[3] )
+        {}
+
+        vec4t( const glm::vec4 &other )
+        {
+            operator=( other );
+        }
+
+        template< typename T >
+        explicit vec4t( const T &t )
+        {
+            operator=( t );
+        }
+
+        template< typename T >
+        vec4t &operator=( const T &t )
+        {
+            x = t[0]; //t.x;
+            y = t[1]; //t.y;
+            z = t[2]; //t.z;
+            return *this;
+        }
+
+        #define with(oper) \
+        template< typename T > \
+        vec4t &operator oper ( const T &t ) \
+        { \
+            x oper t[0]; \
+            y oper t[1]; \
+            z oper t[2]; \
+            return *this; \
+        } \
+        template<> \
+        vec4t &operator oper ( const int &f ) \
+        { \
+            x oper f; \
+            y oper f; \
+            z oper f; \
+            return *this; \
+        } \
+        template<> \
+        vec4t &operator oper ( const float &f ) \
+        { \
+            x oper f; \
+            y oper f; \
+            z oper f; \
+            return *this; \
+        }
+        with(+=)
+        with(-=)
+        with(*=)
+        with(/=)
+        #undef with
+
+        #define with(oper) \
+        template< typename T > \
+        vec4t operator oper ( const T &t ) const \
+        { \
+            return vec4t( x oper t[0], y oper t[1], z oper t[2], w oper t[3]); \
+        } \
+        template<> \
+        vec4t operator oper ( const int &f ) const \
+        { \
+            return vec4t( x oper f, y oper f, z oper f, w oper f); \
+        } \
+        template<> \
+        vec4t operator oper ( const float &f ) const \
+        { \
+            return vec4t( x oper f, y oper f, z oper f, w oper f); \
+        }
+        with(+)
+        with(-)
+        with(*)
+        with(/)
+        #undef with
+
+        // conversion
+
+        template <typename T>
+        T as() const
+        {
+            T t;
+            t[0] = x, t[1] = y, t[2] = z, t[3] = w;
+            return t;
+        }
+
+        template <typename T> // implicit conversion. handy to convert automatically to glm::vec3, btVector3, vector3, Vector3f, vec3f, etc!
+        operator T() const
+        {
+           return as<T>();
+        }
+
+        // basis conversion
+        // right,forward,up to right,up,forward
+        // right,up,forward to right,forward,up
+        vec4t swap0() const
+        {
+            return vec4t( x, -z, y, w );
+        }
+        vec4t swap1() const
+        {
+            return vec4t( x, z, -y, w );
+        }
+
+        // swizzles, generated code for base-6 { o, l, x, y, z, w }
+        // @todo !
+
+        // tools
+
+        const float *data() const
+        {
+            return &x; // @todo: assert x,y,z,w are contigous!
+        }
+
+        float *data()
+        {
+            return &x; // @todo: assert x,y,z,w are contigous!
+        }
+
+        vec4t &operator()( const float &_x, const float &_y, const float &_z, const float &_w )
+        {
+            x = _x;
+            y = _y;
+            z = _z;
+            w = _w;
+            return *this;
+        }
+    };
+
+    typedef moon9::vec2t<0,0>     vec2;
+    typedef moon9::vec3t<0,0,0>   vec3;
+    typedef moon9::vec4t<0,0,0,0> vec4;
 
     typedef moon9::vec2t<0,0>   float00;
     typedef moon9::vec2t<0,1>   float01;
@@ -390,6 +551,23 @@ namespace moon9
     typedef moon9::vec3t<1,1,0> float110;
     typedef moon9::vec3t<1,1,1> float111;
 
+    typedef moon9::vec4t<0,0,0,0> float0000;
+    typedef moon9::vec4t<0,0,0,1> float0001;
+    typedef moon9::vec4t<0,0,1,0> float0010;
+    typedef moon9::vec4t<0,0,1,1> float0011;
+    typedef moon9::vec4t<0,1,0,0> float0100;
+    typedef moon9::vec4t<0,1,0,1> float0101;
+    typedef moon9::vec4t<0,1,1,0> float0110;
+    typedef moon9::vec4t<0,1,1,1> float0111;
+    typedef moon9::vec4t<1,0,0,0> float1000;
+    typedef moon9::vec4t<1,0,0,1> float1001;
+    typedef moon9::vec4t<1,0,1,0> float1010;
+    typedef moon9::vec4t<1,0,1,1> float1011;
+    typedef moon9::vec4t<1,1,0,0> float1100;
+    typedef moon9::vec4t<1,1,0,1> float1101;
+    typedef moon9::vec4t<1,1,1,0> float1110;
+    typedef moon9::vec4t<1,1,1,1> float1111;
+
     // used for code clarifications, ie, move_to( point& ), push_from( point &pos, vector &dir ), etc...
 
     typedef moon9::vec3 ray;
@@ -400,6 +578,7 @@ namespace moon9
 
 std::ostream &operator<<( std::ostream &os, const moon9::vec2 &v );
 std::ostream &operator<<( std::ostream &os, const moon9::vec3 &v );
+std::ostream &operator<<( std::ostream &os, const moon9::vec4 &v );
 
 // utils
 

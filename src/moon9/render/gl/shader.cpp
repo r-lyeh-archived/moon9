@@ -105,7 +105,12 @@ namespace moon9
         if( vs_src.size() == 0 || fs_src.size() == 0 ) // gs_src is optional
             return "Cannot determine size of the shader";
 
-        return setup();
+       std::string error = setup();
+
+       if( error.size() )
+           std::cerr << error << std::endl << get_log() << std::endl;
+
+       return error;
     }
 
     void shader::enable()

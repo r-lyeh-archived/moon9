@@ -320,7 +320,7 @@ namespace moon9
 
             moon9::vec3 wincoord = moon9::vec3( screen_x, screen_y, depth );
             moon9::vec3 ret = glm::unProject( wincoord, view, projection, viewport );
-
+#if 0
             if( depth == 1.f )
                 std::cout << "depth: far" << std::endl;
             else
@@ -328,7 +328,7 @@ namespace moon9
                 std::cout << "depth: " << depth << std::endl;
             else
                 std::cout << "depth: near" << std::endl;
-
+#endif
             return moon9::vec3( ret.x, ret.y, -ret.z );
         }
 

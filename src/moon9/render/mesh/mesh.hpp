@@ -86,6 +86,23 @@ namespace moon9
         std::vector< unsigned int > polygons;
         */
 
+        bool is_hidden;
+        bool is_processed;
+
+        mesh() : is_hidden( false ), is_processed( true )
+        {}
+
+        // get_sphere / get_aabox / get_oobox
+        // anim control -> play tweeners ping pong pingpong loop, speed factor
+        // link/unlink -> attach/detach (+= transform?)
+        // setscale ?
+        // settexture( unit, id ) ?
+        // dir/orient/facing
+        // render IMM / render VAO / render VBO
+        // shadow matrix
+        // world matrix
+        // local matrix
+
         void swap() // swaps vertex and normals from xyz to xzy basis
         {
             for( auto it = vertices.begin(), end = vertices.end(); it != end; ++it )
