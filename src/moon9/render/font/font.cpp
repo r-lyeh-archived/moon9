@@ -285,7 +285,7 @@ namespace font
 
         ::style st = get_style( style_id );
 
-        int py = y;
+        float py = y;
         for( std::vector<std::string>::const_iterator it = lines.begin(), end = lines.end(); it != end; ++it )
         {
             if( *it != "\n" )
@@ -296,7 +296,7 @@ namespace font
                 t.str = *it;
 
                 t.x = x;
-                t.y = y;
+                t.y = py;
                 t.st = st;
                 t.rgba[0] = rgba[0];
                 t.rgba[1] = rgba[1];
@@ -306,7 +306,7 @@ namespace font
 
     #if 1
             // truetype
-            py += st.pt / 2;
+            py += st.height + st.height / 4; // 1.25 interline
     #else
             // freeglut bitmap
             py += 13 / 2;
@@ -362,7 +362,7 @@ namespace font
                     float inc_x = 0;
 
                     glColor4ubv( t.rgba );
-                    sth_draw_text(stash, t.st.face, t.st.pt, t.x, h - t.st.pt - t.y, t.str.c_str(), &inc_x );
+                    sth_draw_text(stash, t.st.face, t.st.pt, t.x, h - t.st.height - t.y, t.str.c_str(), &inc_x );
                 }
 
                 texts.clear();
