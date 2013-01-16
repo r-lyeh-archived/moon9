@@ -18,6 +18,11 @@ namespace moon9
         factory()
         {}
 
+        bool exists( const std::string &given_name )
+        {
+            return map.find( given_name ) != map.end();
+        }
+
         template <class T> //inscribe, register, store, add
         void inscribe( const std::string &given_name, const T& t )
         {

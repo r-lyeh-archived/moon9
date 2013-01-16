@@ -1,5 +1,5 @@
-#include "os.hpp"
-#include "window.hpp"
+#include <moon9/render/gl.hpp>
+#include <moon9/render/window.hpp>
 
 class window : public moon9::window // moon9::miniwin, moon9::miniwin2
 {

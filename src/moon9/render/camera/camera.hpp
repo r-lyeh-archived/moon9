@@ -42,13 +42,15 @@
  *   hybrid 2.5d
  * p64 predicition, ai, pathfinding
  * voy por p80, cinematography
+ *
+ * todo: http://outerra.blogspot.com.es/2012/11/maximizing-depth-buffer-range-and.html
  */
 
 #pragma once
 
 #include <cmath>
 
-#include <moon9/render/os.hpp>
+#include <moon9/render/gl.hpp>
 #include <moon9/spatial/vec.hpp>
 
 #include <moon9/time/dt.hpp>

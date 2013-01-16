@@ -1,4 +1,4 @@
-#include "image/os/os.hpp"
+#include "image/gl/gl.hpp"
 
 #include <cassert>
 

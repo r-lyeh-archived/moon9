@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "../../os.hpp"
+#include "../../gl.hpp"
 
 #include "md2.hpp"
 
