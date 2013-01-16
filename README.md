@@ -13,6 +13,11 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 ## Supported build systems
 - CMake
 
+## Building instructions
+- cmake [path_to_moon9] -G "Visual Studio 11" && root.sln && rem Most users want this
+- cmake [path_to_moon9] -G "NMake Makefiles" && nmake && rem My personal choice
+- Also add -DCMAKE_BUILD_TYPE=Debug or -DCMAKE_BUILD_TYPE=Release flags as needed
+
 ## Features
 - To write
 
