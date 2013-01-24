@@ -4,8 +4,8 @@ namespace moon9
 {
     struct nocopy
     {
-        nocopy() {}
-        protected: nocopy( const nocopy &other );
-        protected: nocopy operator=( const nocopy &other );
+        protected: nocopy() {}
+        private:   nocopy( const nocopy &other );
+        private:   nocopy operator=( const nocopy &other );
     };
 }

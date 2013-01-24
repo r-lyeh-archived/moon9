@@ -21,23 +21,39 @@ namespace
 {
     // cache
 
-    GLubyte rgba[4] = { 127, 127, 127, 255 };
-
-    struct style
+    namespace types
     {
-        std::string name;
-        int height;
-        int face;
-        float pt;
-    };
+        struct clip
+        {
+            size_t x;
+            size_t y;
+            size_t w;
+            size_t h;
+        };
 
-    std::map< int, style > styles;
+        struct style
+        {
+            std::string name;
+            int height;
+            int face;
+            float pt;
+        };
+
+        typedef std::string string;
+    }
+
+    types::clip clipping = { 0,0,~0,~0 };
+
+    std::map< int, types::style > styles;
+
+    GLubyte rgba[4] = { 127, 127, 127, 255 };
 
     struct text
     {
         float w, h, x, y;
-        std::string str;
-        style st;
+        types::clip clip;
+        types::style style;
+        types::string string;
         GLubyte rgba[4];
     };
 
@@ -91,13 +107,13 @@ namespace
         return ( map[ pathfile ] = map[ pathfile ] ) = fontface;
     }
 
-    style get_style( int id )
+    types::style get_style( int id )
     {
         auto found = styles.find( id );
 
         if( found == styles.end() )
         {
-            style invalid;
+            types::style invalid;
 
             invalid.name = std::string();
             invalid.pt = 0.f;
@@ -140,17 +156,24 @@ namespace
         if( face <= 0 )
             return false; // invalid face
 
-        float minx = 0, miny = 0, maxx = 0, maxy = 0;
-        sth_dim_text( stash, face, pt, "|", &minx, &miny, &maxx, &maxy);
+        const char letters[] = "|Il1A";
+        for( int i = 0; i < sizeof(letters); ++i )
+        {
+            float minx = 0, miny = 0, maxx = 0, maxy = 0;
+            sth_dim_text( stash, face, pt, (std::string("") + letters[i]).c_str() , &minx, &miny, &maxx, &maxy);
 
-        style &s = ( styles[ id ] = styles[ id ] );
+            types::style &s = ( styles[ id ] = styles[ id ] );
 
-        s.name = pathfile;
-        s.pt = pt;
-        s.face = face;
-        s.height = int(maxy);
+            s.name = pathfile;
+            s.pt = pt;
+            s.face = face;
+            s.height = int(maxy);
 
-        return true;
+            if( s.height > 0 )
+                return true;
+        }
+
+        return true; //false; font interlining wont work :P
     }
 
     std::string UTF16toUTF8(const std::wstring& utf16)
@@ -262,6 +285,12 @@ namespace font
         }
     }
 
+    void clip( size_t x, size_t y, size_t w, size_t h )
+    {
+        types::clip clipping = { x, y, w, h };
+        ::clipping = clipping;
+    }
+
     void color( float r, float g, float b, float a )
     {
         /*
@@ -279,11 +308,26 @@ namespace font
         rgba[3] = (GLubyte)(a);
     }
 
+    void color( unsigned _rgba )
+    {
+#if 1 // @todo: endian safe
+        rgba[3] = (GLubyte)((_rgba>>24)&0xff);
+        rgba[2] = (GLubyte)((_rgba>>16)&0xff);
+        rgba[1] = (GLubyte)((_rgba>> 8)&0xff);
+        rgba[0] = (GLubyte)((_rgba>> 0)&0xff);
+#else
+        rgba[0] = (GLubyte)((_rgba>>24)&0xff);
+        rgba[1] = (GLubyte)((_rgba>>16)&0xff);
+        rgba[2] = (GLubyte)((_rgba>> 8)&0xff);
+        rgba[3] = (GLubyte)((_rgba>> 0)&0xff);
+#endif
+    }
+
     void batch( const std::string &utf8, float x, float y, int style_id )
     {
         std::vector<std::string> lines = split( utf8, "\n" );
 
-        ::style st = get_style( style_id );
+        types::style style = get_style( style_id );
 
         float py = y;
         for( std::vector<std::string>::const_iterator it = lines.begin(), end = lines.end(); it != end; ++it )
@@ -293,20 +337,21 @@ namespace font
                 texts.push_back( text() );
                 text &t = texts.back();
 
-                t.str = *it;
+                t.string = *it;
 
                 t.x = x;
                 t.y = py;
-                t.st = st;
+                t.style = style;
                 t.rgba[0] = rgba[0];
                 t.rgba[1] = rgba[1];
                 t.rgba[2] = rgba[2];
                 t.rgba[3] = rgba[3];
+                t.clip = clipping;
             }
 
     #if 1
             // truetype
-            py += st.height + st.height / 4; // 1.25 interline
+            py += style.height + style.height / 4; // 1.25 interline
     #else
             // freeglut bitmap
             py += 13 / 2;
@@ -323,12 +368,13 @@ namespace font
     {
         single( assert( stash ) );
 
-        float h;
+        float w, h;
 
         {
             GLint view[4];
             glGetIntegerv( GL_VIEWPORT, &view[0] );
 
+            w = view[2];
             h = view[3];
         }
 
@@ -351,10 +397,6 @@ namespace font
 
             /* draw text during your OpenGL render loop */
 
-                glColor4ub( 255, 255, 255, 255 );
-
-                sth_begin_draw(stash);
-
                 for( std::vector<text>::iterator it = texts.begin(), end = texts.end(); it != end; ++it )
                 {
                     text &t = *it;
@@ -362,12 +404,20 @@ namespace font
                     float inc_x = 0;
 
                     glColor4ubv( t.rgba );
-                    sth_draw_text(stash, t.st.face, t.st.pt, t.x, h - t.st.height - t.y, t.str.c_str(), &inc_x );
+
+                    glEnable( GL_SCISSOR_TEST );
+                    glScissor( t.clip.x, t.clip.y, t.clip.w > 0 ? t.clip.w : w, t.clip.h > 0 ? t.clip.h : h );
+
+                    sth_begin_draw(stash);
+                    sth_draw_text(stash, t.style.face, t.style.pt, t.x, h - t.style.height - t.y, t.string.c_str(), &inc_x );
+                    sth_end_draw(stash);
+
+                    glDisable( GL_SCISSOR_TEST );
                 }
 
-                texts.clear();
+                glColor4ub( 255, 255, 255, 255 );
 
-                sth_end_draw(stash);
+                texts.clear();
 
             glEnable(GL_CULL_FACE);
 

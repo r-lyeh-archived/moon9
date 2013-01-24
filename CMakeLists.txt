@@ -18,7 +18,7 @@ OPTION(BUILD_TESTS      "Enable this to build *all* tests"      OFF)
 
 
 if(MSVC)
-    add_definitions(/EHsc)
+    add_definitions(/EHsc /MP)
     add_definitions(/D_CRT_SECURE_NO_WARNINGS)
     add_definitions(/wd4244) # dear MSVC, im fully aware and confident about my type conversions. stop hammering me. kthx :s
 

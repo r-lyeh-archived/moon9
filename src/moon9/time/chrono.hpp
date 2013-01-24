@@ -9,12 +9,12 @@ namespace moon9
     class chrono
     {
         moon9::dt dt;
-        const double top;
+        double top;
 
         public:
 
         explicit
-        chrono( double _top ) : top(_top)
+        chrono( double _top = 1 ) : top(_top)
         {
             assert( _top > 0 );
         }
@@ -28,6 +28,13 @@ namespace moon9
 
         void reset()
         {
+            dt.reset();
+        }
+
+        void reset( double _top )
+        {
+            assert( _top > 0 );
+            top = _top;
             dt.reset();
         }
     };

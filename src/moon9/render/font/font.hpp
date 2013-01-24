@@ -41,7 +41,9 @@ namespace moon9
              int height( int style_id = 1 );
         }
 
-        void color( float r = 127, float g = 127, float b = 127, float a = 255 );
+        void clip( size_t x, size_t y, size_t w, size_t h );
+        void color( unsigned rgba );
+        void color( float r /*= 127*/, float g /*= 127*/, float b /*= 127*/, float a = 255 );
         void batch( const std::string  &utf8,  float x = 0, float y = 0, int style_id = 1 );
         void batch( const std::wstring &utf16, float x = 0, float y = 0, int style_id = 1 );
         void submit();

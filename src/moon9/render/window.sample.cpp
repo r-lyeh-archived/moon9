@@ -29,7 +29,7 @@ class window : public moon9::window // moon9::miniwin, moon9::miniwin2
         moon9::matrix::scale sc( 1 + abs(sin(t)) * 10 );
         moon9::matrix::rotate_x rx( sin(t) * 90 );
         moon9::style::red red;
-        moon9::sphere sph;
+        moon9::cube cb;
     }
 };
 

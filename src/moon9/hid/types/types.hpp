@@ -284,6 +284,23 @@ namespace moon9
             // un patron o no. tiene mas sentido; mejor que devolver un booleano. ademas enlazo ya
             // con los gestures : )
 
+#if 1
+            // idle: low [then] -> low [now]
+            bool idle( float interval_t = 0.0125f ) //interval useful here?
+            {
+                double then_t = container.at(1).t;
+                double  now_t = container.at(0).t;
+
+                if( now_t - then_t > interval_t )
+                    return false; //time exceeded
+
+                double then = container.at(1).x;
+                double  now = container.at(0).x;
+
+                return then < 0.5f && now < 0.5f;
+            }
+#else
+            // original code. conflict with release()
             // idle: low [now]
             bool idle()
             {
@@ -291,6 +308,7 @@ namespace moon9
 
                 return now < 0.5f;
             }
+#endif
 
             // trigger: [then] low -> high [now]
             bool trigger( float interval_t = 0.0125f ) //interval useful here?

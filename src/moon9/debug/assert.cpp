@@ -12,7 +12,9 @@ namespace
         errorbox( assertion );
 
         if( !debugger() )
-            die( -1 );
+            ; // oops :s
+
+        die( -1 );
     }
 }
 
