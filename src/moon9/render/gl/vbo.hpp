@@ -1,138 +1,135 @@
 #pragma once
 
-#include "ext.hpp"
+#include "gl.hpp"
 
 #include <cassert>
+#include <cstdio>  // NULL
+#include <cstring> // std::memcpy
 
 namespace moon9
 {
-	class vbo2
-	{
-	    GLuint buffer;
+    class vbo2
+    {
+        GLuint buffer;
 
-	public:
+    public:
 
-	    vbo2(GLenum target, GLenum usage, GLsizei size)
-	    {
-	        glGenBuffers(1, &buffer);
+        vbo2(GLenum target, GLenum usage, GLsizei size)
+        {
+            $glGenBuffers(1, &buffer);
 
-	        glBindBuffer(target, buffer);
-	        glBufferData(target, size, NULL, usage);
+            $glBindBuffer(target, buffer);
+            $glBufferData(target, size, NULL, usage);
 
-	        glBindBuffer(target, 0);
+            $glBindBuffer(target, 0);
+        }
 
-	        GL_CHECK();
-	    }
+        ~vbo2()
+        {
+            $glDeleteBuffers(1, &buffer);
+        }
 
-	    ~vbo2()
-	    {
-	        glDeleteBuffers(1, &buffer);
-	        GL_CHECK();
-	    }
+        void bind(GLenum target)
+        {
+            $glBindBuffer(target, buffer);
+        }
+    };
 
-	    void bind(GLenum target)
-	    {
-	        glBindBuffer(target, buffer);
-	        GL_CHECK();
-	    }
-	};
+    class vbo // mesh
+    {
+        public:
 
-	class vbo // mesh
-	{
-		public:
+        GLuint id;
+        size_t size;
 
-		GLuint id;
-		size_t size;
+        vbo() : id(0), size(0)
+        {}
 
-		vbo() : id(0), size(0)
-		{}
+        explicit
+        vbo( size_t _size_in_bytes ) : id(0), size(0)
+        {
+            bool ok = resize( _size_in_bytes );
+            assert( ok == true );
+        }
 
-		explicit
-		vbo( size_t _size_in_bytes ) : id(0), size(0)
-		{
-			bool ok = resize( _size_in_bytes );
-			assert( ok == true );
-		}
+        void clear()
+        {
+            if( id )
+            {
+                $glDeleteBuffers( 1, &id );
+                id = 0;
+                size = 0;
+            }
+        }
 
-		void clear()
-		{
-			if( id )
-			{
-				glDeleteBuffers( 1, &id );
-				id = 0;
-				size = 0;
-			}
-		}
+        bool resize( size_t size_in_bytes )
+        {
+            if( !size_in_bytes )
+                return false;
 
-		bool resize( size_t size_in_bytes )
-		{
-			if( !size_in_bytes )
-				return false;
+            if( size == size_in_bytes )
+                return true;
 
-			if( size == size_in_bytes )
-				return true;
+            clear();
 
-			clear();
+            $glGenBuffers( 1, &id );
 
-			glGenBuffers( 1, &id );
+            bind();
+            $glBufferData( GL_ARRAY_BUFFER, size = size_in_bytes, 0, GL_STATIC_DRAW );
+            unbind();
 
-			bind();
-			glBufferData( GL_ARRAY_BUFFER, size = size_in_bytes, 0, GL_STATIC_DRAW );
-			unbind();
+            return true;
+        }
 
-			return true;
-		}
+        // access vbo data directly :)
+        // [ref] http://en.wikibooks.org/wiki/OpenGL_Programming/Scientific_OpenGL_Tutorial_01#Point_sprites
 
-		// access vbo data directly :)
-		// [ref] http://en.wikibooks.org/wiki/OpenGL_Programming/Scientific_OpenGL_Tutorial_01#Point_sprites
+        void *map()
+        {
+            return $glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+        }
 
-		void *map()
-		{
-			return glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-		}
+        void unmap() const
+        {
+            assert( id > 0 );
 
-		void unmap() const
-		{
-			assert( id > 0 );
+            $glUnmapBuffer( GL_ARRAY_BUFFER );
+        }
 
-			glUnmapBuffer( GL_ARRAY_BUFFER );
-		}
+        //
 
-		//
+        void bind() const
+        {
+            assert( id > 0 );
+            $glBindBuffer( GL_ARRAY_BUFFER, id );
+        }
 
-		void bind() const
-		{
-			assert( id > 0 );
-			glBindBuffer( GL_ARRAY_BUFFER, id );
-		}
+        void unbind() const
+        {
+            $glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        }
 
-		void unbind() const
-		{
-			glBindBuffer( GL_ARRAY_BUFFER, 0 );
-		}
+        //
 
-		//
+        template<typename T>
+        void fill( const T &t )
+        {
+            resize( sizeof(T) );
 
-		template<typename T>
-		void fill( const T &t )
-		{
-			resize( sizeof(T) );
+            bind();
+            *( static_cast<T *>( map() ) ) = t;
+            unmap();
+            unbind();
+        }
 
-			bind();
-			*( static_cast<T *>( map() ) ) = t;
-			unmap();
-			unbind();
-		}
+        void fill( void *ptr, size_t size )
+        {
+            resize( size );
 
-		void fill( void *ptr, size_t size )
-		{
-			resize( size );
-
-			bind();
-			memcpy( map(), ptr, size );
-			unmap();
-			unbind();
-		}
-	};
-
+            bind();
+            std::memcpy( map(), ptr, size );
+            unmap();
+            unbind();
+        }
+    };
 }

@@ -12,6 +12,7 @@
 #include "frustum.hpp"
 #include "geometry.hpp"
 #include "gif.hpp"
+#include "gl.hpp"
 #include "image.hpp"
 #include "imgui.hpp"
 #include "invert.hpp"

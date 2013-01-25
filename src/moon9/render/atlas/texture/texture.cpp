@@ -25,72 +25,6 @@
 
 #include "texture.hpp"
 
-namespace
-{
-    void setup_filtering( bool high_quality )
-    {
-    #if 0
-
-        // Nearest Filtered Texture
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-        glTexImage2D(...)
-
-        // Linear Filtered Texture
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-        glTexImage2D(...)
-
-        // MipMapped Texture
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
-        gluBuild2DMipmaps(...)
-
-    #endif
-
-        /* blurry/blocky
-
-        ref: http://gregs-blog.com/2008/01/17/opengl-texture-filter-parameters-explained/
-        MAG_FILTER/MIN_FILTER                 Bilinear Filtering          Mipmapping
-                                                Near   Far
-        GL_NEAREST / GL_NEAREST_MIPMAP_NEAREST  Off    Off                Standard
-        GL_NEAREST / GL_LINEAR_MIPMAP_NEAREST   Off    On                 Standard (* chars)
-        GL_NEAREST / GL_NEAREST_MIPMAP_LINEAR   Off    Off                Use trilinear filtering
-        GL_NEAREST / GL_LINEAR_MIPMAP_LINEAR    Off    On                 Use trilinear filtering (* chars)
-        GL_NEAREST / GL_NEAREST                 Off    Off                None
-        GL_NEAREST / GL_LINEAR                  Off    On                 None (* scene)
-        GL_LINEAR / GL_NEAREST_MIPMAP_NEAREST   On     Off                Standard
-        GL_LINEAR / GL_LINEAR_MIPMAP_NEAREST    On     On                 Standard
-        GL_LINEAR / GL_NEAREST_MIPMAP_LINEAR    On     Off                Use trilinear filtering
-        GL_LINEAR / GL_LINEAR_MIPMAP_LINEAR     On     On                 Use trilinear filtering
-        GL_LINEAR / GL_NEAREST                  On     Off                None
-        GL_LINEAR / GL_LINEAR                   On     On                 None
-
-        (*) intended for prjx
-
-        @todo
-        enum { near_blurry, near_blocky }
-        enum { far_blurry, far_blocky }
-        enum { mipmap_none, mipmap_std, mipmap_trilinear };
-        mask -> near_blocky | far_blurry | mipmap_std
-
-        */
-
-        if( high_quality )
-        {
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST );
-        }
-        else
-        {
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-        }
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    }
-}
 
 namespace moon9
 {
@@ -110,7 +44,11 @@ texture::texture( const image &i, bool mirror_w, bool mirror_h ) : std::vector<p
     //create();
 
     if( load( i, mirror_w, mirror_h ) )
+    {
+        bind();
+        filtering();
         submit();
+    }
 }
 
 texture::texture( size_t _id ) : std::vector<pixel>(), w(0), h(0), iw(0), ih(0), u0(0), v0(0), u1(1), v1(1), delay(0.f), id(_id), delegated(true)
@@ -144,18 +82,31 @@ void texture::destroy()
     }
 }
 
-void texture::bind() const
+void texture::bind( int unit ) const
 {
     if( id )
     {
         GLuint uid = id;
         glEnable( GL_TEXTURE_2D );
+        switch( unit )
+        {
+            case 0: glActiveTexture( GL_TEXTURE0 ); break;
+            case 1: glActiveTexture( GL_TEXTURE1 ); break;
+            case 2: glActiveTexture( GL_TEXTURE2 ); break;
+            case 3: glActiveTexture( GL_TEXTURE3 ); break;
+            case 4: glActiveTexture( GL_TEXTURE4 ); break;
+            case 5: glActiveTexture( GL_TEXTURE5 ); break;
+            case 6: glActiveTexture( GL_TEXTURE6 ); break;
+            case 7: glActiveTexture( GL_TEXTURE7 ); break;
+            default: break;
+        }
         glBindTexture( GL_TEXTURE_2D, uid );
     }
 }
 
 void texture::unbind() const
 {
+    glActiveTexture( GL_TEXTURE0 );
     glBindTexture( GL_TEXTURE_2D, 0 );
     glDisable( GL_TEXTURE_2D );
 }
@@ -238,6 +189,8 @@ void texture::copy( const moon9::texture &that )
     if( that.id > 0 )
     {
         create();
+        bind();
+        filtering(); // @todo: what about 'that' filtering settings? lost forever? :s
         submit();
     }
 #endif
@@ -362,35 +315,40 @@ void texture::capture( int left, int bottom )
     //submit();
 }
 
-void texture::submit() //const
+void texture::filtering( int min, int mag, int wrap_s, int wrap_t, int wrap_r )
 {
-    // submit decoded data to texture
+    if( min )
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min );
 
-    GLint   UnpackAlignment;
+    if( mag )
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag );
 
-    // Here we bind the texture and set up the filtering.
-    //glBindTexture(GL_TEXTURE_2D, id);
-    bind();
-    setup_filtering( true ); // crisp or blurry
+    if( wrap_s )
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s );
+
+    if( wrap_t )
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t );
+
+    if( wrap_r )
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, wrap_r );
+}
+
+void texture::submit( int format, bool build_mip_maps )
+{
+    std::vector<unsigned char> pixels = ( format == GL_RGBA ? rgba_data() : rgb_data() );
 
     // Set unpack alignment to one byte
+
+    GLint   UnpackAlignment;
     glGetIntegerv( GL_UNPACK_ALIGNMENT, &UnpackAlignment );
     glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 
-    GLenum type = GL_RGBA; //GL_ALPHA, GL_LUMINANCE, GL_RGBA
-
-    std::vector<unsigned char> pixels = rgba_data();
-
-    #if 1 //if buildmipmaps
-
-    GLint ret = gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, w, h, type, GL_UNSIGNED_BYTE, pixels.data() ); //&pixels.at(0) );
-
-    #else // else...
-
-    glTexImage2D(GL_TEXTURE_2D, 0 /*LOD*/, GL_RGBA, w, h,
-                    0 /*border*/, type, GL_UNSIGNED_BYTE, pixels.data() ); //&pixels.at(0) );
-
-    #endif
+    // Submit decoded data to texture
+    GLint ret;
+    if( build_mip_maps )
+        ret = gluBuild2DMipmaps(GL_TEXTURE_2D, format, w, h, format, GL_UNSIGNED_BYTE, pixels.data() );
+    else
+        glTexImage2D(GL_TEXTURE_2D, 0 /*LOD*/, format, w, h, 0 /*border*/, format, GL_UNSIGNED_BYTE, pixels.data() );
 
     // Restore old unpack alignment
     glPixelStorei( GL_UNPACK_ALIGNMENT, UnpackAlignment );
@@ -415,6 +373,34 @@ std::vector<unsigned char> texture::rgba_data() const
         pixels.push_back( (unsigned char)(p.r * 255.f) );
         pixels.push_back( (unsigned char)(p.g * 255.f) );
         pixels.push_back( (unsigned char)(p.b * 255.f) );
+        pixels.push_back( (unsigned char)(p.a * 255.f) );
+    }
+    return pixels;
+}
+
+std::vector<unsigned char> texture::rgb_data() const
+{
+    std::vector<unsigned char> pixels( w * h * 3 );
+    pixels.resize(0);
+    for( texture::const_iterator it = this->begin(), end = this->end(); it != end; ++it )
+    {
+        pixel p = it->clamp();
+
+        pixels.push_back( (unsigned char)(p.r * 255.f) );
+        pixels.push_back( (unsigned char)(p.g * 255.f) );
+        pixels.push_back( (unsigned char)(p.b * 255.f) );
+    }
+    return pixels;
+}
+
+std::vector<unsigned char> texture::a_data() const
+{
+    std::vector<unsigned char> pixels( w * h * 1 );
+    pixels.resize(0);
+    for( texture::const_iterator it = this->begin(), end = this->end(); it != end; ++it )
+    {
+        pixel p = it->clamp();
+
         pixels.push_back( (unsigned char)(p.a * 255.f) );
     }
     return pixels;
@@ -470,6 +456,72 @@ void texture::display( const std::string &title ) const
 
 #if 0
 
+namespace
+{
+    void setup_filtering( bool high_quality )
+    {
+    #if 0
+
+        // Nearest Filtered Texture
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+        glTexImage2D(...)
+
+        // Linear Filtered Texture
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+        glTexImage2D(...)
+
+        // MipMapped Texture
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
+        gluBuild2DMipmaps(...)
+
+    #endif
+
+        /* blurry/blocky
+
+        ref: http://gregs-blog.com/2008/01/17/opengl-texture-filter-parameters-explained/
+        MAG_FILTER/MIN_FILTER                 Bilinear Filtering          Mipmapping
+                                                Near   Far
+        GL_NEAREST / GL_NEAREST_MIPMAP_NEAREST  Off    Off                Standard
+        GL_NEAREST / GL_LINEAR_MIPMAP_NEAREST   Off    On                 Standard (* chars)
+        GL_NEAREST / GL_NEAREST_MIPMAP_LINEAR   Off    Off                Use trilinear filtering
+        GL_NEAREST / GL_LINEAR_MIPMAP_LINEAR    Off    On                 Use trilinear filtering (* chars)
+        GL_NEAREST / GL_NEAREST                 Off    Off                None
+        GL_NEAREST / GL_LINEAR                  Off    On                 None (* scene)
+        GL_LINEAR / GL_NEAREST_MIPMAP_NEAREST   On     Off                Standard
+        GL_LINEAR / GL_LINEAR_MIPMAP_NEAREST    On     On                 Standard
+        GL_LINEAR / GL_NEAREST_MIPMAP_LINEAR    On     Off                Use trilinear filtering
+        GL_LINEAR / GL_LINEAR_MIPMAP_LINEAR     On     On                 Use trilinear filtering
+        GL_LINEAR / GL_NEAREST                  On     Off                None
+        GL_LINEAR / GL_LINEAR                   On     On                 None
+
+        (*) intended for prjx
+
+        @todo
+        enum { near_blurry, near_blocky }
+        enum { far_blurry, far_blocky }
+        enum { mipmap_none, mipmap_std, mipmap_trilinear };
+        mask -> near_blocky | far_blurry | mipmap_std
+
+        */
+
+        if( high_quality )
+        {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST );
+        }
+        else
+        {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+        }
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
+}
         struct texture : render_detail::nocopy
         {
             texture( const std::string &pathFile, const bool high_quality = true ) : id( 0 )

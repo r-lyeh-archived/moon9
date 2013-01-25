@@ -20,6 +20,8 @@
 
 // check: texture.h (rectangle, cube) from md3/md5/md5b
 
+#include <moon9/render/gl.hpp>
+
 namespace moon9
 {
     class texture : public std::vector<pixel>
@@ -68,7 +70,8 @@ namespace moon9
         void copy( const moon9::texture &other );
         size_t delegate() const; // useful to delegate texture id to another consumer. this avoids texture destruction when ~texture() is called
 
-        void submit(); // const;
+        void filtering( int filt_min = GL_LINEAR_MIPMAP_NEAREST, int filt_mag = GL_NEAREST, int wrap_s = GL_REPEAT, int wrap_t = GL_REPEAT, int wrap_r = GL_REPEAT );
+        void submit( int format = GL_RGBA, bool build_mip_maps = true );
 
         inline const size_t size() const { return this->std::vector<pixel>::size(); }
         bool loaded() const { return this->std::vector<pixel>::size() != 0; }
@@ -79,13 +82,15 @@ namespace moon9
         inline const pixel &at( size_t offset ) const { return this->std::vector<pixel>::at( offset ); }
         inline const pixel &at( size_t x, size_t y ) const { return this->std::vector<pixel>::at( x + y * w ); }
 
-        void bind() const;      // apply()
-        void unbind() const;    // clear()
+        void bind( int unit = 0 ) const;      // apply()
+        void unbind() const;                  // clear()
 
         void sprite( float scale = 1.f ) const;
 
         // debug 2d
         std::vector<unsigned char> rgba_data() const;
+        std::vector<unsigned char> rgb_data() const;
+        std::vector<unsigned char> a_data() const;
         void display( const std::string &title = std::string() ) const;
     };
 

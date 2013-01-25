@@ -96,6 +96,8 @@ namespace moon9
             for( int x = (y < 16 ? 0 : 16), end = (y < 16 ? 16 : 32); x < end; x++ )
                 error_texture.at( x, y ) = moon9::pixel::rgba( 1.f, 1.f, 0, 1.f );
 
+            error_texture.bind();
+            error_texture.filtering();
             error_texture.submit();
         }
 

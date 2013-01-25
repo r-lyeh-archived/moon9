@@ -23,6 +23,8 @@ int main( int argc, char **argv )
 
     moon9::texture texture;
     texture.load( "alita/tris.png" );
+    texture.bind();
+    texture.filtering();
     texture.submit();
 
     camera.position = moon9::vec3(10,10,10);

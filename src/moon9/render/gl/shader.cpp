@@ -1,4 +1,4 @@
-#include "ext.hpp"
+#include "gl.hpp"
 
 #include <string>
 #include <sstream>
@@ -10,25 +10,11 @@
 #include "shader.hpp"
 #include "shader.inl"
 
-#define CHECK_GL() check_ogl(__FILE__,__LINE__)
+#include "gl.hpp" //$gl*()
+
 
 namespace moon9
 {
-    namespace
-    {
-        void check_ogl(const char *file, int line)
-        {
-            return;
-
-            GLenum err = glGetError();
-
-            if (err != GL_NO_ERROR)
-                std::cerr << file << ":"
-                          << line << " "
-                          << (const char *) gluErrorString(err) << std::endl;
-        }
-    }
-
     shader::shader() : vs(0), fs(0), gs(0), prog(0)
     {}
 
@@ -36,23 +22,22 @@ namespace moon9
     {
         if( prog )
         {
-            if( vs )
-                glDetachShader( prog, vs ),
-                glDeleteShader( vs );
-        CHECK_GL();
+            if( vs ) {
+                $glDetachShader( prog, vs );
+                $glDeleteShader( vs );
+            }
 
-            if( fs )
-                glDetachShader( prog, fs ),
-                glDeleteShader( fs );
-        CHECK_GL();
+            if( fs ) {
+                $glDetachShader( prog, fs );
+                $glDeleteShader( fs );
+            }
 
-            if( gs )
-                glDetachShader( prog, gs ),
-                glDeleteShader( gs );
-        CHECK_GL();
+            if( gs ) {
+                $glDetachShader( prog, gs );
+                $glDeleteShader( gs );
+            }
 
-            glDeleteProgram( prog );
-        CHECK_GL();
+            $glDeleteProgram( prog );
         }
     }
 
@@ -68,8 +53,13 @@ namespace moon9
 
     bool shader::is_set() const
     {
+        if( prog < 0 )
+            return false;
+
         GLint success = 0;
-        return prog > 0 && ( glGetProgramiv( prog, GL_LINK_STATUS, &success ), CHECK_GL(), success ? true : false );
+        $glGetProgramiv( prog, GL_LINK_STATUS, &success );
+
+        return success == 0 ? false : true;
     }
 
     std::string shader::setup( const std::string &vss, const std::string &fss, const std::string &gss )
@@ -113,16 +103,14 @@ namespace moon9
        return error;
     }
 
-    void shader::enable()
+    void shader::enable() const
     {
-        glUseProgram( prog );
-        CHECK_GL();
+        $glUseProgram( prog );
     }
 
-    void shader::disable()
+    void shader::disable() const
     {
-        glUseProgram( 0 );
-        CHECK_GL();
+        $glUseProgram( 0 );
     }
 
     unsigned int shader::get_program() const
@@ -130,80 +118,80 @@ namespace moon9
         return prog;
     }
 
-    GLint shader::uniform( const std::string &name )
+    GLint shader::uniform( const std::string &name ) const
     {
-        GLint coord = glGetUniformLocation( prog, name.c_str() );
-        CHECK_GL();
+        GLint coord = $glGetUniformLocation( prog, name.c_str() );
 
         if( coord == -1 )
             std::cerr << to_string( "<moon9/render/shader.hpp> says: warning! Could not bind uniform '\1'\n", name ) << std::endl;
-
-        ( uniforms[ name ] = uniforms[ name ] ) = coord;
+        else
+            ( uniforms[ name ] = uniforms[ name ] ) = coord;
 
         return coord;
     }
-    void shader::uniform( const std::string &name, int value )
+    void shader::uniform( const std::string &name, int value ) const
     {
-        glUniform1i( uniform(name), GLint(value) );
-        CHECK_GL();
+        auto coord = uniform(name); if( coord >= 0 )
+        $glUniform1i( coord, GLint(value) );
     }
-    void shader::uniform( const std::string &name, float value )
+    void shader::uniform( const std::string &name, float value ) const
     {
-        glUniform1f( uniform(name), GLfloat(value) );
-        CHECK_GL();
+        auto coord = uniform(name); if( coord >= 0 )
+        $glUniform1f( coord, GLfloat(value) );
     }
-    void shader::uniform( const std::string &name, float value1, float value2 )
+    void shader::uniform( const std::string &name, float value1, float value2 ) const
     {
-        glUniform2f( uniform(name), GLfloat(value1), GLfloat(value2) );
-        CHECK_GL();
+        auto coord = uniform(name); if( coord >= 0 )
+        $glUniform2f( coord, GLfloat(value1), GLfloat(value2) );
     }
-    void shader::uniform( const std::string &name, float value1, float value2, float value3 )
+    void shader::uniform( const std::string &name, float value1, float value2, float value3 ) const
     {
-        glUniform3f( uniform(name), GLfloat(value1), GLfloat(value2), GLfloat(value3) );
-        CHECK_GL();
+        auto coord = uniform(name); if( coord >= 0 )
+        $glUniform3f( coord, GLfloat(value1), GLfloat(value2), GLfloat(value3) );
     }
-    void shader::uniform( const std::string &name, float value1, float value2, float value3, float value4 )
+    void shader::uniform( const std::string &name, float value1, float value2, float value3, float value4 ) const
     {
-        glUniform4f( uniform(name), GLfloat(value1), GLfloat(value2), GLfloat(value3), GLfloat(value4) );
-        CHECK_GL();
+        auto coord = uniform(name); if( coord >= 0 )
+        $glUniform4f( coord, GLfloat(value1), GLfloat(value2), GLfloat(value3), GLfloat(value4) );
     }
-    void shader::uniform( const std::string &name, const glm::vec2 &vec )
+    void shader::uniform( const std::string &name, const glm::vec2 &vec ) const
     {
-        glUniform2fv( uniform(name), 1, glm::value_ptr(vec) );
-        CHECK_GL();
+        auto coord = uniform(name); if( coord >= 0 )
+        $glUniform2fv( coord, 1, glm::value_ptr(vec) );
     }
-    void shader::uniform( const std::string &name, const glm::vec3 &vec )
+    void shader::uniform( const std::string &name, const glm::vec3 &vec ) const
     {
-        glUniform3fv( uniform(name), 1, glm::value_ptr(vec) );
-        CHECK_GL();
+        auto coord = uniform(name); if( coord >= 0 )
+        $glUniform3fv( coord, 1, glm::value_ptr(vec) );
     }
-    void shader::uniform( const std::string &name, const glm::vec4 &vec )
+    void shader::uniform( const std::string &name, const glm::vec4 &vec ) const
     {
-        glUniform4fv( uniform(name), 1, glm::value_ptr(vec) );
-        CHECK_GL();
+        auto coord = uniform(name); if( coord >= 0 )
+        $glUniform4fv( coord, 1, glm::value_ptr(vec) );
     }
-    void shader::uniform( const std::string &name, const glm::mat4 &mat )
+    void shader::uniform( const std::string &name, const glm::mat4 &mat ) const
     {
-        glUniformMatrix4fv( uniform(name), 1, GL_FALSE, glm::value_ptr(mat) );
-        CHECK_GL();
+        auto coord = uniform(name); if( coord >= 0 )
+        $glUniformMatrix4fv( coord, 1, GL_FALSE, glm::value_ptr(mat) );
     }
 
     /*
-    void shader::attrib( const char *attribName, int size, GLenum type, bool normalized, int stride, void *pointer )
+    void shader::attrib( const char *attribName, int size, GLenum type, bool normalized, int stride, void *pointer ) const
     {
         int id = glGetAttribLocation(prog, attribName);
+       ;
+
         if(id < 0)
             throw to_string("Failed to load attribute \1", attribName);
 
-        glVertexAttribPointer(id, size, type, normalized, stride, pointer);
-        glEnableVertexAttribArray(id);
+        $glVertexAttribPointer(id, size, type, normalized, stride, pointer);
+        $glEnableVertexAttribArray(id);
     }
     */
 
-    GLint shader::attrib( const std::string &name )
+    GLint shader::attrib( const std::string &name ) const
     {
-        GLint coord = glGetAttribLocation( prog, name.c_str() );
-        CHECK_GL();
+        GLint coord = $glGetAttribLocation( prog, name.c_str() );
 
         if( coord == -1 )
             std::cerr << to_string( "Warning: Could not bind attribute '\1'\n", name ) << std::endl;
@@ -213,17 +201,17 @@ namespace moon9
         return coord;
     }
     /*
-    void shader::attrib( const std::string &name, const glm::vec2 &vec )
+    void shader::attrib( const std::string &name, const glm::vec2 &vec ) const
     {
         // @todo
         attrib( name );
     }
-    void shader::attrib( const std::string &name, const glm::vec3 &vec )
+    void shader::attrib( const std::string &name, const glm::vec3 &vec ) const
     {
         // @todo
         attrib( name );
     }
-    void shader::attrib( const std::string &name, const glm::vec4 &vec )
+    void shader::attrib( const std::string &name, const glm::vec4 &vec ) const
     {
         // @todo
         attrib( name );
@@ -237,26 +225,22 @@ namespace moon9
         std::string log;
 
         log += "Vertex: ";
-        glGetShaderiv( vs, GL_INFO_LOG_LENGTH, &size );
-        CHECK_GL();
+        $glGetShaderiv( vs, GL_INFO_LOG_LENGTH, &size );
         if( size > 0 )
         {
             char *text = new char [ size ];
-            glGetShaderInfoLog( vs, size, &written, text );
-        CHECK_GL();
+            $glGetShaderInfoLog( vs, size, &written, text );
             log += std::string( text );
             delete [] text;
         }
         log += '\n';
 
         log += "Fragment: ";
-        glGetShaderiv( fs, GL_INFO_LOG_LENGTH, &size );
-        CHECK_GL();
+        $glGetShaderiv( fs, GL_INFO_LOG_LENGTH, &size );
         if( size > 0 )
         {
             char *text = new char [ size ];
-            glGetShaderInfoLog( fs, size, &written, text );
-        CHECK_GL();
+            $glGetShaderInfoLog( fs, size, &written, text );
             log += std::string( text );
             delete [] text;
         }
@@ -265,13 +249,11 @@ namespace moon9
         log += "Geometry: ";
         if( gs )
         {
-            glGetShaderiv( gs, GL_INFO_LOG_LENGTH, &size );
-        CHECK_GL();
+            $glGetShaderiv( gs, GL_INFO_LOG_LENGTH, &size );
             if( size > 0 )
             {
                 char *text = new char [ size ];
-                glGetShaderInfoLog( gs, size, &written, text );
-        CHECK_GL();
+                $glGetShaderInfoLog( gs, size, &written, text );
                 log += std::string( text );
                 delete [] text;
             }
@@ -279,13 +261,11 @@ namespace moon9
         log += '\n';
 
         log += "Program: ";
-        glGetProgramiv( prog, GL_INFO_LOG_LENGTH, &size );
-        CHECK_GL();
+        $glGetProgramiv( prog, GL_INFO_LOG_LENGTH, &size );
         if( size > 0 )
         {
             char *text = new char [ size ];
-            glGetProgramInfoLog( prog, size, &written, text );
-        CHECK_GL();
+            $glGetProgramInfoLog( prog, size, &written, text );
             log += std::string( text );
             delete [] text;
         }
@@ -330,47 +310,35 @@ namespace moon9
                 vs.c_str()
             #endif
         };
-        glShaderSource( vs, 3, &vs_src_ptr, NULL );
+        $glShaderSource( vs, 3, &vs_src_ptr, NULL );
 #endif
 
         const char *vs_src_ptr = vs_src.c_str();
         const char *fs_src_ptr = fs_src.c_str();
         const char *gs_src_ptr = gs_src.c_str();
 
-        vs = glCreateShader( GL_VERTEX_SHADER );
-        CHECK_GL();
-        glShaderSource( vs, 1, &vs_src_ptr, NULL );
-        CHECK_GL();
-        glCompileShader( vs );
-        CHECK_GL();
-        glGetShaderiv( vs, GL_COMPILE_STATUS, &success );
-        CHECK_GL();
+        vs = $glCreateShader( GL_VERTEX_SHADER );
+        $glShaderSource( vs, 1, &vs_src_ptr, NULL );
+        $glCompileShader( vs );
+        $glGetShaderiv( vs, GL_COMPILE_STATUS, &success );
 
         if( !success )
             return "Error: cant compile vertex shader";
 
-        fs = glCreateShader( GL_FRAGMENT_SHADER );
-        CHECK_GL();
-        glShaderSource( fs, 1, &fs_src_ptr, NULL );
-        CHECK_GL();
-        glCompileShader( fs );
-        CHECK_GL();
-        glGetShaderiv( fs, GL_COMPILE_STATUS, &success );
-        CHECK_GL();
+        fs = $glCreateShader( GL_FRAGMENT_SHADER );
+        $glShaderSource( fs, 1, &fs_src_ptr, NULL );
+        $glCompileShader( fs );
+        $glGetShaderiv( fs, GL_COMPILE_STATUS, &success );
 
         if( !success )
             return "Error: cant compile fragment shader";
 
         if( gs_src.size() > 0 )
         {
-            gs = glCreateShader( GL_GEOMETRY_SHADER );
-        CHECK_GL();
-            glShaderSource( gs, 1, &gs_src_ptr, NULL );
-        CHECK_GL();
-            glCompileShader( gs );
-        CHECK_GL();
-            glGetShaderiv( gs, GL_COMPILE_STATUS, &success );
-        CHECK_GL();
+            gs = $glCreateShader( GL_GEOMETRY_SHADER );
+            $glShaderSource( gs, 1, &gs_src_ptr, NULL );
+            $glCompileShader( gs );
+            $glGetShaderiv( gs, GL_COMPILE_STATUS, &success );
 
             if( !success )
                 return "Error: cant compile geometry shader";
@@ -378,23 +346,17 @@ namespace moon9
 
         // Create a program object and attach all compiled shaders
 
-        prog = glCreateProgram();
-        CHECK_GL();
-        glAttachShader( prog, vs );
-        CHECK_GL();
-        glAttachShader( prog, fs );
-        CHECK_GL();
+        prog = $glCreateProgram();
+        $glAttachShader( prog, vs );
+        $glAttachShader( prog, fs );
 
         if( gs )
-            glAttachShader( prog, gs );
-        CHECK_GL();
+            $glAttachShader( prog, gs );
 
         // Link the program object
 
-        glLinkProgram( prog );
-        CHECK_GL();
-        glGetProgramiv( prog, GL_LINK_STATUS, &success );
-        CHECK_GL();
+        $glLinkProgram( prog );
+        $glGetProgramiv( prog, GL_LINK_STATUS, &success );
 
         if( !success )
             return "Error: cant link shader";
