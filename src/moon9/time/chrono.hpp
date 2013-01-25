@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cassert>
-
 #include "dt.hpp"
 
 namespace moon9
@@ -15,14 +13,14 @@ namespace moon9
 
         explicit
         chrono( double _top = 1 ) : top(_top)
-        {
-            assert( _top > 0 );
-        }
+        {}
 
         double s()
         {
-            double now = dt.s() / top;
+            if( top <= 0 )
+                return 1.0;
 
+            double now = dt.s() / top;
             return now >= 1.0 ? 1.0 : now;
         }
 
@@ -33,7 +31,6 @@ namespace moon9
 
         void reset( double _top )
         {
-            assert( _top > 0 );
             top = _top;
             dt.reset();
         }
