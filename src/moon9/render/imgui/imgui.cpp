@@ -261,28 +261,29 @@ namespace moon9
         return RGBA( r, g, b, a );
     }
 
-    RGBA black(   0,  0,  0 );
-    RGBA white( 255,255,255 );
+    const RGBA black(   0,  0,  0 );
+    const RGBA white( 255,255,255 );
 
     // goo colour scheme, all components make 255+192 (~) to keep
     // tone balance. red, purple and yellow tweak a little bit to
     // fit better with gray colours.
 
-    RGBA   default_colour_scheme::gray( 149,149,149 ); // gray
-    RGBA   default_colour_scheme::blue(   0,192,255 ); // blue
-    RGBA   default_colour_scheme::cyan(  48,255,144 ); // cyan/turquoise
-    RGBA   default_colour_scheme::pink(  255,48,144 ); // pink
-    RGBA default_colour_scheme::orange(  255,144,48 ); // orange
-    RGBA  default_colour_scheme::green(  144,255,48 ); // green/lime
-    RGBA default_colour_scheme::purple( 178,128,255 ); // purple
-    RGBA default_colour_scheme::yellow(   255,224,0 ); // yellow
-    RGBA    default_colour_scheme::red(   255,48,48 ); // red
+    const RGBA   default_colour_scheme::gray( 149,149,149 ); // gray
+    const RGBA   default_colour_scheme::blue(   0,192,255 ); // blue
+    const RGBA   default_colour_scheme::cyan(  48,255,144 ); // cyan/turquoise
+    const RGBA   default_colour_scheme::pink(  255,48,144 ); // pink
+    const RGBA default_colour_scheme::orange(  255,144,48 ); // orange
+    const RGBA  default_colour_scheme::green(  144,255,48 ); // green/lime
+    const RGBA default_colour_scheme::purple( 178,128,255 ); // purple
+    const RGBA default_colour_scheme::yellow(   255,224,0 ); // yellow
+    const RGBA    default_colour_scheme::red(   255,48,48 ); // red
 }
 
 namespace imgui
 {
-    moon9::RGBA tone(192,255,0,255);
-    moon9::RGBA background(0,0,0,128);
+    moon9::RGBA theme( 255,255,255 );    // ui theme defaults to white
+    moon9::RGBA tone(192,255,0,255);     // foreground items
+    moon9::RGBA background(0,0,0,128);   // background items
 }
 
 // C++ interface
@@ -314,12 +315,12 @@ namespace moon9
 
     color::color( float r, float g, float b, float a )
     {
-        white = RGBA( RGBAf(r,g,b,a) );
+        theme = RGBA( RGBAf(r,g,b,a) );
     }
 
     color::~color()
     {
-        white = RGBA(255,255,255,255);
+        theme = RGBA(255,255,255,255);
     }
 
     ui::operator const bool() const
@@ -439,6 +440,7 @@ void box::self_data::defaults( std::string name, int x, int y, int w, int h, int
     this->vh = 0;
 
     this->name = name;
+    this->title = "";
     this->ox = x;
     this->oy = y;
     this->ow = w;
@@ -465,13 +467,16 @@ void box::self_data::defaults( std::string name, int x, int y, int w, int h, int
     dx = 0, dy = 0;
     dw = this->w, dh = AREA_HEADER; //this->h;
 
-    color_def = tone.alpha(1.f);
-    color_bkp = tone.alpha(1.f);
+    opacity = 0.5;
+
+    color_fg =
+    color_fg_backup = tone.alpha(1.f);
+
+    color_bg =
+    color_bg_backup = moon9::RGBA(0,0,0,opacity * 255.f);
 
     debug = false;
     debug_verbose = false;
-
-    opacity = 0.5;
 }
 
 void box::self_data::erase( std::string ext )
@@ -541,10 +546,10 @@ std::map< imgui::string, box::self_data > &box::self_data::persist( action to_do
         else
             *this = map[ name ];
 
-        tone = color_def;
-        background = moon9::RGBA(0,0,0,opacity * 255.f);
+        tone = color_fg;
+        background = color_bg;
 
-        hover = BeginScrollArea( name.c_str(), phx, phy, phw, phh, scrollable ? &scroll : 0 );
+        hover = BeginScrollArea( title.c_str(), phx, phy, phw, phh, scrollable ? &scroll : 0 );
 
 #if defined(NDEBUG) || defined(_NDEBUG)
         if( const bool reflexion_debug = false )
@@ -572,6 +577,7 @@ std::map< imgui::string, box::self_data > &box::self_data::persist( action to_do
                     Indent();
                     Indent();
                     Pair(        ".name", imgui::string(name).c_str() );
+                    Pair(       ".title", imgui::string(title).c_str() );
                     Pair(         ".phx", imgui::string(phx).c_str() );
                     Pair(         ".phy", imgui::string(phy).c_str() );
                     Pair(         ".phw", imgui::string(phw).c_str() );
@@ -632,13 +638,13 @@ std::map< imgui::string, box::self_data > &box::self_data::persist( action to_do
                     scrollable ^= true;
 
                 {
-                    Label("Color");
+                    Label("Foreground");
 
                     unsigned r,g,b;
 
-                    b = ( color_def >> 16 ) & 0xff;
-                    g = ( color_def >>  8 ) & 0xff;
-                    r = ( color_def >>  0 ) & 0xff;
+                    b = ( color_fg >> 16 ) & 0xff;
+                    g = ( color_fg >>  8 ) & 0xff;
+                    r = ( color_fg >>  0 ) & 0xff;
 
                     float fr = r / 255.0, fg = g / 255.0, fb = b / 255.0;
 
@@ -649,7 +655,28 @@ std::map< imgui::string, box::self_data > &box::self_data::persist( action to_do
 
                     r = fr * 255.f, g = fg * 255.f, b = fb * 255.f;
 
-                    color_def = moon9::RGBA(r,g,b);
+                    color_fg = moon9::RGBA(r,g,b);
+                }
+
+                {
+                    Label("Background");
+
+                    unsigned r,g,b;
+
+                    b = ( color_bg >> 16 ) & 0xff;
+                    g = ( color_bg >>  8 ) & 0xff;
+                    r = ( color_bg >>  0 ) & 0xff;
+
+                    float fr = r / 255.0, fg = g / 255.0, fb = b / 255.0;
+
+                    Slider("R", &fr, 0.f, 1.f, 0.01f );
+                    Slider("G", &fg, 0.f, 1.f, 0.01f );
+                    Slider("B", &fb, 0.f, 1.f, 0.01f );
+                    Slider("A", &opacity, 0.f, 1.f, 0.01f );
+
+                    r = fr * 255.f, g = fg * 255.f, b = fb * 255.f;
+
+                    color_bg = moon9::RGBA(r,g,b);
                 }
 
                 if( Button( "Save options") )
@@ -679,7 +706,8 @@ std::map< imgui::string, box::self_data > &box::self_data::persist( action to_do
     {
         EndScrollArea();
 
-        tone = color_bkp;
+        tone = color_fg_backup;
+        background = color_bg_backup;
 
         map[ name ] = *this;
     }
@@ -1089,6 +1117,11 @@ box &box::reflexion( bool on )
     self.reflexion = on;
     return *this;
 }
+box &box::title( const std::string &titlebar )
+{
+    self.title = titlebar;
+    return *this;
+}
 // dock
 
 box &box::attach( std::string name, int dx, int dy )
@@ -1136,10 +1169,15 @@ box &box::maximize()
     return *this;
 }
 
-
-box &box::color( RGBA color )
+box &box::color_fg( RGBA color )
 {
-    self.color_def = color;
+    self.color_fg = color;
+    return *this;
+}
+
+box &box::color_bg( RGBA color )
+{
+    self.color_bg = color;
     return *this;
 }
 
@@ -2108,7 +2146,7 @@ namespace imgui
 
         addGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, 6, /*g_insideScrollArea ? tone.saturation(0.05).alpha(0.5) :*/ background );
 
-        addGfxCmdText(x+AREA_HEADER/2, y+h-AREA_HEADER/2-TEXT_HEIGHT/2, ALIGN_LEFT, name, /*!g_insideScrollArea ?  white.alpha(0.75) :*/ tone.alpha(1.0) );
+        addGfxCmdText(x+AREA_HEADER/2, y+h-AREA_HEADER/2-TEXT_HEIGHT/2, ALIGN_LEFT, name, /*!g_insideScrollArea ?  theme.alpha(0.75) :*/ tone.alpha(1.0) );
 
         if( g_scrollVal ) // @rlyeh: support for fixed areas
               addGfxCmdScissor(
@@ -2178,7 +2216,7 @@ namespace imgui
                 if (isActive(hid))
                         addGfxCmdRoundedRect((float)hx, (float)hy, (float)hw, (float)hh, (float)w/2-1, tone.alpha(0.75) );
                 else
-                        addGfxCmdRoundedRect((float)hx, (float)hy, (float)hw, (float)hh, (float)w/2-1, isHot(hid) ? tone.alpha(0.375) : white.alpha(0.25) );
+                        addGfxCmdRoundedRect((float)hx, (float)hy, (float)hw, (float)hh, (float)w/2-1, isHot(hid) ? tone.alpha(0.375) : theme.alpha(0.25) );
 
                 // Handle mouse scrolling.
                 if (g_insideScrollArea) // && !anyActive())
@@ -2211,7 +2249,7 @@ namespace imgui
 
         addGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, (float)BUTTON_HEIGHT/2-1, isActive(id) ? gray.alpha(0.5) : gray.alpha(0.375) );
         if (enabled)
-                addGfxCmdText(x+BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, isHot(id) ? tone.alpha(1.0) : white.alpha(0.75) );
+                addGfxCmdText(x+BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, isHot(id) ? tone.alpha(1.0) : theme.alpha(0.75) );
         else
                 addGfxCmdText(x+BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, gray.alpha(0.75) );
 
@@ -2236,7 +2274,7 @@ namespace imgui
                 addGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, 2.0f, isActive(id) ? tone.alpha(0.75) : tone.alpha(0.375) );
 
         if (enabled)
-                addGfxCmdText(x+BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, white.alpha(0.75) );
+                addGfxCmdText(x+BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, theme.alpha(0.75) );
         else
                 addGfxCmdText(x+BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, gray.alpha(0.75) );
 
@@ -2263,13 +2301,13 @@ namespace imgui
         if (checked)
         {
                 if (enabled)
-                        addGfxCmdRoundedRect((float)cx, (float)cy, (float)CHECK_SIZE, (float)CHECK_SIZE, (float)CHECK_SIZE/2-1, isActive(id) ? white.alpha(1.0) : white.alpha(0.75));
+                        addGfxCmdRoundedRect((float)cx, (float)cy, (float)CHECK_SIZE, (float)CHECK_SIZE, (float)CHECK_SIZE/2-1, isActive(id) ? theme.alpha(1.0) : theme.alpha(0.75));
                 else
                         addGfxCmdRoundedRect((float)cx, (float)cy, (float)CHECK_SIZE, (float)CHECK_SIZE, (float)CHECK_SIZE/2-1, gray.alpha(0.75) );
         }
 
         if (enabled)
-                addGfxCmdText(x+BUTTON_HEIGHT, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, isHot(id) ? tone.alpha(1.0) : white.alpha(0.75) );
+                addGfxCmdText(x+BUTTON_HEIGHT, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, isHot(id) ? tone.alpha(1.0) : theme.alpha(0.75) );
         else
                 addGfxCmdText(x+BUTTON_HEIGHT, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, gray.alpha(0.75) );
 
@@ -2294,17 +2332,17 @@ namespace imgui
         bool res = buttonLogic(id, over);
 
         if (checked)
-                addGfxCmdTriangle(cx, cy, CHECK_SIZE, CHECK_SIZE, 2, isActive(id) ? white.alpha(1.0) : white.alpha(0.75) );
+                addGfxCmdTriangle(cx, cy, CHECK_SIZE, CHECK_SIZE, 2, isActive(id) ? theme.alpha(1.0) : theme.alpha(0.75) );
         else
-                addGfxCmdTriangle(cx, cy, CHECK_SIZE, CHECK_SIZE, 1, isActive(id) ? white.alpha(1.0) : white.alpha(0.75) );
+                addGfxCmdTriangle(cx, cy, CHECK_SIZE, CHECK_SIZE, 1, isActive(id) ? theme.alpha(1.0) : theme.alpha(0.75) );
 
         if (enabled)
-                addGfxCmdText(x+BUTTON_HEIGHT, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, isHot(id) ? tone.alpha(1.0) : white.alpha(0.75) );
+                addGfxCmdText(x+BUTTON_HEIGHT, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, isHot(id) ? tone.alpha(1.0) : theme.alpha(0.75) );
         else
                 addGfxCmdText(x+BUTTON_HEIGHT, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, gray.alpha(0.75) );
 
         if (subtext)
-                addGfxCmdText(x+w-BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_RIGHT, subtext, white.alpha(0.5));
+                addGfxCmdText(x+w-BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_RIGHT, subtext, theme.alpha(0.5));
 
         return res;
     }
@@ -2314,7 +2352,7 @@ namespace imgui
         int x = g_state.widgetX;
         int y = g_state.widgetY - BUTTON_HEIGHT;
         g_state.widgetY -= BUTTON_HEIGHT;
-        addGfxCmdText(x, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, white.alpha(1.0) );
+        addGfxCmdText(x, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, theme.alpha(1.0) );
     }
 
     void Value(const char* text)
@@ -2324,7 +2362,7 @@ namespace imgui
         const int w = g_state.widgetW;
         g_state.widgetY -= BUTTON_HEIGHT;
 
-        addGfxCmdText(x+w-BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_RIGHT, text, white.alpha(0.75) );
+        addGfxCmdText(x+w-BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_RIGHT, text, theme.alpha(0.75) );
     }
 
     void Pair(const char* text, const char *value)  // @rlyeh: new widget
@@ -2355,11 +2393,11 @@ namespace imgui
         {
             addGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, 2.0f, !isHot(id) ? gray.alpha(0.25) : (isActive(id) ? tone.alpha(0.75) : tone.alpha(choosing ? 0.25 : 0.375)) );
 
-            addGfxCmdTriangle((float)cx, (float)cy, CHECK_SIZE, CHECK_SIZE, choosing ? 2 : 1, isActive(id) ? white.alpha(1.0) : white.alpha(0.75) );
+            addGfxCmdTriangle((float)cx, (float)cy, CHECK_SIZE, CHECK_SIZE, choosing ? 2 : 1, isActive(id) ? theme.alpha(1.0) : theme.alpha(0.75) );
 
-            addGfxCmdText(x+BUTTON_HEIGHT, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, clicked < 0 ? text : options[clicked], white.alpha(0.75) );
+            addGfxCmdText(x+BUTTON_HEIGHT, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, clicked < 0 ? text : options[clicked], theme.alpha(0.75) );
 
-            //addGfxCmdRoundedRect(x+w-BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, (float)CHECK_SIZE, (float)CHECK_SIZE, (float)CHECK_SIZE/2-1, isActive(id) ? white.alpha(1.0) : white.alpha(0.75));
+            //addGfxCmdRoundedRect(x+w-BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, (float)CHECK_SIZE, (float)CHECK_SIZE, (float)CHECK_SIZE/2-1, isActive(id) ? theme.alpha(1.0) : theme.alpha(0.75));
 
             if( res )
                 choosing ^= 1;
@@ -2368,11 +2406,11 @@ namespace imgui
         {
             addGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, 2.0f, gray.alpha(0.25) );
 
-            addGfxCmdTriangle((float)cx, (float)cy, CHECK_SIZE, CHECK_SIZE, choosing ? 2 : 1, isActive(id) ? white.alpha(1.0) : white.alpha(0.75) );
+            addGfxCmdTriangle((float)cx, (float)cy, CHECK_SIZE, CHECK_SIZE, choosing ? 2 : 1, isActive(id) ? theme.alpha(1.0) : theme.alpha(0.75) );
 
             addGfxCmdText(x+BUTTON_HEIGHT, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, clicked < 0 ? text : options[clicked], gray.alpha(0.75) );
 
-            //addGfxCmdRoundedRect(x+w-BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, (float)CHECK_SIZE, (float)CHECK_SIZE, (float)CHECK_SIZE/2-1, isActive(id) ? white.alpha(1.0) : white.alpha(0.75));
+            //addGfxCmdRoundedRect(x+w-BUTTON_HEIGHT/2, y+BUTTON_HEIGHT/2-TEXT_HEIGHT/2, (float)CHECK_SIZE, (float)CHECK_SIZE, (float)CHECK_SIZE/2-1, isActive(id) ? theme.alpha(1.0) : theme.alpha(0.75));
         }
 
         bool result = false;
@@ -2422,7 +2460,7 @@ namespace imgui
         bool res = buttonLogic(id, over);
 
         if (enabled)
-                addGfxCmdText(cx, cy, ALIGN_LEFT, text, isHot(id) ? tone.alpha(1.0) : white.alpha(0.75) );
+                addGfxCmdText(cx, cy, ALIGN_LEFT, text, isHot(id) ? tone.alpha(1.0) : theme.alpha(0.75) );
         else
                 addGfxCmdText(cx, cy, ALIGN_LEFT, text, gray.alpha(0.75) );
 
@@ -2464,7 +2502,7 @@ namespace imgui
         if (u > 1) u = 1;
         int m = (int)(u * range);
 
-        addGfxCmdRoundedRect((float)(x+0), (float)y, (float)(SLIDER_MARKER_WIDTH+m), (float)SLIDER_HEIGHT, 4.0f, white.alpha(0.25) );
+        addGfxCmdRoundedRect((float)(x+0), (float)y, (float)(SLIDER_MARKER_WIDTH+m), (float)SLIDER_HEIGHT, 4.0f, theme.alpha(0.25) );
 
         // TODO: fix this, take a look at 'nicenum'.
         int digits = (int)(std::ceilf(std::log10f(0.01f)));
@@ -2474,8 +2512,8 @@ namespace imgui
         else
         sprintf(msg, "%d%%", int(val) );
 
-        addGfxCmdText(x+SLIDER_HEIGHT/2, y+SLIDER_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, white.alpha(0.75) );
-        addGfxCmdText(x+w-SLIDER_HEIGHT/2, y+SLIDER_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_RIGHT, msg, white.alpha(0.75) );
+        addGfxCmdText(x+SLIDER_HEIGHT/2, y+SLIDER_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, theme.alpha(0.75) );
+        addGfxCmdText(x+w-SLIDER_HEIGHT/2, y+SLIDER_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_RIGHT, msg, theme.alpha(0.75) );
     }
 
     bool Slider(const char* text, float* val, float vmin, float vmax, float vinc, bool enabled)
@@ -2522,9 +2560,9 @@ namespace imgui
         }
 
         if (isActive(id))
-                addGfxCmdRoundedRect((float)(x+m), (float)y, (float)SLIDER_MARKER_WIDTH, (float)SLIDER_HEIGHT, 4.0f, white.alpha(1.0) );
+                addGfxCmdRoundedRect((float)(x+m), (float)y, (float)SLIDER_MARKER_WIDTH, (float)SLIDER_HEIGHT, 4.0f, theme.alpha(1.0) );
         else
-                addGfxCmdRoundedRect((float)(x+m), (float)y, (float)SLIDER_MARKER_WIDTH, (float)SLIDER_HEIGHT, 4.0f, isHot(id) ? tone.alpha(0.5) : white.alpha(0.25) );
+                addGfxCmdRoundedRect((float)(x+m), (float)y, (float)SLIDER_MARKER_WIDTH, (float)SLIDER_HEIGHT, 4.0f, isHot(id) ? tone.alpha(0.5) : theme.alpha(0.25) );
 
         // TODO: fix this, take a look at 'nicenum'.
         int digits = (int)(std::ceilf(std::log10f(vinc)));
@@ -2533,8 +2571,8 @@ namespace imgui
 
         if (enabled)
         {
-                addGfxCmdText(x+SLIDER_HEIGHT/2, y+SLIDER_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, isHot(id) | isActive(id) ? tone.alpha(1.0) : white.alpha(0.75) ); // @rlyeh: fix blinking colours
-                addGfxCmdText(x+w-SLIDER_HEIGHT/2, y+SLIDER_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_RIGHT, msg, isHot(id) | isActive(id) ? tone.alpha(1.0) : white.alpha(0.75) ); // @rlyeh: fix blinking colours
+                addGfxCmdText(x+SLIDER_HEIGHT/2, y+SLIDER_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_LEFT, text, isHot(id) | isActive(id) ? tone.alpha(1.0) : theme.alpha(0.75) ); // @rlyeh: fix blinking colours
+                addGfxCmdText(x+w-SLIDER_HEIGHT/2, y+SLIDER_HEIGHT/2-TEXT_HEIGHT/2, ALIGN_RIGHT, msg, isHot(id) | isActive(id) ? tone.alpha(1.0) : theme.alpha(0.75) ); // @rlyeh: fix blinking colours
         }
         else
         {
@@ -2571,7 +2609,7 @@ namespace imgui
         int h = 1;
         g_state.widgetY -= DEFAULT_SPACING*4;
 
-        addGfxCmdRect((float)x, (float)y, (float)w, (float)h, white.alpha(0.125) );
+        addGfxCmdRect((float)x, (float)y, (float)w, (float)h, theme.alpha(0.125) );
     }
 
     void VSeparator() // @rlyeh: new widget (@fixme)
@@ -2594,7 +2632,7 @@ namespace imgui
         g_state.widgetX += DEFAULT_SPACING*4;
         g_state.widgetW += DEFAULT_SPACING*4;
 
-        addGfxCmdRect((float)x, (float)y, (float)w, (float)h, white.alpha(0.125) );
+        addGfxCmdRect((float)x, (float)y, (float)w, (float)h, theme.alpha(0.125) );
     }
 
     void DrawText(int x, int y, TextAlign align, const char* text, const moon9::RGBA &color)

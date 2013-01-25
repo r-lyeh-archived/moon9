@@ -185,20 +185,20 @@ namespace moon9
 
     unsigned RGBAf( float r, float g, float b, float a = 1.f );
 
-    extern RGBA black;
-    extern RGBA white;
+    extern const RGBA black;
+    extern const RGBA white;
 
     namespace default_colour_scheme
     {
-        extern RGBA   gray; // gray
-        extern RGBA   blue; // blue
-        extern RGBA   cyan; // cyan/turquoise
-        extern RGBA   pink; // pink
-        extern RGBA orange; // orange
-        extern RGBA  green; // green/lime
-        extern RGBA purple; // purple
-        extern RGBA yellow; // yellow
-        extern RGBA    red; // red
+        extern const RGBA   gray; // gray
+        extern const RGBA   blue; // blue
+        extern const RGBA   cyan; // cyan/turquoise
+        extern const RGBA   pink; // pink
+        extern const RGBA orange; // orange
+        extern const RGBA  green; // green/lime
+        extern const RGBA purple; // purple
+        extern const RGBA yellow; // yellow
+        extern const RGBA    red; // red
     }
 
     using namespace default_colour_scheme;
@@ -359,6 +359,7 @@ namespace moon9
         struct self_data
         {
             std::string name;
+            std::string title;
 
             float opacity;
             bool constrained;
@@ -377,7 +378,7 @@ namespace moon9
             std::string attached_to; // box to attach to (pointer would be better?)
 
             int x,y,w,h,ox,oy,ow,oh,scroll;
-            moon9::RGBA color_def, color_bkp;
+            moon9::RGBA color_fg, color_bg, color_fg_backup, color_bg_backup;
 
             bool init;
             bool hover, enabled;
@@ -433,6 +434,7 @@ namespace moon9
         box &physics( bool on = true );
         box &minimizable( bool on = true );
         box &reflexion( bool on = true );
+        box &title( const std::string &titlebar = std::string() );
 
         // dock
 
@@ -441,8 +443,8 @@ namespace moon9
         box &minimize( int dw, int dh );
         box &maximize();
 
-
-        box &color( RGBA color );
+        box &color_fg( RGBA color );
+        box &color_bg( RGBA color );
         bool is_hover() const;
         bool is_attached() const;
 
