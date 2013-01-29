@@ -26,13 +26,13 @@ int main( int argc, char **argv )
 		"\n"
 		"namespace \1\n"
 		"{\n"
-		"\tsize_t size()\n"
+		"\tconst size_t size()\n"
 		"\t{\n"
 		"\t\treturn \2;\n"
 		"\t}\n"
-		"\tconst void* data()\n"
+		"\tconst void * data()\n"
 		"\t{\n"
-		"\t\tconst unsigned char data[] = \n"
+		"\t\tstatic const unsigned char data[] = \n"
 		"\t\t{\n",
 		filename,
 		file.size() );

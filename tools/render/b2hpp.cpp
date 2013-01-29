@@ -26,8 +26,8 @@ int main( int argc, char **argv )
 		"\n"
 		"namespace \1\n"
 		"{\n"
-		"\textern const size_t size;\n"
-		"\textern const unsigned char data[];\n"
+		"\textern const size_t size();\n"
+		"\textern const void * data();\n"
 		"}\n"
 		"\n",
 		filename );
