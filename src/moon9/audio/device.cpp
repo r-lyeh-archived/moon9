@@ -11,11 +11,8 @@
 #include <stb_vorbis.h>
 //#include <opus.h>
 
-
 namespace
 {
-    enum { INVALID_ID = -1 };
-
     bool check_oal( const char *file, int line )
     {
         ALenum error = alGetError();
@@ -61,62 +58,61 @@ namespace
         check_oal( file, line );
         return t;
     }
-}
 
 #if defined(NDEBUG) || defined(_NDEBUG)
-#define MOON9_AL_0(...) ( (__VA_ARGS__), true )
-#define MOON9_AL_N(...) (__VA_ARGS__)
+#   define MOON9_AL_0(...) ( (__VA_ARGS__), true )
+#   define MOON9_AL_N(...) (__VA_ARGS__)
 #else
-#define MOON9_AL_0(...) ::check_oal( __FILE__, __LINE__, ((__VA_ARGS__), true) )
-#define MOON9_AL_N(...) ::check_oal( __FILE__, __LINE__, (__VA_ARGS__) )
+#   define MOON9_AL_0(...) check_oal( __FILE__, __LINE__, ((__VA_ARGS__), true) )
+#   define MOON9_AL_N(...) check_oal( __FILE__, __LINE__, (__VA_ARGS__) )
 #endif
 
-#define $alBufferData(...)          MOON9_AL_0( alBufferData(__VA_ARGS__) )
-#define $alcCloseDevice(...)        MOON9_AL_0( alcCloseDevice(__VA_ARGS__) )
-#define $alcDestroyContext(...)     MOON9_AL_0( alcDestroyContext(__VA_ARGS__) )
-#define $alcMakeContextCurrent(...) MOON9_AL_0( alcMakeContextCurrent(__VA_ARGS__) )
-#define $alDeleteBuffers(...)       MOON9_AL_0( alDeleteBuffers(__VA_ARGS__) )
-#define $alDeleteSources(...)       MOON9_AL_0( alDeleteSources(__VA_ARGS__) )
-#define $alDistanceModel(...)       MOON9_AL_0( alDistanceModel(__VA_ARGS__) )
-#define $alGenBuffers(...)          MOON9_AL_0( alGenBuffers(__VA_ARGS__) )
-#define $alGenSources(...)          MOON9_AL_0( alGenSources(__VA_ARGS__) )
-#define $alGetSourcei(...)          MOON9_AL_0( alGetSourcei(__VA_ARGS__) )
-#define $alListenerf(...)           MOON9_AL_0( alListenerf(__VA_ARGS__) )
-#define $alListenerfv(...)          MOON9_AL_0( alListenerfv(__VA_ARGS__) )
-#define $alSourcef(...)             MOON9_AL_0( alSourcef(__VA_ARGS__) )
-#define $alSourcefv(...)            MOON9_AL_0( alSourcefv(__VA_ARGS__) )
-#define $alSourcei(...)             MOON9_AL_0( alSourcei(__VA_ARGS__) )
-#define $alSourcePause(...)         MOON9_AL_0( alSourcePause(__VA_ARGS__) )
-#define $alSourcePlay(...)          MOON9_AL_0( alSourcePlay(__VA_ARGS__) )
-#define $alSourceStop(...)          MOON9_AL_0( alSourceStop(__VA_ARGS__) )
+#   define $alBufferData(...)          MOON9_AL_0( alBufferData(__VA_ARGS__) )
+#   define $alDeleteBuffers(...)       MOON9_AL_0( alDeleteBuffers(__VA_ARGS__) )
+#   define $alDeleteSources(...)       MOON9_AL_0( alDeleteSources(__VA_ARGS__) )
+#   define $alDistanceModel(...)       MOON9_AL_0( alDistanceModel(__VA_ARGS__) )
+#   define $alGenBuffers(...)          MOON9_AL_0( alGenBuffers(__VA_ARGS__) )
+#   define $alGenSources(...)          MOON9_AL_0( alGenSources(__VA_ARGS__) )
+#   define $alGetSourcei(...)          MOON9_AL_0( alGetSourcei(__VA_ARGS__) )
+#   define $alListenerf(...)           MOON9_AL_0( alListenerf(__VA_ARGS__) )
+#   define $alListenerfv(...)          MOON9_AL_0( alListenerfv(__VA_ARGS__) )
+#   define $alSourcef(...)             MOON9_AL_0( alSourcef(__VA_ARGS__) )
+#   define $alSourcefv(...)            MOON9_AL_0( alSourcefv(__VA_ARGS__) )
+#   define $alSourcei(...)             MOON9_AL_0( alSourcei(__VA_ARGS__) )
+#   define $alSourcePause(...)         MOON9_AL_0( alSourcePause(__VA_ARGS__) )
+#   define $alSourcePlay(...)          MOON9_AL_0( alSourcePlay(__VA_ARGS__) )
+#   define $alSourceStop(...)          MOON9_AL_0( alSourceStop(__VA_ARGS__) )
 
-#if 0
-// why are these generating errors?
-#define $alcCreateContext(...)      MOON9_AL_N( alcCreateContext(__VA_ARGS__) )
-#define $alcGetString(...)          MOON9_AL_N( alcGetString(__VA_ARGS__) )
-#define $alcIsExtensionPresent(...) MOON9_AL_N( alcIsExtensionPresent(__VA_ARGS__) )
-#define $alcOpenDevice(...)         MOON9_AL_N( alcOpenDevice(__VA_ARGS__) )
+//  dont check these
+#   define $alcCloseDevice(...)        ( alcCloseDevice(__VA_ARGS__) )
+#   define $alcCreateContext(...)      ( alcCreateContext(__VA_ARGS__) )
+#   define $alcDestroyContext(...)     ( alcDestroyContext(__VA_ARGS__) )
+#   define $alcGetString(...)          ( alcGetString(__VA_ARGS__) )
+#   define $alcIsExtensionPresent(...) ( alcIsExtensionPresent(__VA_ARGS__) )
+#   define $alcMakeContextCurrent(...) ( alcMakeContextCurrent(__VA_ARGS__) )
+#   define $alcOpenDevice(...)         ( alcOpenDevice(__VA_ARGS__) )
 
-#else
+}
 
-#define $alcCreateContext(...)      ( alcCreateContext(__VA_ARGS__) )
-#define $alcGetString(...)          ( alcGetString(__VA_ARGS__) )
-#define $alcIsExtensionPresent(...) ( alcIsExtensionPresent(__VA_ARGS__) )
-#define $alcOpenDevice(...)         ( alcOpenDevice(__VA_ARGS__) )
-
-#endif
-
-std::string device::name( int devnum ) const
+namespace
 {
-//  std::stringstream ss;
-//  if ($alGetString(AL_VERSION))
-//      ss << "OpenAL version: " << $alGetString(AL_VERSION) << std::endl;
-//  if ($alGetString(AL_RENDERER))
-//      ss << "OpenAL renderer: " << $alGetString(AL_RENDERER) << std::endl;
-//  if ($alGetString(AL_VENDOR))
-//      ss << "OpenAL vendor: " << $alGetString(AL_VENDOR) << std::endl;
-//  if ($alGetString(AL_EXTENSIONS))
-//      ss << "OpenAL extensions: " << $alGetString(AL_EXTENSIONS) << std::endl;
+    enum { INVALID_ID = -1 };
+
+}
+
+audio_t::audio_t()
+{
+    alcInit();
+
+    //  std::stringstream ss;
+    //  if ($alGetString(AL_VERSION))
+    //      ss << "OpenAL version: " << $alGetString(AL_VERSION) << std::endl;
+    //  if ($alGetString(AL_RENDERER))
+    //      ss << "OpenAL renderer: " << $alGetString(AL_RENDERER) << std::endl;
+    //  if ($alGetString(AL_VENDOR))
+    //      ss << "OpenAL vendor: " << $alGetString(AL_VENDOR) << std::endl;
+    //  if ($alGetString(AL_EXTENSIONS))
+    //      ss << "OpenAL extensions: " << $alGetString(AL_EXTENSIONS) << std::endl;
 
     std::vector<std::string> vs;
 
@@ -125,58 +121,51 @@ std::string device::name( int devnum ) const
         const char *s = (const char *)$alcGetString( NULL, ALC_DEVICE_SPECIFIER );
         while( *s != '\0' )
         {
-            vs.push_back( s );
+            int dev = int( devices.size() );
+            devices[ dev ] = device_t();
+			devices[ dev ].dev = 0;
+            devices[ dev ].name = s;
+            devices[ dev ].devnum = dev;
             while( *s++ != '\0' );
         }
     }
 
-    if( devnum < 0 || devnum >= int(vs.size()) )
-        return std::string();
-
-    return vs[ devnum ];
+    alcDeinit();
 }
 
-bool device::init( int devnum )
+audio_t::~audio_t()
+{
+    clear();
+
+    for( auto &it : devices )
+        it.second.quit();
+}
+
+bool device_t::init()
 {
     alcInit();
 
     // select device
-    std::string devname = name( devnum );
-    dev = $alcOpenDevice( devname.empty() ? 0 : devname.c_str() );
+    dev = 0;
+    dev = $alcOpenDevice( name.empty() ? 0 : name.c_str() );
 
     if( !dev )
         return false;
 
-    ctx = $alcCreateContext(dev, NULL);
+    contexts[3].init( dev );
+    contexts[2].init( dev );
+    contexts[1].init( dev );
+    contexts[0].init( dev );
 
-    if( !ctx )
-    {
-        $alcCloseDevice( dev );
-        dev = 0;
-        return false;
-    }
-
-    $alcMakeContextCurrent(ctx);
-
-    //$alDistanceModel(AL_INVERSE_DISTANCE);
-    $alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
-    $alListenerf(AL_GAIN, 1.0f);
-
-    reset();
+    contexts[0].enable();
 
     return true;
 }
 
-void device::quit()
+void device_t::quit()
 {
-    clear();
-
-    if( ctx )
-    {
-        $alcMakeContextCurrent(NULL);
-        $alcDestroyContext(ctx);
-        ctx = 0;
-    }
+    for( auto &it : contexts )
+        it.second.quit();
 
     if( dev )
     {
@@ -187,41 +176,83 @@ void device::quit()
     alcDeinit();
 }
 
-void device::clear()
+bool context_t::init( ALCdevice *dev )
 {
-    int index = int(sounds.size());
-    while( index-- )
-    {
-        soundDelete(index);
-    }
+    alcInit();
 
-    index = int(sources.size());
-    while( index-- )
-    {
-        sourceDelete(index);
-    }
+    // select device
+    ctx = 0;
+    ctx = $alcCreateContext(dev, NULL);
+
+    if( !ctx )
+        return false;
+
+    enable();
+
+    //$alDistanceModel(AL_INVERSE_DISTANCE);
+    $alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
+    $alListenerf(AL_GAIN, 1.0f);
+
+    return true;
 }
 
-void device::reset()
+void context_t::enable()
 {
-    clear();
-
-    // reserve id (0) ; blank
-    soundAdd( "ogg", blank_ogg::data(), blank_ogg::size() );
+    $alcMakeContextCurrent(ctx);
 }
 
-int device::soundAdd( const std::string &type, const void *data, size_t size )
+void context_t::disable()
+{
+    $alcMakeContextCurrent(0);
+}
+
+void context_t::quit()
+{
+    if( ctx )
+    {
+        disable();
+        $alcDestroyContext(ctx);
+        ctx = 0;
+    }
+
+    alcDeinit();
+}
+
+// --------------------------------------------------------------------------
+
+void listener_t::gain( const float gain )
+{
+    $alListenerf( AL_GAIN, gain );
+}
+
+void listener_t::position( const float *position3 )
+{
+    $alListenerfv( AL_POSITION, position3 );
+}
+
+void listener_t::velocity( const float *velocity3 )
+{
+    $alListenerfv( AL_VELOCITY, velocity3 );
+}
+
+void listener_t::direction( const float *direction3 )
+{
+    float orientation6[] = { direction3[0], direction3[1], direction3[2], 0, -1, 0 };
+    $alListenerfv( AL_ORIENTATION, orientation6 );
+}
+
+// --------------------------------------------------------------------------
+
+bool sound_t::load( const std::string &type, const void *data, size_t size )
 {
     if( type.empty() )
-        return INVALID_ID;
+        return false;
 
     if( !data )
-        return INVALID_ID;
+        return false;
 
     if( !size )
-        return INVALID_ID;
-
-    sound_t sound;
+        return false;
 
     // Clear error flag
     alGetError();
@@ -231,20 +262,20 @@ int device::soundAdd( const std::string &type, const void *data, size_t size )
         auto *oss = stb_vorbis_open_memory( (unsigned char *)data, size, NULL, NULL);;
 
         if( !oss )
-            return INVALID_ID;
+            return false;
 
         stb_vorbis_info info = stb_vorbis_get_info(oss);
 
-        sound.format = info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
-        sound.sampleRate = info.sample_rate;
+        this->format = info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
+        this->sampleRate = info.sample_rate;
 
-        sound.size = (stb_vorbis_stream_length_in_samples(oss) * info.channels);
+        this->size = (stb_vorbis_stream_length_in_samples(oss) * info.channels);
 
-        sound.samples = new short[sound.size];
+        this->samples = new short[this->size];
 
-        stb_vorbis_get_samples_short_interleaved(oss, info.channels, sound.samples, sound.size );
+        stb_vorbis_get_samples_short_interleaved(oss, info.channels, this->samples, this->size );
 
-        sound.size *= sizeof(short);
+        this->size *= sizeof(short);
 
         stb_vorbis_close(oss);
     }
@@ -263,12 +294,12 @@ int device::soundAdd( const std::string &type, const void *data, size_t size )
 
         std::cout << "decoded: " << len << std::endl;
 /*
-        sound.format = info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
-        sound.sampleRate = info.sample_rate;
-        sound.size = (stb_vorbis_stream_length_in_samples(oss) * info.channels);
-        sound.samples = new short[sound.size];
-        stb_vorbis_get_samples_short_interleaved(oss, info.channels, sound.samples, sound.size );
-        sound.size *= sizeof(short);
+        this->format = info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
+        this->sampleRate = info.sample_rate;
+        this->size = (stb_vorbis_stream_length_in_samples(oss) * info.channels);
+        this->samples = new short[this->size];
+        stb_vorbis_get_samples_short_interleaved(oss, info.channels, this->samples, this->size );
+        this->size *= sizeof(short);
 */
 
         opus_decoder_destroy(dec);
@@ -278,57 +309,202 @@ int device::soundAdd( const std::string &type, const void *data, size_t size )
     else {
         ALboolean al_bool;
         ALvoid *data;
-        alutLoadWAVFile(pathfile, &sound.format, &data, &sound.size, &sound.sampleRate, &al_bool);
-        sound.samples = (short *) data;
+        alutLoadWAVFile(pathfile, &this->format, &data, &this->size, &this->sampleRate, &al_bool);
+        this->samples = (short *) data;
     }
 #endif
 
-    $alGenBuffers( 1, &sound.buffer );
+    $alGenBuffers( 1, &this->buffer );
 
-    if( !$alBufferData( sound.buffer, sound.format, sound.samples, sound.size, sound.sampleRate ) )
+    if( !$alBufferData( this->buffer, this->format, this->samples, this->size, this->sampleRate ) )
     {
-        $alDeleteBuffers( 1, &sound.buffer );
-        return "something went wrong", INVALID_ID;
+        $alDeleteBuffers( 1, &this->buffer );
+        return "something went wrong", false;
     }
 
-    return soundInsert( sound );
+    return true;
 }
 
-int device::soundAdd( const std::string &pathfile )
+bool sound_t::load( const std::string &pathfile )
 {
     const char *type = strrchr(pathfile.c_str(), '.') + 1;
 
-#if 0
-    FILE *fp = fopen( pathfile, "rb" );
-    if( !fp )
-        return "cannot open file", INVALID_ID;
-
-    fseek( fp, 0L, SEEK_END );
-    size_t size = ftell(fp);
-    fseek( fp, 0L, SEEK_SET );
-
-    void *data = malloc( size );
-    fread( data, 1, size, fp );
-    fclose( fp );
-
-    auto id = addSoundPtr( type, data, size );
-    free( data );
-#else
     std::ifstream t( pathfile, std::ios::in | std::ios::binary );
     std::stringstream buffer;
     buffer << t.rdbuf();
     const std::string &str = buffer.str();
 
     if( str.empty() )
-        return "cannot open file", INVALID_ID;
+        return "cannot open file", false;
 
-    auto id = soundAdd( type, &str[0], str.size() );
-#endif
-
-    return id;
+    return load( type, &str[0], str.size() );
 }
 
-int device::soundInsert( sound_t &sound )
+void sound_t::unload()
+{
+    if( buffer )
+    {
+        $alDeleteBuffers( 1, &buffer );
+
+#if 0
+        alutUnloadWAV( sound.format, sound.samples, sound.size, sound.sampleRate );
+#endif
+    }
+
+    if( samples )
+    {
+        delete [] samples;
+        samples = NULL;
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+bool source_t::create()
+{
+    $alGenSources( 1, &source );
+    return source > 0;
+}
+
+bool source_t::bind( int buffer, bool looping, bool relative_pos )
+{
+    this->buffer = buffer;
+
+    $alSourcei( source, AL_LOOPING, looping ? AL_TRUE : AL_FALSE );
+    $alSourcei( source, AL_SOURCE_RELATIVE, relative_pos ? AL_TRUE : AL_FALSE );
+
+    $alSourcei( source, AL_BUFFER, buffer );
+    //$alSourceQueue
+
+    $alSourcef( source, AL_MIN_GAIN, 0.0f );
+    $alSourcef( source, AL_MAX_GAIN, 1.0f );
+
+    $alSourcef( source, AL_GAIN, 1.0f );
+    $alSourcef( source, AL_PITCH, 1.0f );
+
+    // seeking : AL_SEC_OFFSET (secs), AL_SAMPLE_OFFSET (samps), AL_BYTE_OFFSET(bytes)
+    // must be reset back on every loop
+    // $alSourcef( soundSource.source, AL_SEC_OFFSET, 5.0f );
+
+    return true;
+}
+
+void source_t::unbind()
+{
+	if( buffer )
+	{
+	    $alSourcei( source, AL_BUFFER, NULL );
+		buffer = 0;
+	}
+}
+
+void source_t::purge()
+{
+    unbind();
+
+    if( source )
+    {
+        $alDeleteSources( 1, &source );
+        source = 0;
+    }
+}
+
+void source_t::play()
+{
+    $alSourcePlay( source );
+}
+
+void source_t::stop()
+{
+    $alSourceStop( source );
+}
+
+void source_t::pause()
+{
+    $alSourcePause( source );
+}
+
+bool source_t::is_playing() const
+{
+    ALint state;
+    $alGetSourcei( source, AL_SOURCE_STATE, &state );
+
+    return ( state == AL_PLAYING );
+}
+
+void source_t::gain( const float gain )
+{
+    $alSourcef( source, AL_GAIN, gain );
+}
+
+void source_t::position( const float *position3 )
+{
+    $alSourcefv( source, AL_POSITION, position3 );
+}
+
+void source_t::velocity( const float *velocity3 )
+{
+    $alSourcefv( source, AL_VELOCITY, velocity3 );
+}
+
+void source_t::direction( const float *direction3 )
+{
+    $alSourcefv( source, AL_DIRECTION, direction3 );
+}
+
+void source_t::attenuation( const float rollOff, const float refDistance )
+{
+    $alSourcef( source, AL_REFERENCE_DISTANCE, refDistance );
+    $alSourcef( source, AL_ROLLOFF_FACTOR, rollOff );
+}
+
+/*
+
+ALfloat GetBufferLength(ALuint buffer)
+{
+    ALint size, bits, channels, freq;
+
+    alGetBufferi(buffer, AL_SIZE, &size);
+    alGetBufferi(buffer, AL_BITS, &bits);
+    alGetBufferi(buffer, AL_CHANNELS, &channels);
+    alGetBufferi(buffer, AL_FREQUENCY, &freq);
+    if(alGetError() != AL_NO_ERROR)
+        return 0f;
+
+    return (ALfloat)((ALuint)size/channels/(bits/8)) / (ALfloat)freq;
+}
+
+*/
+
+// ------------------------------------------------------------------------
+
+void channel_t::clear()
+{
+    int index = int(sounds.size());
+    while( index-- )
+    {
+        soundDelete(index);
+    }
+
+    index = int(sources.size());
+    while( index-- )
+    {
+        sourceDelete(index);
+    }
+}
+
+void channel_t::reset()
+{
+    clear();
+
+    // reserve id (0) ; blank
+    sound_t snd;
+    snd.load( "ogg", blank_ogg::data(), blank_ogg::size() );
+
+    soundInsert( snd );
+}
+
+int channel_t::soundInsert( sound_t &sound )
 {
     for( unsigned i = 0; i < sounds.size(); i++ )
     {
@@ -343,49 +519,31 @@ int device::soundInsert( sound_t &sound )
     return sounds.size() - 1;
 }
 
-void device::soundDelete( int sound )
+void channel_t::soundDelete( int _sound )
 {
-    if( sounds[sound].samples )
+    auto &sound = sounds[_sound];
+
+    if( sound.samples )
     {
-        $alDeleteBuffers( 1, &sounds[sound].buffer );
+        // unbind sound from all sources
+        for( auto &it : sources )
+        {
+            ALint id;
+            $alGetSourcei( it.source, AL_BUFFER, &id );
 
-#if 0
-        alutUnloadWAV( sounds[sound].format, sounds[sound].samples, sounds[sound].size, sounds[sound].sampleRate );
-#endif
+            if( id == sound.buffer )
+                $alSourcei( it.source, AL_BUFFER, NULL );
+        }
 
-        delete [] sounds[sound].samples;
-        sounds[sound].samples = NULL;
+        sound.unload();
     }
 }
 
-int device::sourceAdd( int sound, bool looping, bool relative_pos )
-{
-    source_t soundSource;
-
-    soundSource.sound = sound;
-
-    $alGenSources( 1, &soundSource.source );
-    $alSourcei( soundSource.source, AL_LOOPING, looping ? AL_TRUE : AL_FALSE );
-    $alSourcei( soundSource.source, AL_SOURCE_RELATIVE, relative_pos ? AL_TRUE : AL_FALSE );
-    $alSourcei( soundSource.source, AL_BUFFER, sounds[sound].buffer );
-    $alSourcef( soundSource.source, AL_MIN_GAIN, 0.0f );
-    $alSourcef( soundSource.source, AL_MAX_GAIN, 1.0f );
-
-    $alSourcef( soundSource.source, AL_GAIN, 1.0f );
-    $alSourcef( soundSource.source, AL_PITCH, 1.0f );
-
-    // seeking : AL_SEC_OFFSET (secs), AL_SAMPLE_OFFSET (samps), AL_BYTE_OFFSET(bytes)
-    // must be reset back on every loop
-    // $alSourcef( soundSource.source, AL_SEC_OFFSET, 5.0f );
-
-    return sourceInsert( soundSource );
-}
-
-int device::sourceInsert( source_t &source )
+int channel_t::sourceInsert( source_t &source )
 {
     for( unsigned i = 0; i < sources.size(); i++ )
     {
-        if( sources[i].sound == INVALID_ID )
+        if( !sources[i].buffer )
         {
             sources[i] = source;
             return i;
@@ -396,82 +554,44 @@ int device::sourceInsert( source_t &source )
     return sources.size() - 1;
 }
 
-void device::sourceDelete( int source )
+void channel_t::sourceDelete( int source )
+{ sources[source].purge(); }
+
+// ----------------------------------------------------------------------------
+
+void audio_t::clear()
 {
-    if( sources[source].sound != INVALID_ID )
-    {
-        $alDeleteSources( 1, &sources[source].source );
-        sources[source].sound = INVALID_ID;
-    }
+    for( auto &it : devices )
+        it.second.clear();
+}
+void audio_t::reset()
+{
+    for( auto &it : devices )
+        it.second.reset();
 }
 
-void device::sourcePlay( int source )
+void device_t::clear()
 {
-    $alSourcePlay( sources[source].source );
+    for( auto &it : contexts )
+        it.second.clear();
+}
+void device_t::reset()
+{
+    for( auto &it : contexts )
+        it.second.reset();
 }
 
-void device::sourceStop( int source )
+void context_t::clear()
 {
-    $alSourceStop( sources[source].source );
+    for( auto &it : channels )
+        it.second.clear();
+}
+void context_t::reset()
+{
+    for( auto &it : channels )
+        it.second.reset();
 }
 
-void device::sourcePause( int source )
-{
-    $alSourcePause( sources[source].source );
-}
-
-bool device::sourceIsPlaying( int source )
-{
-    ALint state;
-    $alGetSourcei( sources[source].source, AL_SOURCE_STATE, &state );
-
-    return ( state == AL_PLAYING );
-}
-
-void device::listenerSetPosition( const float *position3 )
-{
-    $alListenerfv( AL_POSITION, position3 );
-}
-
-void device::listenerSetVelocity( const float *velocity3 )
-{
-    $alListenerfv( AL_VELOCITY, velocity3 );
-}
-
-void device::listenerSetDirection( const float *direction3 )
-{
-    float orientation6[] = { direction3[0], direction3[1], direction3[2], 0, -1, 0 };
-    $alListenerfv( AL_ORIENTATION, orientation6 );
-}
-
-void device::sourceSetGain( int source, const float gain )
-{
-    $alSourcef( sources[source].source, AL_GAIN, gain );
-}
-
-void device::sourceSetPosition( int source, const float *position3 )
-{
-    $alSourcefv( sources[source].source, AL_POSITION, position3 );
-}
-
-void device::sourceSetVelocity( int source, const float *velocity3 )
-{
-    $alSourcefv( sources[source].source, AL_VELOCITY, velocity3 );
-}
-
-void device::sourceSetDirection( int source, const float *direction3 )
-{
-    $alSourcefv( sources[source].source, AL_DIRECTION, direction3 );
-}
-
-void device::sourceSetAttenuation( int source, const float rollOff, const float refDistance )
-{
-    $alSourcef( sources[source].source, AL_REFERENCE_DISTANCE, refDistance );
-    $alSourcef( sources[source].source, AL_ROLLOFF_FACTOR, rollOff );
-}
-
-
-// ------------------------------------------------------------------------
 
 #if 0
 

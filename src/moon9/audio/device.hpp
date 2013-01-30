@@ -1,5 +1,6 @@
 // Simple OpenAL wrapper. Based on code by Emil Persson
 // @todo: doppler: alDopplerFactor, alSpeedOfSound
+// @todo: playonce( int src );
 // - rlyeh
 
 #pragma once
@@ -9,75 +10,145 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
-class device
+
+struct sound_t
 {
-    public:
+    ALenum format;
+    ALuint buffer;
 
-     explicit
-     device( int devnum ) : ctx(0),dev(0) { init(devnum); }
+    short *samples;
+    int sampleRate;
+    int size;
+//    bool ok;
 
-     device() : ctx(0),dev(0) {}
-    ~device() { quit(); }
+    bool load( const std::string &pathfile );
+    bool load( const std::string &type, const void *data, size_t size );
+    void unload();
+};
 
-    std::string name( int devnum ) const;
+struct source_t
+{
+    ALuint source;
+    ALuint buffer;
 
-    bool init( int devnum = 0 );
-    void quit();
+    bool create();
+    bool bind( int buffer, bool looping = false, bool relative_pos = false );
+    void unbind();
+    void purge();
+
+    void gain( const float gain );
+    void position( const float *position3 );
+    void velocity( const float *velocity3 );
+    void direction( const float *direction3 );
+    void attenuation( const float rollOff, const float refDistance );
+
+    void play();
+    void stop();
+    void pause();
+    bool is_playing() const;
+};
+
+struct listener_t
+{
+    void gain( const float gain );
+    void position( const float *position3 );
+    void velocity( const float *velocity3 );
+    void direction( const float *direction3 );
+};
+
+struct channel_t
+{
+    std::vector<sound_t> sounds;
+    std::vector<source_t> sources;
+
     void clear();
     void reset();
 
-    void listenerSetPosition( const float *position3 );
-    void listenerSetVelocity( const float *velocity3 );
-    void listenerSetDirection( const float *direction3 );
-
-     int soundAdd( const std::string &pathfile );
-     int soundAdd( const std::string &type, const void *data, size_t size );
+     int soundInsert( sound_t &sound );
     void soundDelete( int sound );
 
-     int sourceAdd( int sound, bool looping = false, bool relative_pos = false );
+     int sourceInsert( source_t &source );
     void sourceDelete( int source );
-    void sourceSetGain( int source, const float gain );
-    void sourceSetPosition( int source, const float *position3 );
-    void sourceSetVelocity( int source, const float *velocity3 );
-    void sourceSetDirection( int source, const float *direction3 );
-    void sourceSetAttenuation( int source, const float rollOff, const float refDistance );
-    void sourcePlay( int source );
-    void sourceStop( int source );
-    void sourcePause( int source );
-    bool sourceIsPlaying( int source );
 
-    static device *defaults() { static device d(0); return &d; }
-
-    protected:
-
-    ALCcontext *ctx;
-    ALCdevice *dev;
-
-    struct sound_t
+    int playonce( const std::string &pathfile )
     {
-        ALenum format;
-        ALuint buffer;
+        sound_t snd;
 
-        short *samples;
-        int sampleRate;
-        int size;
-    };
+        if( !snd.load( pathfile ) )
+            return -1;
 
-    struct source_t
-    {
-        ALuint source;
-        int sound;
-    };
+        soundInsert( snd );
 
-    int soundInsert(sound_t &sound);
-    int sourceInsert(source_t &source);
+        source_t src;
 
-    std::vector<sound_t> sounds;
-    std::vector<source_t> sources;
+        src.create();
+        src.bind( snd.buffer );
+        src.play();
+
+        // @todo : implement remove flags @sourcePlay()
+
+        return sourceInsert( src );
+    }
 };
 
+struct context_t
+{
+    ALCcontext *ctx;
+    int contextnum;
+
+    listener_t ltn;
+    std::map< int, channel_t > channels;
+
+    bool init( ALCdevice * );
+    void quit();
+
+    void enable();
+    void disable();
+
+    void clear();
+    void reset();
+};
+
+struct device_t
+{
+    ALCdevice *dev;
+    int devnum;
+//    bool ok;
+
+    std::string name;
+    std::map< int, context_t > contexts;
+
+    bool init();
+    void quit();
+
+    void clear();
+    void reset();
+};
+
+struct audio_t
+{
+    std::map< int, device_t > devices;
+
+      audio_t();
+     ~audio_t();
+
+//     bool init( int devnum, int contextnum );
+//     void quit( int devnum, int contextnum );
+
+    void clear();
+    void reset();
+};
+
+
 #if 0
+
+// proposal
+
+audio.devices[N].context[M].listener
+                            channel[O].sounds[P]
+                                      .sources[Q]
 
 // proposal
 

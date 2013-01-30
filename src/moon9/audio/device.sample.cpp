@@ -2,57 +2,31 @@
 
 #include "device.hpp"
 
-
-
 int main( int argc, char **argv )
 {
     if( argc != 2 )
-    {
-        std::cout << "Usage: " << argv[0] << " file.ogg" << std::endl;
-        return -1;
-    }
+        return std::cerr << "Usage: " << argv[0] << " file.ogg" << std::endl, -1;
 
-#if 1
+    audio_t audio;
 
-    device audio;
+    for( auto &it : audio.devices )
+        std::cout << "Audio device: " << it.second.name << std::endl;
 
-    if( !audio.init(0) )
-    {
-        std::cerr << "Cant open audio device: " << audio.name(0) << std::endl;
-        return -1;
-    }
+    if( !audio.devices[0].init() )
+        return std::cerr << "Cant open audio device." << std::endl, -1;
 
-    std::cout << "Using audio device: " << audio.name(0) << std::endl;
+    std::cout << "Using audio device: " << audio.devices[0].name << std::endl;
 
-    int sndid = audio.soundAdd( argv[1] );
+    auto &channels = audio.devices[0].contexts[0].channels;
 
-    if( sndid > 0 )
-    {
-        int srcid = audio.sourceAdd( sndid );
+    enum { SFX, MUS, AMB, VOX, VID, UI };
 
-        audio.sourcePlay( srcid );
-        while( audio.sourceIsPlaying( srcid ) )
-        {}
-    }
+    channels[ MUS ].reset();
 
-#else
+    int source = channels[ MUS ].playonce( argv[1] );
 
-    context ctx;
-
-    int id = load( argv[1] );
-
-    speaker spk;
-    init( spk );
-    spk.source = load( argv[1] );
-
-    ctx.ui.push_back( spk );
-
-    update( ctx );
-
-    while( ctx.ui.front().playing )
-        ;
-
-#endif
+    while( channels[ MUS ].sources[ source ].is_playing() )
+    {}
 
     return 0;
 }
