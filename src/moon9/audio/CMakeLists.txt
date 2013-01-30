@@ -24,5 +24,5 @@ list(REMOVE_ITEM MOON9_AUDIO_SRCS "" ${MOON9_AUDIO_SAMPLES} ${MOON9_AUDIO_TESTS}
 ## list(APPEND MOON9_AUDIO_SRCS platform/w32/others.cpp)
 add_library(moon9-audio-static STATIC ${MOON9_AUDIO_SRCS})
 
-add_executable(sfx.sample              sfx.sample.cpp)
-target_link_libraries(sfx.sample       moon9-audio-static openal stb_vorbis)
+add_executable(device.sample              device.sample.cpp)
+target_link_libraries(device.sample       moon9-audio-static openal stb_vorbis)
