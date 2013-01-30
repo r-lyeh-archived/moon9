@@ -17,11 +17,11 @@ struct sound_t
 {
     ALenum format;
     ALuint buffer;
+//    bool ok;
 
     short *samples;
     int sampleRate;
     int size;
-//    bool ok;
 
     bool load( const std::string &pathfile );
     bool load( const std::string &type, const void *data, size_t size );
@@ -32,6 +32,7 @@ struct source_t
 {
     ALuint source;
     ALuint buffer;
+//    bool ok;
 
     bool create();
     bool bind( int buffer, bool looping = false, bool relative_pos = false );
@@ -58,50 +59,19 @@ struct listener_t
     void direction( const float *direction3 );
 };
 
-struct channel_t
+struct context_t
 {
+    ALCdevice *dev;
+    ALCcontext *ctx;
+//    bool ok;
+
+    listener_t listener;
     std::vector<sound_t> sounds;
     std::vector<source_t> sources;
 
-    void clear();
-    void reset();
+    std::string devname;
 
-     int soundInsert( sound_t &sound );
-    void soundDelete( int sound );
-
-     int sourceInsert( source_t &source );
-    void sourceDelete( int source );
-
-    int playonce( const std::string &pathfile )
-    {
-        sound_t snd;
-
-        if( !snd.load( pathfile ) )
-            return -1;
-
-        soundInsert( snd );
-
-        source_t src;
-
-        src.create();
-        src.bind( snd.buffer );
-        src.play();
-
-        // @todo : implement remove flags @sourcePlay()
-
-        return sourceInsert( src );
-    }
-};
-
-struct context_t
-{
-    ALCcontext *ctx;
-    int contextnum;
-
-    listener_t ltn;
-    std::map< int, channel_t > channels;
-
-    bool init( ALCdevice * );
+    bool init( int devnum );
     void quit();
 
     void enable();
@@ -109,38 +79,17 @@ struct context_t
 
     void clear();
     void reset();
+
+     int insert_sound( sound_t &sound );
+    void erase_sound( int sound );
+
+     int insert_source( source_t &source );
+    void erase_source( int source );
+
+     int playonce( const std::string &pathfile );
 };
 
-struct device_t
-{
-    ALCdevice *dev;
-    int devnum;
-//    bool ok;
-
-    std::string name;
-    std::map< int, context_t > contexts;
-
-    bool init();
-    void quit();
-
-    void clear();
-    void reset();
-};
-
-struct audio_t
-{
-    std::map< int, device_t > devices;
-
-      audio_t();
-     ~audio_t();
-
-//     bool init( int devnum, int contextnum );
-//     void quit( int devnum, int contextnum );
-
-    void clear();
-    void reset();
-};
-
+std::vector< std::string > enumerate();
 
 #if 0
 

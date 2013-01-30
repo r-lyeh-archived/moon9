@@ -7,25 +7,25 @@ int main( int argc, char **argv )
     if( argc != 2 )
         return std::cerr << "Usage: " << argv[0] << " file.ogg" << std::endl, -1;
 
-    audio_t audio;
+    // enumerate audio devices
+    for( auto &it : enumerate() )
+        std::cout << "Audio device: " << it << std::endl;
 
-    for( auto &it : audio.devices )
-        std::cout << "Audio device: " << it.second.name << std::endl;
+    // create as many audio contexts as you want
+    context_t sfx, music, voice, ambient, video, ui;
 
-    if( !audio.devices[0].init() )
+    // sfx uses device #0
+    if( !sfx.init(0) )
         return std::cerr << "Cant open audio device." << std::endl, -1;
 
-    std::cout << "Using audio device: " << audio.devices[0].name << std::endl;
+    // print device name
+    std::cout << "Using audio device: " << sfx.devname << std::endl;
 
-    auto &channels = audio.devices[0].contexts[0].channels;
+    // @todo: purge @playonce
+    int source = sfx.playonce( argv[1] );
 
-    enum { SFX, MUS, AMB, VOX, VID, UI };
-
-    channels[ MUS ].reset();
-
-    int source = channels[ MUS ].playonce( argv[1] );
-
-    while( channels[ MUS ].sources[ source ].is_playing() )
+    // wait for source to finish
+    while( sfx.sources[ source ].is_playing() )
     {}
 
     return 0;

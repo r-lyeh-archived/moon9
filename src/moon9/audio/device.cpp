@@ -100,7 +100,7 @@ namespace
 
 }
 
-audio_t::audio_t()
+std::vector<std::string> enumerate()
 {
     alcInit();
 
@@ -121,64 +121,57 @@ audio_t::audio_t()
         const char *s = (const char *)$alcGetString( NULL, ALC_DEVICE_SPECIFIER );
         while( *s != '\0' )
         {
-            int dev = int( devices.size() );
-            devices[ dev ] = device_t();
-			devices[ dev ].dev = 0;
-            devices[ dev ].name = s;
-            devices[ dev ].devnum = dev;
+            vs.push_back( s );
             while( *s++ != '\0' );
         }
     }
 
     alcDeinit();
+
+    return vs;
 }
 
-audio_t::~audio_t()
+namespace
 {
-    clear();
-
-    for( auto &it : devices )
-        it.second.quit();
+    int numcontexts = 0;
 }
 
-bool device_t::init()
+int context_t::playonce( const std::string &pathfile )
+{
+    sound_t snd;
+
+    if( !snd.load( pathfile ) )
+        return -1;
+
+    insert_sound( snd );
+
+    source_t src;
+
+    src.create();
+    src.bind( snd.buffer );
+    src.play();
+
+    // @todo : implement remove flags @sourcePlay()
+
+    return insert_source( src );
+}
+
+
+bool context_t::init( int devnum )
 {
     alcInit();
+
+    // device name
+    devname = std::string();
+    auto list = enumerate();
+    if( devnum >= 0 && devnum < int(list.size()) )
+        devname = list[ devnum ];
 
     // select device
     dev = 0;
-    dev = $alcOpenDevice( name.empty() ? 0 : name.c_str() );
+    dev = $alcOpenDevice( devname.empty() ? 0 : devname.c_str() );
 
-    if( !dev )
-        return false;
-
-    contexts[3].init( dev );
-    contexts[2].init( dev );
-    contexts[1].init( dev );
-    contexts[0].init( dev );
-
-    contexts[0].enable();
-
-    return true;
-}
-
-void device_t::quit()
-{
-    for( auto &it : contexts )
-        it.second.quit();
-
-    if( dev )
-    {
-        $alcCloseDevice(dev);
-        dev = 0;
-    }
-
-    alcDeinit();
-}
-
-bool context_t::init( ALCdevice *dev )
-{
-    alcInit();
+    //if( !dev ) return false;
 
     // select device
     ctx = 0;
@@ -189,9 +182,11 @@ bool context_t::init( ALCdevice *dev )
 
     enable();
 
-    //$alDistanceModel(AL_INVERSE_DISTANCE);
-    $alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
-    $alListenerf(AL_GAIN, 1.0f);
+    //$alDistanceModel( AL_INVERSE_DISTANCE );
+    $alDistanceModel( AL_INVERSE_DISTANCE_CLAMPED );
+    listener.gain( 1.f );
+
+    reset();
 
     return true;
 }
@@ -215,8 +210,94 @@ void context_t::quit()
         ctx = 0;
     }
 
+    if( dev )
+    {
+//        $alcCloseDevice(dev);
+        dev = 0;
+    }
+
     alcDeinit();
 }
+
+void context_t::clear()
+{
+    int index = int(sounds.size());
+    while( index-- )
+    {
+        erase_sound(index);
+    }
+
+    index = int(sources.size());
+    while( index-- )
+    {
+        erase_source(index);
+    }
+}
+
+void context_t::reset()
+{
+    clear();
+
+    // reserve id (0) ; blank
+    sound_t snd;
+    snd.load( "ogg", blank_ogg::data(), blank_ogg::size() );
+
+    insert_sound( snd );
+}
+
+int context_t::insert_sound( sound_t &sound )
+{
+    for( unsigned i = 0; i < sounds.size(); i++ )
+    {
+        if( sounds[i].samples == NULL )
+        {
+            sounds[i] = sound;
+            return i;
+        }
+    }
+
+    sounds.push_back(sound);
+    return sounds.size() - 1;
+}
+
+void context_t::erase_sound( int _sound )
+{
+    auto &sound = sounds[_sound];
+
+    if( sound.samples )
+    {
+        // unbind sound from all sources
+        for( auto &it : sources )
+        {
+            ALint id;
+            $alGetSourcei( it.source, AL_BUFFER, &id );
+
+            if( id == sound.buffer )
+                $alSourcei( it.source, AL_BUFFER, NULL );
+        }
+
+        sound.unload();
+    }
+}
+
+int context_t::insert_source( source_t &source )
+{
+    for( unsigned i = 0; i < sources.size(); i++ )
+    {
+        if( !sources[i].buffer )
+        {
+            sources[i] = source;
+            return i;
+        }
+    }
+
+    sources.push_back( source );
+    return sources.size() - 1;
+}
+
+void context_t::erase_source( int source )
+{ sources[source].purge(); }
+
 
 // --------------------------------------------------------------------------
 
@@ -476,121 +557,7 @@ ALfloat GetBufferLength(ALuint buffer)
 
 */
 
-// ------------------------------------------------------------------------
-
-void channel_t::clear()
-{
-    int index = int(sounds.size());
-    while( index-- )
-    {
-        soundDelete(index);
-    }
-
-    index = int(sources.size());
-    while( index-- )
-    {
-        sourceDelete(index);
-    }
-}
-
-void channel_t::reset()
-{
-    clear();
-
-    // reserve id (0) ; blank
-    sound_t snd;
-    snd.load( "ogg", blank_ogg::data(), blank_ogg::size() );
-
-    soundInsert( snd );
-}
-
-int channel_t::soundInsert( sound_t &sound )
-{
-    for( unsigned i = 0; i < sounds.size(); i++ )
-    {
-        if( sounds[i].samples == NULL )
-        {
-            sounds[i] = sound;
-            return i;
-        }
-    }
-
-    sounds.push_back(sound);
-    return sounds.size() - 1;
-}
-
-void channel_t::soundDelete( int _sound )
-{
-    auto &sound = sounds[_sound];
-
-    if( sound.samples )
-    {
-        // unbind sound from all sources
-        for( auto &it : sources )
-        {
-            ALint id;
-            $alGetSourcei( it.source, AL_BUFFER, &id );
-
-            if( id == sound.buffer )
-                $alSourcei( it.source, AL_BUFFER, NULL );
-        }
-
-        sound.unload();
-    }
-}
-
-int channel_t::sourceInsert( source_t &source )
-{
-    for( unsigned i = 0; i < sources.size(); i++ )
-    {
-        if( !sources[i].buffer )
-        {
-            sources[i] = source;
-            return i;
-        }
-    }
-
-    sources.push_back( source );
-    return sources.size() - 1;
-}
-
-void channel_t::sourceDelete( int source )
-{ sources[source].purge(); }
-
 // ----------------------------------------------------------------------------
-
-void audio_t::clear()
-{
-    for( auto &it : devices )
-        it.second.clear();
-}
-void audio_t::reset()
-{
-    for( auto &it : devices )
-        it.second.reset();
-}
-
-void device_t::clear()
-{
-    for( auto &it : contexts )
-        it.second.clear();
-}
-void device_t::reset()
-{
-    for( auto &it : contexts )
-        it.second.reset();
-}
-
-void context_t::clear()
-{
-    for( auto &it : channels )
-        it.second.clear();
-}
-void context_t::reset()
-{
-    for( auto &it : channels )
-        it.second.reset();
-}
 
 
 #if 0
@@ -648,7 +615,7 @@ int load( const std::string &resource )
 
 void unload( int source )
 {
-    device::defaults()->soundDelete( source );
+    device::defaults()->erase_sound( source );
 }
 
 void update( speaker &spk )
