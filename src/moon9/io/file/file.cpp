@@ -193,7 +193,7 @@ namespace moon9
     size_t file::size() const
     {
         //should we return std::streamoff instead and avoid casting?
-        std::ifstream is( pathfile.c_str(), std::ios::in|std::ios::binary|std::ios::ate );
+        std::ifstream is( pathfile, std::ios::in|std::ios::binary|std::ios::ate );
 
         //is.seekg(0, std::ios::end);
         size_t length = static_cast<size_t>( is.tellg() );
@@ -213,11 +213,16 @@ namespace moon9
         {
             buffer.resize( length );
 
-            std::ifstream is( pathfile.c_str(), std::ios::in|std::ios::binary );
+            std::ifstream is( pathfile, std::ios::in|std::ios::binary );
             is.read( reinterpret_cast< char * >( &buffer[0] ), length );
 
-            // std::ifstream ifs( pathfile.c_str(), std::ios::in|std::ios::binary );
+            // std::ifstream ifs( pathfile, std::ios::in|std::ios::binary );
             // buffer = std::string( std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>() );
+
+            //std::ifstream is( pathfile, std::ios::in | std::ios::binary );
+            //std::stringstream buffer;
+            //buffer << is.rdbuf();
+            //return buffer.str();
         }
 
         return buffer;
@@ -231,7 +236,7 @@ namespace moon9
     bool file::overwrite( const void *data, size_t size ) const
     {
         // is trunc flag needed?
-        std::ofstream is( pathfile.c_str(), std::ios::out|std::ios::binary|std::ios::trunc );
+        std::ofstream is( pathfile, std::ios::out|std::ios::binary|std::ios::trunc );
 
         if( is.is_open() && is.good() )
             is.write( reinterpret_cast<const char *>( data ), size );
@@ -246,7 +251,7 @@ namespace moon9
 
     bool file::append( const void *data, size_t size ) const
     {
-        std::fstream is( pathfile.c_str(), std::ios::out|std::ios::binary|std::ios::app|std::ios::ate );
+        std::fstream is( pathfile, std::ios::out|std::ios::binary|std::ios::app|std::ios::ate );
 
         if( is.is_open() && is.good() )
             is.write( reinterpret_cast<const char *>( data ), size );
