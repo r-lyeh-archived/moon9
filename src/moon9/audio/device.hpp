@@ -26,6 +26,8 @@ struct sound_t
     bool load( const std::string &pathfile );
     bool load( const std::string &type, const void *data, size_t size );
     void unload();
+
+    double seconds() const;
 };
 
 struct source_t
@@ -35,15 +37,19 @@ struct source_t
 //    bool ok;
 
     bool create();
-    bool bind( int buffer, bool looping = false, bool relative_pos = false );
+    bool bind( int buffer );
     void unbind();
     void purge();
 
+    void loop( const bool on );
     void gain( const float gain );
-    void position( const float *position3 );
+    void pitch( const float pitch );
+    void position( const float *position3, bool relative = false );
     void velocity( const float *velocity3 );
     void direction( const float *direction3 );
+
     void attenuation( const float rollOff, const float refDistance );
+//    void distance( const float mind, const float maxd );
 
     void play();
     void stop();
@@ -70,6 +76,7 @@ struct context_t
     std::vector<source_t> sources;
 
     std::string devname;
+    bool has_efx;
 
     bool init( int devnum );
     void quit();
@@ -86,7 +93,7 @@ struct context_t
      int insert_source( source_t &source );
     void erase_source( int source );
 
-     int playonce( const std::string &pathfile );
+     int playonce( const std::string &pathfile, void (*efxpre)(int) = 0, void (*efxpost)(int) = 0 );
 };
 
 std::vector< std::string > enumerate();

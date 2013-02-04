@@ -477,7 +477,7 @@ static struct sth_glyph* get_glyph(struct sth_stash* stash, struct sth_font* fnt
 	fnt->lut[h] = fnt->nglyphs-1;
 
 	// Rasterize
-	bmp = (unsigned char*)malloc(gw*gh);
+	bmp = (unsigned char*)malloc( gw*gh == 0 ? 0 : gw*gh );
 	if (bmp)
 	{
 		stbtt_MakeGlyphBitmap(&fnt->font, bmp, gw,gh,gw, scale,scale, g);

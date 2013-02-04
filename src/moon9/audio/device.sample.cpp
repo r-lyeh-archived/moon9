@@ -25,6 +25,7 @@ int main( int argc, char **argv )
     int source = sfx.playonce( argv[1] );
 
     // wait for source to finish
+    if( source >= 0 )
     while( sfx.sources[ source ].is_playing() )
     {}
 

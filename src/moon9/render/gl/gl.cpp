@@ -43,8 +43,10 @@ namespace moon9
 
             std::cerr << ss.str() << std::endl;
 
+			/*
             debugger(ss.str());
             die(-1);
+			*/
         }
     }
 }

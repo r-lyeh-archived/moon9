@@ -1,3 +1,5 @@
+#if 0
+
 //
 // Copyright (c) 2011 Andreas Krinke andreas.krinke@gmx.de
 // Copyright (c) 2009 Mikko Mononen memon@inside.org
@@ -477,7 +479,8 @@ static struct sth_glyph* get_glyph(struct sth_stash* stash, struct sth_font* fnt
 	fnt->lut[h] = fnt->nglyphs-1;
 
 	// Rasterize
-	bmp = (unsigned char*)malloc(gw*gh);
+	// #error @rlyeh: this source is outdated
+	bmp = (unsigned char*)( gw*gh == 0 ? 0 : malloc(gw*gh) );
 	if (bmp)
 	{
 		stbtt_MakeGlyphBitmap(&fnt->font, bmp, gw,gh,gw, scale,scale, g);
@@ -726,3 +729,5 @@ void sth_delete(struct sth_stash* stash)
 	}
 	free(stash);
 }
+
+#endif

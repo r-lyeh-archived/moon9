@@ -83,142 +83,158 @@
 namespace moon9
 {
 //c++0x
-//	template <class T, typename container_t = std::unordered_set<T *> > // std::vector<T *>
-	template <class T, typename container_t = std::set<T *> > // std::vector<T *>
-	class component
-	{
-		enum config
-		{
-			verbose = false,
-			debug = true
-		};
+//  template <class T, typename container_t = std::unordered_set<T *> > // std::vector<T *>
+    template <class T, typename container_t = std::set<T *> > // std::vector<T *>
+    class component
+    {
+        enum config
+        {
+            verbose = false,
+            debug = true
+        };
 
-		typedef typename container_t::iterator container_it;
+        typedef typename container_t::iterator container_it;
 
-		enum mode_t { ADD, DEL, NOP };
+        enum mode_t { ADD, DEL, NOP };
 
-		static container_t *operation( mode_t mode, void *self = 0 )
-		{
-#if 1
-			static container_t container;
+        static container_t *operation( mode_t mode, void *self = 0 )
+        {
+#if 0
+            // Original code.
+            // Works perfectly in most cases.
+            // No leaks.
+            static container_t container;
 #else
-            static container_t *container_p = new container_t();
-            container_t &container   = *container_p;
+            // However, previous code may fail under some circumnstances. Ie,
+            // static classes, instances created before main(), singletons, etc.
+            // So we use a compromise in here.
+            // Seems to work in every case... so far.
+            // No leaks still.
+            static container_t *container_p = 0;
+            if( !container_p )
+            {
+                static char placement[ sizeof(container_t) ];
+                container_p = (container_t *)placement; // no leak and no memory traced :P
+                new (container_p) container_t();        // memtraced recursion safe; we don't track placement-news
+                struct deleter { static void set() { container_p->~container_t(); } };
+                atexit( deleter::set );
+            }
+            static container_t &container = *container_p;
 #endif
 
-			if( mode == ADD )
-			{
-				if( config::verbose )
-					std::cout << "+ moon9::component<" << typeid(T).name() << "> | .self=" << self << std::endl;
+            if( mode == ADD )
+            {
+                if( config::verbose )
+                    std::cout << "+ moon9::component<" << typeid(T).name() << "> | .self=" << self << std::endl;
 
-				T* t = reinterpret_cast<T*>(self);
+                T* t = reinterpret_cast<T*>(self);
 
-				if( config::debug )
-				{
-					container_it it = container.find( t );
-//					assert1txt( it == container.end(), "error: registering instance twice" );
-				}
+                if( config::debug )
+                {
+                    container_it it = container.find( t );
+//                  assert1txt( it == container.end(), "error: registering instance twice" );
+                }
 
-				container.insert( t );
-			}
+                container.insert( t );
+            }
 
-			if( mode == DEL )
-			{
-				if( config::verbose )
-					std::cout << "- moon9::component<" << typeid(T).name() << "> | .self=" << self << std::endl;
+            if( mode == DEL )
+            {
+                if( config::verbose )
+                    std::cout << "- moon9::component<" << typeid(T).name() << "> | .self=" << self << std::endl;
 
-				T* t = reinterpret_cast<T*>(self);
+                T* t = reinterpret_cast<T*>(self);
 
-				container_it it = container.find( t );
+                container_it it = container.find( t );
 
-				if( it != container.end() )
-				{
-					container.erase( it );
-				}
-			}
+                if( it != container.end() )
+                {
+                    container.erase( it );
+                }
+            }
 
-			return &container;
-		}
+            return &container;
+        }
 
-		public:
+        public:
 
-		component()
-		{
-			operation( ADD, this );
-		}
-		component( const component &t )
-		{
-			operation( ADD, this );
-		}
-		component &operator=( const component &t )
-		{
-			operation( ADD, this );
-			return *this;
-		}
-		~component()
-		{
-			operation( DEL, this );
-		}
+        component()
+        {
+            operation( ADD, this );
+        }
+        component( const component &t )
+        {
+            operation( ADD, this );
+        }
+        component &operator=( const component &t )
+        {
+            operation( ADD, this );
+            return *this;
+        }
+        ~component()
+        {
+            operation( DEL, this );
+        }
 
-		struct iterators
-		{
-			static typename container_t::iterator begin()
-			{
-				return operation( NOP )->begin();
-			}
-			static typename container_t::iterator end()
-			{
-				return operation( NOP )->end();
-			}
-	        static typename container_t::reverse_iterator rbegin()
-	        {
-	            return operation( NOP )->rbegin();
-	        }
-	        static typename container_t::reverse_iterator rend()
-	        {
-	            return operation( NOP )->rend();
-	        }
-			static size_t size()
-			{
-				return operation( NOP )->size();
-			}
+        struct iterators
+        {
+            static typename container_t::iterator begin()
+            {
+                return operation( NOP )->begin();
+            }
+            static typename container_t::iterator end()
+            {
+                return operation( NOP )->end();
+            }
+            static typename container_t::reverse_iterator rbegin()
+            {
+                return operation( NOP )->rbegin();
+            }
+            static typename container_t::reverse_iterator rend()
+            {
+                return operation( NOP )->rend();
+            }
+            static size_t size()
+            {
+                return operation( NOP )->size();
+            }
 
-			typedef typename container_t::iterator iterator;
-			typedef typename container_t::const_iterator const_iterator;
-			typedef typename container_t::reverse_iterator reverse_iterator;
-			typedef typename container_t::const_reverse_iterator const_reverse_iterator;
-		};
-	};
+            typedef typename container_t::iterator iterator;
+            typedef typename container_t::const_iterator const_iterator;
+            typedef typename container_t::reverse_iterator reverse_iterator;
+            typedef typename container_t::const_reverse_iterator const_reverse_iterator;
+        };
+    };
 
-	template<typename T>
-	typename moon9::component<T>::iterators all()
-	{
-		return moon9::component<T>::iterators();
-	}
+    template<typename T>
+    typename moon9::component<T>::iterators all()
+    {
+        return moon9::component<T>::iterators();
+    }
 
-	template<typename T>
-	typename moon9::component<T>::iterators::iterator begin()
-	{
-		return moon9::component<T>::iterators::begin();
-	}
+    template<typename T>
+    typename moon9::component<T>::iterators::iterator begin()
+    {
+        return moon9::component<T>::iterators::begin();
+    }
 
-	template<typename T>
-	typename moon9::component<T>::iterators::iterator end()
-	{
-		return moon9::component<T>::iterators::end();
-	}
+    template<typename T>
+    typename moon9::component<T>::iterators::iterator end()
+    {
+        return moon9::component<T>::iterators::end();
+    }
 
-	template<typename T>
-	typename moon9::component<T>::iterators::reverse_iterator rbegin()
-	{
-		return moon9::component<T>::iterators::rbegin();
-	}
+    template<typename T>
+    typename moon9::component<T>::iterators::reverse_iterator rbegin()
+    {
+        return moon9::component<T>::iterators::rbegin();
+    }
 
-	template<typename T>
-	typename moon9::component<T>::iterators::reverse_iterator rend()
-	{
-		return moon9::component<T>::iterators::rend();
-	}
+    template<typename T>
+    typename moon9::component<T>::iterators::reverse_iterator rend()
+    {
+        return moon9::component<T>::iterators::rend();
+    }
 
     template<class T>
     typename size_t size()

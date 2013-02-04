@@ -11,40 +11,151 @@
 #include <stb_vorbis.h>
 //#include <opus.h>
 
+
+#include <AL/al.h>
+#include <AL/alc.h>
+#include <AL/alext.h>
+#include <AL/efx.h>
+//#include <AL/efx-creative.h>
+
+// Effect objects
+LPALGENEFFECTS alGenEffects = 0;
+LPALDELETEEFFECTS alDeleteEffects = 0;
+LPALISEFFECT alIsEffect = 0;
+LPALEFFECTI alEffecti = 0;
+LPALEFFECTIV alEffectiv = 0;
+LPALEFFECTF alEffectf = 0;
+LPALEFFECTFV alEffectfv = 0;
+LPALGETEFFECTI alGetEffecti = 0;
+LPALGETEFFECTIV alGetEffectiv = 0;
+LPALGETEFFECTF alGetEffectf = 0;
+LPALGETEFFECTFV alGetEffectfv = 0;
+// Filter objects
+LPALGENFILTERS alGenFilters = 0;
+LPALDELETEFILTERS alDeleteFilters = 0;
+LPALISFILTER alIsFilter = 0;
+LPALFILTERI alFilteri = 0;
+LPALFILTERIV alFilteriv = 0;
+LPALFILTERF alFilterf = 0;
+LPALFILTERFV alFilterfv = 0;
+LPALGETFILTERI alGetFilteri = 0;
+LPALGETFILTERIV alGetFilteriv = 0;
+LPALGETFILTERF alGetFilterf = 0;
+LPALGETFILTERFV alGetFilterfv = 0;
+// Slot objects
+LPALGENAUXILIARYEFFECTSLOTS alGenAuxiliaryEffectSlots = 0;
+LPALDELETEAUXILIARYEFFECTSLOTS alDeleteAuxiliaryEffectSlots = 0;
+LPALISAUXILIARYEFFECTSLOT alIsAuxiliaryEffectSlot = 0;
+LPALAUXILIARYEFFECTSLOTI alAuxiliaryEffectSloti = 0;
+LPALAUXILIARYEFFECTSLOTIV alAuxiliaryEffectSlotiv = 0;
+LPALAUXILIARYEFFECTSLOTF alAuxiliaryEffectSlotf = 0;
+LPALAUXILIARYEFFECTSLOTFV alAuxiliaryEffectSlotfv = 0;
+LPALGETAUXILIARYEFFECTSLOTI alGetAuxiliaryEffectSloti = 0;
+LPALGETAUXILIARYEFFECTSLOTIV alGetAuxiliaryEffectSlotiv = 0;
+LPALGETAUXILIARYEFFECTSLOTF alGetAuxiliaryEffectSlotf = 0;
+
+bool init_efx()
+{
+    // Effect objects
+    alGenEffects = (LPALGENEFFECTS)alGetProcAddress("alGenEffects");
+    alDeleteEffects = (LPALDELETEEFFECTS)alGetProcAddress("alDeleteEffects");
+    alIsEffect = (LPALISEFFECT)alGetProcAddress("alIsEffect");
+    alEffecti = (LPALEFFECTI)alGetProcAddress("alEffecti");
+    alEffectiv = (LPALEFFECTIV)alGetProcAddress("alEffectiv");
+    alEffectf = (LPALEFFECTF)alGetProcAddress("alEffectf");
+    alEffectfv = (LPALEFFECTFV)alGetProcAddress("alEffectfv");
+    alGetEffecti = (LPALGETEFFECTI)alGetProcAddress("alGetEffecti");
+    alGetEffectiv = (LPALGETEFFECTIV)alGetProcAddress("alGetEffectiv");
+    alGetEffectf = (LPALGETEFFECTF)alGetProcAddress("alGetEffectf");
+    alGetEffectfv = (LPALGETEFFECTFV)alGetProcAddress("alGetEffectfv");
+    // Filter objects
+    alGenFilters = (LPALGENFILTERS)alGetProcAddress("alGenFilters");
+    alDeleteFilters = (LPALDELETEFILTERS)alGetProcAddress("alDeleteFilters");
+    alIsFilter = (LPALISFILTER)alGetProcAddress("alIsFilter");
+    alFilteri = (LPALFILTERI)alGetProcAddress("alFilteri");
+    alFilteriv = (LPALFILTERIV)alGetProcAddress("alFilteriv");
+    alFilterf = (LPALFILTERF)alGetProcAddress("alFilterf");
+    alFilterfv = (LPALFILTERFV)alGetProcAddress("alFilterfv");
+    alGetFilteri = (LPALGETFILTERI)alGetProcAddress("alGetFilteri");
+    alGetFilteriv = (LPALGETFILTERIV)alGetProcAddress("alGetFilteriv");
+    alGetFilterf = (LPALGETFILTERF)alGetProcAddress("alGetFilterf");
+    alGetFilterfv = (LPALGETFILTERFV)alGetProcAddress("alGetFilterfv");
+    // Slot objects
+    alGenAuxiliaryEffectSlots = (LPALGENAUXILIARYEFFECTSLOTS)alGetProcAddress("alGenAuxiliaryEffectSlots");
+    alDeleteAuxiliaryEffectSlots = (LPALDELETEAUXILIARYEFFECTSLOTS)alGetProcAddress("alDeleteAuxiliaryEffectSlots");
+    alIsAuxiliaryEffectSlot = (LPALISAUXILIARYEFFECTSLOT)alGetProcAddress("alIsAuxiliaryEffectSlot");
+    alAuxiliaryEffectSloti = (LPALAUXILIARYEFFECTSLOTI)alGetProcAddress("alAuxiliaryEffectSloti");
+    alAuxiliaryEffectSlotiv = (LPALAUXILIARYEFFECTSLOTIV)alGetProcAddress("alAuxiliaryEffectSlotiv");
+    alAuxiliaryEffectSlotf = (LPALAUXILIARYEFFECTSLOTF)alGetProcAddress("alAuxiliaryEffectSlotf");
+    alAuxiliaryEffectSlotfv = (LPALAUXILIARYEFFECTSLOTFV)alGetProcAddress("alAuxiliaryEffectSlotfv");
+    alGetAuxiliaryEffectSloti = (LPALGETAUXILIARYEFFECTSLOTI)alGetProcAddress("alGetAuxiliaryEffectSloti");
+    alGetAuxiliaryEffectSlotiv = (LPALGETAUXILIARYEFFECTSLOTIV)alGetProcAddress("alGetAuxiliaryEffectSlotiv");
+    alGetAuxiliaryEffectSlotf = (LPALGETAUXILIARYEFFECTSLOTF)alGetProcAddress("alGetAuxiliaryEffectSlotf");
+
+    return true;
+}
+
+bool has_efx( ALCdevice *dev )
+{
+    return (alcIsExtensionPresent(dev, "ALC_EXT_EFX") == AL_TRUE); // ALC_TRUE
+}
+
+
 namespace
 {
+    size_t mread( void *t, size_t element_size, size_t num_elements, unsigned char *&data )
+    {
+        size_t offs = 0;
+
+        if( t && (element_size * num_elements > 0) && data )
+        {
+            unsigned char *ut = (unsigned char *)t;
+            unsigned char *udata = (unsigned char *)data;
+
+            for( size_t i = 0; i < num_elements; ++i )
+            {
+                for( size_t e = 0; e < element_size; ++e )
+                {
+                    (*ut++) = (*udata++);
+                }
+            }
+
+            offs = ( int(udata) - int(data) );
+            data = udata;
+        }
+
+        return offs;
+    }
+
+    const char *error( ALenum error )
+    {
+        switch ( error )
+        {
+            case AL_INVALID_NAME:
+                return "invalid name";
+            case AL_INVALID_ENUM:
+                return "invalid enum";
+            case AL_INVALID_VALUE:
+                return "invalid value";
+            case AL_INVALID_OPERATION:
+                return "invalid operation";
+            case AL_OUT_OF_MEMORY:
+                return "out of memory";
+            default:
+                return "unknown error";
+        };
+    }
+
     bool check_oal( const char *file, int line )
     {
-        ALenum error = alGetError();
+        ALenum errorno = alGetError();
 
-        if( error == AL_NO_ERROR )
+        if( errorno == AL_NO_ERROR )
             return true;
 
         std::stringstream ss;
         ss << "<moon9/audio/device.cpp> says: OpenAL error! ";
-
-        switch ( error )
-        {
-            case AL_INVALID_NAME:
-                ss << "invalid name";
-                break;
-            case AL_INVALID_ENUM:
-                ss << "invalid enum";
-                break;
-            case AL_INVALID_VALUE:
-                ss << "invalid value";
-                break;
-            case AL_INVALID_OPERATION:
-                ss << "invalid operation";
-                break;
-            case AL_OUT_OF_MEMORY:
-                ss << "out of memory";
-                break;
-            default:
-                ss << "unknown error";
-                break;
-        };
-
+        ss << error( errorno );
         ss << " at " << file << ':' << line;
 
         std::cerr << ss.str() << std::endl;
@@ -67,38 +178,109 @@ namespace
 #   define MOON9_AL_N(...) check_oal( __FILE__, __LINE__, (__VA_ARGS__) )
 #endif
 
-#   define $alBufferData(...)          MOON9_AL_0( alBufferData(__VA_ARGS__) )
-#   define $alDeleteBuffers(...)       MOON9_AL_0( alDeleteBuffers(__VA_ARGS__) )
-#   define $alDeleteSources(...)       MOON9_AL_0( alDeleteSources(__VA_ARGS__) )
-#   define $alDistanceModel(...)       MOON9_AL_0( alDistanceModel(__VA_ARGS__) )
-#   define $alGenBuffers(...)          MOON9_AL_0( alGenBuffers(__VA_ARGS__) )
-#   define $alGenSources(...)          MOON9_AL_0( alGenSources(__VA_ARGS__) )
-#   define $alGetSourcei(...)          MOON9_AL_0( alGetSourcei(__VA_ARGS__) )
-#   define $alListenerf(...)           MOON9_AL_0( alListenerf(__VA_ARGS__) )
-#   define $alListenerfv(...)          MOON9_AL_0( alListenerfv(__VA_ARGS__) )
-#   define $alSourcef(...)             MOON9_AL_0( alSourcef(__VA_ARGS__) )
-#   define $alSourcefv(...)            MOON9_AL_0( alSourcefv(__VA_ARGS__) )
-#   define $alSourcei(...)             MOON9_AL_0( alSourcei(__VA_ARGS__) )
-#   define $alSourcePause(...)         MOON9_AL_0( alSourcePause(__VA_ARGS__) )
-#   define $alSourcePlay(...)          MOON9_AL_0( alSourcePlay(__VA_ARGS__) )
-#   define $alSourceStop(...)          MOON9_AL_0( alSourceStop(__VA_ARGS__) )
+// N
+#   define $alGetBoolean(...)               MOON9_AL_N( alGetBoolean(__VA_ARGS__) )
+#   define $alIsBuffer(...)                 MOON9_AL_N( alIsBuffer(__VA_ARGS__) )
+#   define $alIsEnabled(...)                MOON9_AL_N( alIsEnabled(__VA_ARGS__) )
+#   define $alIsExtensionPresent(...)       MOON9_AL_N( alIsExtensionPresent(__VA_ARGS__) )
+#   define $alIsSource(...)                 MOON9_AL_N( alIsSource(__VA_ARGS__) )
+#   define $alGetDouble(...)                MOON9_AL_N( alGetDouble(__VA_ARGS__) )
+#   define $alGetEnumValue(...)             MOON9_AL_N( alGetEnumValue(__VA_ARGS__) )
+#   define $alGetError(...)                 MOON9_AL_N( alGetError(__VA_ARGS__) )
+#   define $alGetFloat(...)                 MOON9_AL_N( alGetFloat(__VA_ARGS__) )
+#   define $alGetInteger(...)               MOON9_AL_N( alGetInteger(__VA_ARGS__) )
+#   define $alGetString(...)                MOON9_AL_N( alGetString(__VA_ARGS__) )
 
-//  dont check these
-#   define $alcCloseDevice(...)        ( alcCloseDevice(__VA_ARGS__) )
-#   define $alcCreateContext(...)      ( alcCreateContext(__VA_ARGS__) )
-#   define $alcDestroyContext(...)     ( alcDestroyContext(__VA_ARGS__) )
-#   define $alcGetString(...)          ( alcGetString(__VA_ARGS__) )
-#   define $alcIsExtensionPresent(...) ( alcIsExtensionPresent(__VA_ARGS__) )
-#   define $alcMakeContextCurrent(...) ( alcMakeContextCurrent(__VA_ARGS__) )
-#   define $alcOpenDevice(...)         ( alcOpenDevice(__VA_ARGS__) )
+// 0
+#   define $alBuffer3f(...)                 MOON9_AL_0( alBuffer3f(__VA_ARGS__) )
+#   define $alBuffer3i(...)                 MOON9_AL_0( alBuffer3i(__VA_ARGS__) )
+#   define $alBufferData(...)               MOON9_AL_0( alBufferData(__VA_ARGS__) )
+#   define $alBufferf(...)                  MOON9_AL_0( alBufferf(__VA_ARGS__) )
+#   define $alBufferfv(...)                 MOON9_AL_0( alBufferfv(__VA_ARGS__) )
+#   define $alBufferi(...)                  MOON9_AL_0( alBufferi(__VA_ARGS__) )
+#   define $alBufferiv(...)                 MOON9_AL_0( alBufferiv(__VA_ARGS__) )
+#   define $alDeleteBuffers(...)            MOON9_AL_0( alDeleteBuffers(__VA_ARGS__) )
+#   define $alDeleteSources(...)            MOON9_AL_0( alDeleteSources(__VA_ARGS__) )
+#   define $alDisable(...)                  MOON9_AL_0( alDisable(__VA_ARGS__) )
+#   define $alDistanceModel(...)            MOON9_AL_0( alDistanceModel(__VA_ARGS__) )
+#   define $alDopplerFactor(...)            MOON9_AL_0( alDopplerFactor(__VA_ARGS__) )
+#   define $alDopplerVelocity(...)          MOON9_AL_0( alDopplerVelocity(__VA_ARGS__) )
+#   define $alEnable(...)                   MOON9_AL_0( alEnable(__VA_ARGS__) )
+#   define $alGenBuffers(...)               MOON9_AL_0( alGenBuffers(__VA_ARGS__) )
+#   define $alGenSources(...)               MOON9_AL_0( alGenSources(__VA_ARGS__) )
+#   define $alGetBooleanv(...)              MOON9_AL_0( alGetBooleanv(__VA_ARGS__) )
+#   define $alGetBuffer3f(...)              MOON9_AL_0( alGetBuffer3f(__VA_ARGS__) )
+#   define $alGetBuffer3i(...)              MOON9_AL_0( alGetBuffer3i(__VA_ARGS__) )
+#   define $alGetBufferf(...)               MOON9_AL_0( alGetBufferf(__VA_ARGS__) )
+#   define $alGetBufferfv(...)              MOON9_AL_0( alGetBufferfv(__VA_ARGS__) )
+#   define $alGetBufferi(...)               MOON9_AL_0( alGetBufferi(__VA_ARGS__) )
+#   define $alGetBufferiv(...)              MOON9_AL_0( alGetBufferiv(__VA_ARGS__) )
+#   define $alGetDoublev(...)               MOON9_AL_0( alGetDoublev(__VA_ARGS__) )
+#   define $alGetFloatv(...)                MOON9_AL_0( alGetFloatv(__VA_ARGS__) )
+#   define $alGetIntegerv(...)              MOON9_AL_0( alGetIntegerv(__VA_ARGS__) )
+#   define $alGetListener3f(...)            MOON9_AL_0( alGetListener3f(__VA_ARGS__) )
+#   define $alGetListener3i(...)            MOON9_AL_0( alGetListener3i(__VA_ARGS__) )
+#   define $alGetListenerf(...)             MOON9_AL_0( alGetListenerf(__VA_ARGS__) )
+#   define $alGetListenerfv(...)            MOON9_AL_0( alGetListenerfv(__VA_ARGS__) )
+#   define $alGetListeneri(...)             MOON9_AL_0( alGetListeneri(__VA_ARGS__) )
+#   define $alGetListeneriv(...)            MOON9_AL_0( alGetListeneriv(__VA_ARGS__) )
+#   define $alGetSource3f(...)              MOON9_AL_0( alGetSource3f(__VA_ARGS__) )
+#   define $alGetSource3i(...)              MOON9_AL_0( alGetSource3i(__VA_ARGS__) )
+#   define $alGetSourcef(...)               MOON9_AL_0( alGetSourcef(__VA_ARGS__) )
+#   define $alGetSourcefv(...)              MOON9_AL_0( alGetSourcefv(__VA_ARGS__) )
+#   define $alGetSourcei(...)               MOON9_AL_0( alGetSourcei(__VA_ARGS__) )
+#   define $alGetSourceiv(...)              MOON9_AL_0( alGetSourceiv(__VA_ARGS__) )
+#   define $alListener3f(...)               MOON9_AL_0( alListener3f(__VA_ARGS__) )
+#   define $alListener3i(...)               MOON9_AL_0( alListener3i(__VA_ARGS__) )
+#   define $alListenerf(...)                MOON9_AL_0( alListenerf(__VA_ARGS__) )
+#   define $alListenerfv(...)               MOON9_AL_0( alListenerfv(__VA_ARGS__) )
+#   define $alListeneri(...)                MOON9_AL_0( alListeneri(__VA_ARGS__) )
+#   define $alListeneriv(...)               MOON9_AL_0( alListeneriv(__VA_ARGS__) )
+#   define $alSource3f(...)                 MOON9_AL_0( alSource3f(__VA_ARGS__) )
+#   define $alSource3i(...)                 MOON9_AL_0( alSource3i(__VA_ARGS__) )
+#   define $alSourcef(...)                  MOON9_AL_0( alSourcef(__VA_ARGS__) )
+#   define $alSourcefv(...)                 MOON9_AL_0( alSourcefv(__VA_ARGS__) )
+#   define $alSourcei(...)                  MOON9_AL_0( alSourcei(__VA_ARGS__) )
+#   define $alSourceiv(...)                 MOON9_AL_0( alSourceiv(__VA_ARGS__) )
+#   define $alSourcePause(...)              MOON9_AL_0( alSourcePause(__VA_ARGS__) )
+#   define $alSourcePausev(...)             MOON9_AL_0( alSourcePausev(__VA_ARGS__) )
+#   define $alSourcePlay(...)               MOON9_AL_0( alSourcePlay(__VA_ARGS__) )
+#   define $alSourcePlayv(...)              MOON9_AL_0( alSourcePlayv(__VA_ARGS__) )
+#   define $alSourceQueueBuffers(...)       MOON9_AL_0( alSourceQueueBuffers(__VA_ARGS__) )
+#   define $alSourceRewind(...)             MOON9_AL_0( alSourceRewind(__VA_ARGS__) )
+#   define $alSourceRewindv(...)            MOON9_AL_0( alSourceRewindv(__VA_ARGS__) )
+#   define $alSourceStop(...)               MOON9_AL_0( alSourceStop(__VA_ARGS__) )
+#   define $alSourceStopv(...)              MOON9_AL_0( alSourceStopv(__VA_ARGS__) )
+#   define $alSourceUnqueueBuffers(...)     MOON9_AL_0( alSourceUnqueueBuffers(__VA_ARGS__) )
+#   define $alSpeedOfSound(...)             MOON9_AL_0( alSpeedOfSound(__VA_ARGS__) )
+
+//  dont check these (N)
+#   define $alcCaptureCloseDevice(...)      ( alcCaptureCloseDevice(__VA_ARGS__) )
+#   define $alcCloseDevice(...)             ( alcCloseDevice(__VA_ARGS__) )
+#   define $alcIsExtensionPresent(...)      ( alcIsExtensionPresent(__VA_ARGS__) )
+#   define $alcMakeContextCurrent(...)      ( alcMakeContextCurrent(__VA_ARGS__) )
+#   define $alcCreateContext(...)           ( alcCreateContext(__VA_ARGS__) )
+#   define $alcGetCurrentContext(...)       ( alcGetCurrentContext(__VA_ARGS__) )
+#   define $alcCaptureOpenDevice(...)       ( alcCaptureOpenDevice(__VA_ARGS__) )
+#   define $alcGetContextsDevice(...)       ( alcGetContextsDevice(__VA_ARGS__) )
+#   define $alcOpenDevice(...)              ( alcOpenDevice(__VA_ARGS__) )
+#   define $alcGetEnumValue(...)            ( alcGetEnumValue(__VA_ARGS__) )
+#   define $alcGetError(...)                ( alcGetError(__VA_ARGS__) )
+#   define $alcGetProcAddress(...)          ( alcGetProcAddress(__VA_ARGS__) )
+#   define $alcGetString(...)               ( alcGetString(__VA_ARGS__) )
+
+//  dont check these (0)
+#   define $alcCaptureSamples(...)          ( alcCaptureSamples(__VA_ARGS__) )
+#   define $alcCaptureStart(...)            ( alcCaptureStart(__VA_ARGS__) )
+#   define $alcCaptureStop(...)             ( alcCaptureStop(__VA_ARGS__) )
+#   define $alcDestroyContext(...)          ( alcDestroyContext(__VA_ARGS__) )
+#   define $alcGetIntegerv(...)             ( alcGetIntegerv(__VA_ARGS__) )
+#   define $alcProcessContext(...)          ( alcProcessContext(__VA_ARGS__) )
+#   define $alcSuspendContext(...)          ( alcSuspendContext(__VA_ARGS__) )
 
 }
 
-namespace
-{
-    enum { INVALID_ID = -1 };
 
-}
 
 std::vector<std::string> enumerate()
 {
@@ -136,12 +318,14 @@ namespace
     int numcontexts = 0;
 }
 
-int context_t::playonce( const std::string &pathfile )
+int context_t::playonce( const std::string &pathfile, void (*efxpre)(int), void (*efxpost)(int) )
 {
     sound_t snd;
 
     if( !snd.load( pathfile ) )
         return -1;
+
+    //std::cout << "seconds " << snd.seconds() << std::endl;
 
     insert_sound( snd );
 
@@ -149,7 +333,14 @@ int context_t::playonce( const std::string &pathfile )
 
     src.create();
     src.bind( snd.buffer );
+
+if( efxpre )
+    (*efxpre)( src.source );
+
     src.play();
+
+if( efxpost )
+    (*efxpost)( src.source );
 
     // @todo : implement remove flags @sourcePlay()
 
@@ -161,21 +352,33 @@ bool context_t::init( int devnum )
 {
     alcInit();
 
-    // device name
+    // init
+    dev = 0;
+    ctx = 0;
+    has_efx = 0;
     devname = std::string();
+
+    // device name
     auto list = enumerate();
     if( devnum >= 0 && devnum < int(list.size()) )
         devname = list[ devnum ];
 
     // select device
-    dev = 0;
     dev = $alcOpenDevice( devname.empty() ? 0 : devname.c_str() );
 
     //if( !dev ) return false;
 
+    // device capabilities
+    has_efx = ::has_efx( dev );
+    if( has_efx )
+        init_efx();
+
+    ALint attribs[4] = { 0 };
+    attribs[0] = ALC_MAX_AUXILIARY_SENDS;
+    attribs[1] = 4;
+
     // select device
-    ctx = 0;
-    ctx = $alcCreateContext(dev, NULL);
+    ctx = $alcCreateContext(dev, has_efx ? attribs : NULL );
 
     if( !ctx )
         return false;
@@ -318,9 +521,21 @@ void listener_t::velocity( const float *velocity3 )
 
 void listener_t::direction( const float *direction3 )
 {
+    // orientation { norm(at), norm(up) };
     float orientation6[] = { direction3[0], direction3[1], direction3[2], 0, -1, 0 };
     $alListenerfv( AL_ORIENTATION, orientation6 );
 }
+
+// --------------------------------------------------------------------------
+
+/*
+
+ALbyte buf[BUF_SIZE];
+
+alcGetIntegerv(mydevice, ALC_CAPTURE_SAMPLES, (ALCsizei)sizeof(ALint), &samples);
+alcCaptureSamples(mydevice, (ALCvoid *)buf, samples);
+
+*/
 
 // --------------------------------------------------------------------------
 
@@ -343,7 +558,7 @@ bool sound_t::load( const std::string &type, const void *data, size_t size )
         auto *oss = stb_vorbis_open_memory( (unsigned char *)data, size, NULL, NULL);;
 
         if( !oss )
-            return false;
+            return "cant decode .ogg file", false;
 
         stb_vorbis_info info = stb_vorbis_get_info(oss);
 
@@ -361,6 +576,14 @@ bool sound_t::load( const std::string &type, const void *data, size_t size )
         stb_vorbis_close(oss);
     }
 #if 0
+    else
+    if( type == "wav" )
+    {
+        ALboolean al_bool;
+        ALvoid *data;
+        alutLoadWAVFile(pathfile, &this->format, &data, &this->size, &this->sampleRate, &al_bool);
+        this->samples = (short *) data;
+    }
     else
     if( type == "opus" )
     {
@@ -387,13 +610,11 @@ bool sound_t::load( const std::string &type, const void *data, size_t size )
 
         delete [] pcm;
     }
-    else {
-        ALboolean al_bool;
-        ALvoid *data;
-        alutLoadWAVFile(pathfile, &this->format, &data, &this->size, &this->sampleRate, &al_bool);
-        this->samples = (short *) data;
-    }
 #endif
+    else
+    {
+        return "unsupported file format", false;
+    }
 
     $alGenBuffers( 1, &this->buffer );
 
@@ -439,6 +660,21 @@ void sound_t::unload()
     }
 }
 
+double sound_t::seconds() const
+{
+    ALint size, bits, channels, freq;
+
+    $alGetBufferi(buffer, AL_SIZE, &size);
+    $alGetBufferi(buffer, AL_BITS, &bits);
+    $alGetBufferi(buffer, AL_CHANNELS, &channels);
+    $alGetBufferi(buffer, AL_FREQUENCY, &freq);
+
+    if( alGetError() != AL_NO_ERROR )
+        return 0.f;
+
+    return (ALfloat)((ALuint)size/channels/(bits/8)) / (ALfloat)freq;
+}
+
 // ---------------------------------------------------------------------------
 
 bool source_t::create()
@@ -447,12 +683,12 @@ bool source_t::create()
     return source > 0;
 }
 
-bool source_t::bind( int buffer, bool looping, bool relative_pos )
+bool source_t::bind( int buffer )
 {
     this->buffer = buffer;
 
-    $alSourcei( source, AL_LOOPING, looping ? AL_TRUE : AL_FALSE );
-    $alSourcei( source, AL_SOURCE_RELATIVE, relative_pos ? AL_TRUE : AL_FALSE );
+    loop( false );
+    $alSourcei( source, AL_SOURCE_RELATIVE, AL_FALSE );
 
     $alSourcei( source, AL_BUFFER, buffer );
     //$alSourceQueue
@@ -460,8 +696,8 @@ bool source_t::bind( int buffer, bool looping, bool relative_pos )
     $alSourcef( source, AL_MIN_GAIN, 0.0f );
     $alSourcef( source, AL_MAX_GAIN, 1.0f );
 
-    $alSourcef( source, AL_GAIN, 1.0f );
-    $alSourcef( source, AL_PITCH, 1.0f );
+    gain( 1.f );
+    pitch( 1.f );
 
     // seeking : AL_SEC_OFFSET (secs), AL_SAMPLE_OFFSET (samps), AL_BYTE_OFFSET(bytes)
     // must be reset back on every loop
@@ -513,14 +749,33 @@ bool source_t::is_playing() const
     return ( state == AL_PLAYING );
 }
 
+void source_t::loop( const bool on )
+{
+    $alSourcei( source, AL_LOOPING, on ? AL_TRUE : AL_FALSE );
+}
+
 void source_t::gain( const float gain )
 {
     $alSourcef( source, AL_GAIN, gain );
 }
 
-void source_t::position( const float *position3 )
+/* pitch, speed stretching */
+void source_t::pitch( const float pitch )
+{
+    // if pitch == 0.f pitch = 0.0001f;
+    $alSourcef( source, AL_PITCH, pitch );
+}
+
+/* tempo, time stretching */
+/* @todo: check soundtouch library { pitch, tempo, bpm } */
+/*
+
+*/
+
+void source_t::position( const float *position3, bool relative )
 {
     $alSourcefv( source, AL_POSITION, position3 );
+    $alSourcei( source, AL_SOURCE_RELATIVE, relative ? AL_TRUE : AL_FALSE );
 }
 
 void source_t::velocity( const float *velocity3 )
@@ -540,21 +795,11 @@ void source_t::attenuation( const float rollOff, const float refDistance )
 }
 
 /*
-
-ALfloat GetBufferLength(ALuint buffer)
+void source_t::distance( const float mind, const float maxd )
 {
-    ALint size, bits, channels, freq;
-
-    alGetBufferi(buffer, AL_SIZE, &size);
-    alGetBufferi(buffer, AL_BITS, &bits);
-    alGetBufferi(buffer, AL_CHANNELS, &channels);
-    alGetBufferi(buffer, AL_FREQUENCY, &freq);
-    if(alGetError() != AL_NO_ERROR)
-        return 0f;
-
-    return (ALfloat)((ALuint)size/channels/(bits/8)) / (ALfloat)freq;
+    $alSourcef( source, AL_REFERENCE_DISTANCE, mind );
+    $alSourcef( source, AL_MAX_DISTANCE, maxd );
 }
-
 */
 
 // ----------------------------------------------------------------------------
