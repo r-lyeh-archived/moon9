@@ -8,7 +8,10 @@ A gameplay framework with no big dependencies. MIT licensed.
 - [moon9::event](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/event), a simple event library
 - [moon9::factory](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/factory), a lightweight abstract factory
 - [moon9::fsm](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/fsm), a safe finite state machine implementation
+- moon9::message,
 - [moon9::module](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/module), a lightweight game module state manager
+- [moon9::multinmap](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/multinmap), a simple any-key/value multimap
+- [moon9::nmap](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/nmap), a simple any-key/value map
 - [moon9::obj](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/obj), an dynamic/agnostic/serializable object class for POD data
 - [moon9::pod](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/pod), a few safe zero-init pod types
 - [moon9::signal](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/signal), signal/wait coroutines made easy
