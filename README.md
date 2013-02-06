@@ -79,7 +79,9 @@ Moon9 is a collection of game oriented C++ frameworks. Warning: wip, dev, undocu
 - [moon9::keycodes](https://github.com/r-lyeh/moon9/tree/master/src/moon9/hid/keycodes), portable keyboard codes
 - [moon9::markov](https://github.com/r-lyeh/moon9/tree/master/src/moon9/string/markov), procedural strings generator based on a few examples
 - [moon9::module](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/module), a lightweight game module state manager
+- [moon9::multinmap](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/multinmap), a simple any-key/value multimap
 - [moon9::mutex](https://github.com/r-lyeh/moon9/tree/master/src/moon9/os/mutex), an improved mutex class
+- [moon9::nmap](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/nmap), a simple any-key/value map
 - [moon9::netstring](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/netstring), a netstring serializer.
 - [moon9::obj](https://github.com/r-lyeh/moon9/tree/master/src/moon9/play/obj), an dynamic/agnostic/serializable object class for POD data
 - [moon9::pak](https://github.com/r-lyeh/moon9/tree/master/src/moon9/io/pak), a package archiver. Miniz library required.
