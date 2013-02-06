@@ -175,6 +175,11 @@ namespace moon9
         vec3t operator oper ( const float &f ) const \
         { \
             return vec3t( x oper f, y oper f, z oper f); \
+        } \
+        template<> \
+        vec3t operator oper ( const size_t &f ) const \
+        { \
+            return vec3t( x oper f, y oper f, z oper f); \
         }
         with(+)
         with(-)

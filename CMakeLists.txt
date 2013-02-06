@@ -13,7 +13,7 @@ UNSET(BUILD_TESTS CACHE)
 
 OPTION(BUILD_FRAMEWORKS "Enable this to build *all* frameworks" ON)
 OPTION(BUILD_DEMOS      "Enable this to build *all* demos"      ON)
-OPTION(BUILD_TESTS      "Enable this to build *all* tests"      OFF)
+OPTION(BUILD_TESTS      "Enable this to build *all* tests"      ON)
 
 set( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH} )
 
@@ -78,7 +78,10 @@ endif()
 
 if(BUILD_TESTS)
     include_directories("deps/play/msgpack/src")
-    file(GLOB msgpack-static "deps/play/msgpack/src/*.cpp")
+
+    file(GLOB ALL_STATIC_LIBS "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*${CMAKE_STATIC_LIBRARY_SUFFIX}")
+
     file(GLOB_RECURSE ALL_TESTS "src/moon9/*.test.cpp")
-    add_executable(ALL.TESTS "src/moon9/test/test.cpp" ${msgpack-static} ${ALL_TESTS})
+    add_executable(ALL.TESTS "src/moon9/test/test.cpp" ${ALL_TESTS})
+    target_link_libraries(ALL.TESTS ${ALL_STATIC_LIBS})
 endif()

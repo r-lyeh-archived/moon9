@@ -30,8 +30,13 @@ void setup_assert( void (*custom_assert_cb)( const std::string &assertion, const
 
 bool is_asserting()
 {
+    bool asserting = false;
+    assert( asserting |= true );
+    return asserting;
+    /*
     static bool enabled = ( enabled = false, assert( enabled ^= true ), enabled );
     return enabled;
+    */
     /*
     static struct once { bool are_enabled; once() : are_enabled(false) {
         assert( are_enabled ^= true );

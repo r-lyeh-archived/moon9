@@ -8,8 +8,8 @@ namespace
 {
     bool done()
     {
-        moon9::pod<bool,0> zero;
-        moon9::pod<bool,1> one;
+        moon9::pod<signed,bool,0> zero;
+        moon9::pod<signed,bool,1> one;
 
         test3( zero, !=, one );
         test3( zero, ==, false );

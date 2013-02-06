@@ -8,6 +8,8 @@
 #include "fsm.hpp"
 #include "message.hpp"
 #include "module.hpp"
+#include "multinmap.hpp"
+#include "nmap.hpp"
 #include "obj.hpp"
 #include "pod.hpp"
 #include "signal.hpp"

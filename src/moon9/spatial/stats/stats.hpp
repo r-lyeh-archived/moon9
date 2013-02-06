@@ -89,7 +89,7 @@ namespace moon9
             }
         };
 
-        std::string metrics( const double &seconds )
+        std::string metrics( const double &seconds ) const
         {
             std::stringstream ss;
 
@@ -226,11 +226,11 @@ namespace moon9
 
         private:
 
-        void update()
+        void update( float _now )
         {
             T t = cur;
 
-            now = timer.s();
+            now = _now;
 
             if( !history.size() )
                 then = now;
@@ -249,7 +249,7 @@ namespace moon9
 
             history.push_back( pair( now, t ) );
 
-            // truncate one record from head when any limit is meet ( by number of history samples, history size (kb), history duration (min) )
+            // truncate one record from head when any limit is met ( by number of history samples, history size (kb), history duration (min) )
 
             bool truncate = false;
 
@@ -269,6 +269,11 @@ namespace moon9
                 history.pop_front();
         }
 
+        void update()
+        {
+            update( timer.s() );
+        }
+
         public:
 
         void push_back( const T& t )
@@ -276,6 +281,13 @@ namespace moon9
             cur = t;
 
             update();
+        }
+
+        void push_back( const T& t, double _now )
+        {
+            cur = t;
+
+            update( _now );
         }
 
         void pop_front()
@@ -330,11 +342,21 @@ namespace moon9
             return get_relative_lerp( t / now );
         }
 
+#if 0
         double get_elapsed() //const
         {
             double t = timer.s();
             return t ? t : 1;
         }
+#else
+        double get_elapsed() const
+        {
+            if( history.size() < 2 )
+                return 0;
+
+            return history.rbegin()->time - history.begin()->time; // return abs()
+        }
+#endif
 
         size_t size() const
         {
@@ -349,10 +371,15 @@ namespace moon9
         //        |
 
 
-        T back( size_t i = 0 ) const
+        T front( size_t i ) const
         {
             return history.size() ? history.at( i ).value : cur;
         }
+
+		T front() const
+		{
+			return front( 0 );
+		}
 
         //   .    |    1
         // .   .  |  2   0
@@ -361,28 +388,28 @@ namespace moon9
         // -------+--------
         //        |
 
-        T front( size_t i ) const
+        T back( size_t i ) const
         {
             return history.size() ? history.at( history.size() - 1 - i ).value : cur;
         }
 
-        T front() const
+        T back() const
         {
-            return cur;
+            return back( 0 );
         }
 
-        std::string report( const char *title = 0, int W = 80, int H = 20, bool use_blur = false ) //const
+        std::string report( const char *title = 0, int W = 80, int H = 20, bool use_blur = false ) const
         {
-    	    //assert( W > 1 && H > 1 );
+            //assert( W > 1 && H > 1 );
 
             // init map
 
             char blank = char( use_blur ? 1 : ' ' ), filler = char( use_blur ? 127 : '\xFE' );
 
-    	    std::vector<std::string> l( H, std::string( W, blank ) );
+            std::vector<std::string> l( H, std::string( W, blank ) );
 
             //for( int y = 0; y < H; ++y )
-	        //   l[y] = std::string( W, blank );
+            //   l[y] = std::string( W, blank );
 
             // draw map (downscaled)
 
@@ -484,13 +511,15 @@ namespace moon9
                 footer << fmt << std::endl;
             }
 
+            float lapse = get_elapsed();
+
             footer << "Min: " << get_min()  << "; "
                    << "Max: " << get_max()  << "; "
                    << "Avg: " << get_avg()  << "; "
                    << "Hit: " << get_hits() << "; "
-                   << "Lapse: " << get_elapsed() << "s"  << "; "
-                   << "Avg Hits/sec: " << get_hits() / get_elapsed() << "; "
-                   << "Cur: " << front() << std::endl;
+                   << "Lapse: " << lapse << "s"  << "; "
+                   << "Avg Hits/sec: " << ( lapse > 0 ? get_hits() / lapse : 0 ) << "; "
+                   << "Cur: " << back() << std::endl;
 
             return header.str() + body.str() + footer.str();
         }
