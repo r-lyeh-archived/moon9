@@ -33,8 +33,7 @@ namespace
         test3( mnm["first key"][second_key].get(), ==, 314159 );
 
         // 2 keys, different types, different key order
-        test3( mnm[second_key]["first key"].findit(), ==, true );
-        test3( mnm[second_key]["first key"].get(), ==, 314159 );
+        test3( mnm[second_key]["first key"].findit(), ==, false );
 
         // 2 keys, same types
         test3( mnm["string1"]["string2"].findit(), ==, false );
@@ -44,8 +43,7 @@ namespace
         test3( mnm["string1"]["string2"].get(), ==, 4 );
 
         // 2 keys, same types, different key order
-        test3( mnm["string2"]["string1"].findit(), ==, true );
-        test3( mnm["string2"]["string1"].get(), ==, 4 );
+        test3( mnm["string2"]["string1"].findit(), ==, false );
 
         // N keys, custom find
         mnm["hello world"][1][3.f][3.14159][true].get() = 13;

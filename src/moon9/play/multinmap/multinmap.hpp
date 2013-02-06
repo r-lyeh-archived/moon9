@@ -1,4 +1,4 @@
-// Simple multi-any-key/value (N-keys/1-value) map. Key order is commutative. MIT licensed.
+// Simple any-key/value multimap. Key order matters. MIT licensed.
 // This is a std compatible-ish container in spirit of std::multimap, whereas it handles
 // multiple-keys/single-value as opposed to single-key/multiple-values.
 // - rlyeh
@@ -6,9 +6,7 @@
 // /* usage: */
 // moon9::multinmap<char> mnm;
 // /* direct access */
-// mnm["helloworld"][true]['a'][-123][3.1459f][100.00].get() = 'X';
-// assert( mnm["helloworld"][true]['a'][-123][3.1459f][100.00].get() == 'X' );
-// assert( mnm['a'][true][3.1459f][100.00]["helloworld"][-123].get() == 'X' );
+// mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].get() = 'X';
 // assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].get() == 'X' );
 // /* standard find */
 // assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].find() != mnm.end() );
@@ -19,7 +17,7 @@
 #pragma once
 
 #include <map>
-#include <set>
+#include <vector>
 #include <functional>
 #include <string>
 //#include <sstream>
@@ -29,7 +27,7 @@ namespace moon9
     template<typename VALUE>
     class multinmap : public std::map< size_t, VALUE >
     {
-        mutable struct hashes_t : public std::set< size_t >
+        mutable struct hashes_t : public std::vector< size_t >
         {
             hashes_t()
             {}
@@ -44,9 +42,9 @@ namespace moon9
                 this->clear();
                 return std::hash<std::string>()(ss.str());
 #           else
-                size_t hash = 0;
+                size_t hash = *this->begin();
                 for( auto &it : *this )
-                    hash += it;
+                    hash ^= (it << 1);
                 this->clear();
                 return hash;
 #           endif
@@ -66,13 +64,13 @@ namespace moon9
         template<typename T>
         multinmap &operator []( const T &t )
         {
-            hashes.insert( std::hash<T>()(t) );
+            hashes.push_back( std::hash<T>()(t) );
             return *this;
         }
 
         multinmap &operator []( const char *t )
         {
-            hashes.insert( std::hash<std::string>()(t) );
+            hashes.push_back( std::hash<std::string>()(t) );
             return *this;
         }
 
@@ -110,10 +108,12 @@ namespace moon9
         }
         const VALUE &found() const
         {
+            hashes.clear();
             return cursor->second;
         }
         VALUE &found()
         {
+            hashes.clear();
             return cursor->second;
         }
     };
