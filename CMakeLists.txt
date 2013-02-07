@@ -79,9 +79,8 @@ endif()
 if(BUILD_TESTS)
     include_directories("deps/play/msgpack/src")
 
-    file(GLOB ALL_STATIC_LIBS "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*${CMAKE_STATIC_LIBRARY_SUFFIX}")
-
     file(GLOB_RECURSE ALL_TESTS "src/moon9/*.test.cpp")
+
     add_executable(ALL.TESTS "src/moon9/test/test.cpp" ${ALL_TESTS})
-    target_link_libraries(ALL.TESTS ${ALL_STATIC_LIBS})
+    target_link_libraries(ALL.TESTS moon9-test-static moon9-string-static moon9-time-static msgpack-static)
 endif()

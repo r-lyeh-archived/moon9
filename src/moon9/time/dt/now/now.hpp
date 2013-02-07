@@ -2,7 +2,9 @@
 
 namespace moon9
 {
+    // seconds since start of program
     double now();
+    // seconds since unix epoch
     double epoch();
 
     // for QA and testing purposes; ie, advance a whole year in runtime and check all now() calls are still working

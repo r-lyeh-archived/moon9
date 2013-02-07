@@ -9,12 +9,7 @@ namespace
 {
     bool unittest()
     {
-        double pi = 3.1415926535897932384626433832795;
-        const double cpi = 3.1415926535897932384626433832795;
-        std::cout << moon9::string( pi ) << std::endl;
-        std::cout << moon9::string( cpi ) << std::endl;
-
-        test3( moon9::string(3.1415926535897932384626433832795), !=, "3.1415926535897932384626433832795" );
+        test3( moon9::string(3.1415926535897932384626433832795), ==, "3.1415926535897931" );
 
         test3( moon9::string().strip(), ==, moon9::string() );
         test3( moon9::string("").strip(), ==, moon9::string() );
@@ -86,12 +81,13 @@ namespace
         test3( moon9::string( "false" ).as<bool>(), ==, false );
         test3( moon9::string(  "true" ).as<bool>(), ==,  true );
 
+        test3( moon9::string(   'a' ).as<char>(), ==,    'a' );
         test3( moon9::string(       ).as<char>(), ==,   '\0' );
+        test3( moon9::string(     0 ).as<char>(), ==,    '0' );
+        test3( moon9::string(     1 ).as<char>(), ==,    '1' );
+        test3( moon9::string(    33 ).as<char>(), ==,    '!' );
         test3( moon9::string( false ).as<char>(), ==,   '\0' );
         test3( moon9::string(  true ).as<char>(), ==, '\x01' );
-        test3( moon9::string(     0 ).as<char>(), ==,   '\0' );
-        test3( moon9::string(     1 ).as<char>(), ==, '\x01' );
-        test3( moon9::string(    33 ).as<char>(), ==,    '!' );
 
         //short
         //long
@@ -270,7 +266,7 @@ namespace
 
     #define EVAL(expr) do { \
         double ret = moon9::string(#expr).eval().as<double>(); \
-        std::cout << #expr << '=' << ret << std::endl; test3( expr, ==, ret ); } while(0)
+        test3( expr, ==, ret ); } while(0)
 
         EVAL(1+1);
         EVAL(3+(2*4));

@@ -22,6 +22,7 @@
 
  * @todo:
  * - Mockups
+ * - Suites and chain tests.
 
  * - rlyeh
  */
@@ -33,27 +34,41 @@
 
 namespace tests
 {
-	extern std::string &errors();
-	extern size_t passed, failed, executed;
+    extern std::string &errors();
+    extern size_t passed, failed, executed;
 
-	extern void (*warning_cb)( const std::string &message );
-	extern void (* report_cb)( const std::string &report  );
+    extern void (*warning_cb)( const std::string &message );
+    extern void (* report_cb)( const std::string &report  );
 }
 
-#	define test3(A,op,B) do { \
-		std::string &errors = tests::errors(); \
-		auto __a__ = (A); auto __b__ = (B); \
-		if( __a__ op __b__ ) { \
-			tests::executed++; \
-			tests::passed++; \
-		} else { \
-			tests::executed++; \
-			tests::failed++; \
-			std::stringstream ss; \
-			ss  << "Test #" << tests::executed << " failed at " << __FILE__ << ':' << __LINE__ << std::endl \
-				<< #A << " (" << __a__ << ") " << #op << ' ' << #B << " (" << __b__ << ") "; \
-			if( tests::warning_cb ) (*tests::warning_cb)( ss.str() ); \
-			errors += ss.str() + '\n'; \
-	} } while(0)
+#   define test3(A,op,B) do { \
+        std::string &errors = tests::errors(); \
+        auto __a__ = (A); auto __b__ = (B); \
+        if( __a__ op __b__ ) { \
+            tests::executed++; \
+            tests::passed++; \
+        } else { \
+            tests::executed++; \
+            tests::failed++; \
+            std::stringstream ss; \
+            ss  << "Test #" << tests::executed << " failed at " << __FILE__ << ':' << __LINE__ << std::endl \
+                << #A << " (" << __a__ << ") " << #op << ' ' << #B << " (" << __b__ << ") "; \
+            if( tests::warning_cb ) (*tests::warning_cb)( ss.str() ); \
+            errors += ss.str() + '\n'; \
+    } } while(0)
 
-#	define test1(A) test3(A,==,true)
+#   define test1(A) do { \
+        std::string &errors = tests::errors(); \
+        auto __a__ = (A); decltype(__a__) __b__ = 0; \
+        if( __a__ != __b__ ) { \
+            tests::executed++; \
+            tests::passed++; \
+        } else { \
+            tests::executed++; \
+            tests::failed++; \
+            std::stringstream ss; \
+            ss  << "Test #" << tests::executed << " failed at " << __FILE__ << ':' << __LINE__ << std::endl \
+                << #A << " (" << __a__ << ") not true "; \
+            if( tests::warning_cb ) (*tests::warning_cb)( ss.str() ); \
+            errors += ss.str() + '\n'; \
+    } } while(0)

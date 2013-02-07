@@ -1,18 +1,22 @@
-// Simple any-key/value multimap. Key order matters. MIT licensed.
-// This is a std compatible-ish container in spirit of std::multimap, whereas it handles
-// multiple-keys/single-value as opposed to single-key/multiple-values.
-// - rlyeh
+/* Simple any-key/value multimap. Key order matters. MIT licensed.
+ * This is a std compatible-ish container in spirit of std::multimap, whereas it handles
+ * multiple-keys/single-value as opposed to single-key/multiple-values.
 
-// /* usage: */
-// moon9::multinmap<char> mnm;
-// /* direct access */
-// mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].get() = 'X';
-// assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].get() == 'X' );
-// /* standard find */
-// assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].find() != mnm.end() );
-// /* custom find */
-// assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].findit() == true );
-// assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].found() == 'X' );
+ * @todo: make retrieve() much faster
+
+ * Usage:
+ * moon9::multinmap<char> mnm;
+ * // direct access
+ * mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].get() = 'X';
+ * assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].get() == 'X' );
+ * // standard find
+ * assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].find() != mnm.end() );
+ * // custom find
+ * assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].findit() == true );
+ * assert( mnm[true][-123][100.00]['a'][3.1459f]["helloworld"].found() == 'X' );
+
+ * - rlyeh
+ */
 
 #pragma once
 
@@ -20,7 +24,7 @@
 #include <vector>
 #include <functional>
 #include <string>
-//#include <sstream>
+#include <sstream>
 
 namespace moon9
 {
@@ -42,9 +46,9 @@ namespace moon9
                 this->clear();
                 return std::hash<std::string>()(ss.str());
 #           else
-                size_t hash = *this->begin();
+                size_t hash = 0, pos = 0;
                 for( auto &it : *this )
-                    hash ^= (it << 1);
+                    hash ^= (it << (pos++ % 7));
                 this->clear();
                 return hash;
 #           endif
