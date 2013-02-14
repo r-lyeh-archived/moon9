@@ -1,1 +1,0 @@
-cl customcd.cpp glsamplebase.cpp -I \prj\colony9\source\render9\dependencies\glew\include -I \prj\colony9\source\render9\dependencies\freeglut\include -I \prj\colony9\source\physics9\dependencies\tokamak\include \prj\colony9\source\physics9\dependencies\tokamak\lib\tokamak.lib \prj\colony9\source\render9\dependencies\freeglut\freeglut.c 

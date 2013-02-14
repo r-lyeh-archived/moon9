@@ -5,15 +5,23 @@ int main( int argc, const char **argv )
 {
     moon9::multinmap<int> mnm;
 
-    mnm["helloworld"][true]['a'][-123][3.1459f][100.00].get() = 100;
-    mnm["helloworld"][true]['a'][-123][3.1459f][100.00].get() *= 2;
-    mnm["helloworld"][true]['a'][-123][3.1459f][100.00].get() -= 200;
+    // voxel example
+    mnm[10.f][0.f][-10.f].get() = 12312921;
 
-    int result = mnm["helloworld"][true]['a'][-123][3.1459f][100.00].get();
-    std::cout << "Computing result = " << (result) << " (0 expected)" << std::endl;
+    // agenda example
+    mnm["john"]["doe"].get() = -1;
 
-    auto iterator = mnm["helloworld"][true]['a'][-123][3.1459f][100.00].find();
-    std::cout << "Computing result = " << (iterator->second) << " (0 expected)" << std::endl;
+    // direct access
+    std::cout << "Result = " << mnm["john"]["doe"].get() << std::endl;
+
+    // quick search
+    if( mnm["john"]["doe"].findit() )
+        std::cout << "Result = " << mnm.found() << std::endl;
+
+    // std search
+    auto iterator = mnm["john"]["doe"].find();
+    if( iterator != mnm.end() )
+        std::cout << "Result = " << (iterator->second) << std::endl;
 
     return 0;
 }
