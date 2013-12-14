@@ -27,5 +27,5 @@ add_library(moon9-audio-static STATIC ${MOON9_AUDIO_SRCS})
 add_executable(device.sample              device.sample.cpp)
 target_link_libraries(device.sample       moon9-audio-static openal stb_vorbis)
 
-add_executable(effects.sample             effects.sample.cpp)
-target_link_libraries(effects.sample      moon9-audio-static openal stb_vorbis)
+#add_executable(effects.sample             effects.sample.cpp)
+#target_link_libraries(effects.sample      moon9-audio-static openal stb_vorbis)

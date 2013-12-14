@@ -81,6 +81,8 @@ namespace moon9
     typedef moon9::pod< signed, bool, 0 > bool0;
     typedef moon9::pod< signed, bool, 1 > bool1;
 
+// std::numeric_limits<float>::max(), not constexpr! :(
+    typedef moon9::pod< signed, float, signed(FLT_MAX) > floatNn;
     typedef moon9::pod< signed, float,  -1 > float1n;
     typedef moon9::pod< signed, float,   0 > float0;
     typedef moon9::pod< signed, float, 1,5 > float020;
@@ -91,7 +93,10 @@ namespace moon9
     typedef moon9::pod< signed, float,   1 > float1;
     typedef moon9::pod< signed, float,   2 > float2;
     typedef moon9::pod< signed, float,   3 > float3;
+    typedef moon9::pod< signed, float, signed(-FLT_MAX) > floatN;
 
+// DBL_MAX, precision over :(
+    typedef moon9::pod< signed, double, signed(FLT_MAX), 1 > doubleNn;
     typedef moon9::pod< signed, double,  -1 > double1n;
     typedef moon9::pod< signed, double,   0 > double0;
     typedef moon9::pod< signed, double, 1,5 > double020;
@@ -102,7 +107,7 @@ namespace moon9
     typedef moon9::pod< signed, double,   1 > double1;
     typedef moon9::pod< signed, double,   2 > double2;
     typedef moon9::pod< signed, double,   3 > double3;
-
+    typedef moon9::pod< signed, double, signed(-FLT_MAX), 1 > doubleN;
 
     typedef moon9::pod< signed, signed char, SCHAR_MIN > charNn;
     typedef moon9::pod< signed, signed char,        -1 > char1n;
@@ -112,21 +117,21 @@ namespace moon9
     typedef moon9::pod< signed, signed char,         3 > char3;
     typedef moon9::pod< signed, signed char, SCHAR_MAX > charN;
 
-    typedef moon9::pod< signed, short, SHRT_MIN > shortNn;
-    typedef moon9::pod< signed, short,       -1 > short1n;
-    typedef moon9::pod< signed, short,        0 > short0;
-    typedef moon9::pod< signed, short,        1 > short1;
-    typedef moon9::pod< signed, short,        2 > short2;
-    typedef moon9::pod< signed, short,        3 > short3;
-    typedef moon9::pod< signed, short, SHRT_MAX > shortN;
+    typedef moon9::pod< signed, signed short, SHRT_MIN > shortNn;
+    typedef moon9::pod< signed, signed short,       -1 > short1n;
+    typedef moon9::pod< signed, signed short,        0 > short0;
+    typedef moon9::pod< signed, signed short,        1 > short1;
+    typedef moon9::pod< signed, signed short,        2 > short2;
+    typedef moon9::pod< signed, signed short,        3 > short3;
+    typedef moon9::pod< signed, signed short, SHRT_MAX > shortN;
 
-    typedef moon9::pod< signed, int, INT_MIN > intNn;
-    typedef moon9::pod< signed, int,      -1 > int1n;
-    typedef moon9::pod< signed, int,       0 > int0;
-    typedef moon9::pod< signed, int,       1 > int1;
-    typedef moon9::pod< signed, int,       2 > int2;
-    typedef moon9::pod< signed, int,       3 > int3;
-    typedef moon9::pod< signed, int, INT_MAX > intN;
+    typedef moon9::pod< signed, signed int, INT_MIN > intNn;
+    typedef moon9::pod< signed, signed int,      -1 > int1n;
+    typedef moon9::pod< signed, signed int,       0 > int0;
+    typedef moon9::pod< signed, signed int,       1 > int1;
+    typedef moon9::pod< signed, signed int,       2 > int2;
+    typedef moon9::pod< signed, signed int,       3 > int3;
+    typedef moon9::pod< signed, signed int, INT_MAX > intN;
 
 
     typedef moon9::pod< unsigned, unsigned char,  0 > uchar0;
