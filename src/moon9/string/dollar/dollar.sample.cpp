@@ -30,7 +30,7 @@ int main( int argc, const char **argv )
     // 4) Symbol hot-swapping is supported.
 
     $(HEY) = "Hey $PLAYER_1 and $PLAYER_2";
-    std::cout << $$("Symbol hot-swapping is supported: $GREETING") << std::endl;
+    std::cout << $$("Symbol hot-swapping is supported: $HEY") << std::endl;
 
     // 5) Symbols can hold many different types.
 
