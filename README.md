@@ -110,7 +110,7 @@ to the Committers to the project to let them know that you have filed
 an [Issue](https://github.com/r-lyeh/moon9/issues).
 
 ## License
-The project is open sourced under the BOOST license.
+The project is open sourced under the zlib/libpng license.
 
 ## Disclaimer
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
